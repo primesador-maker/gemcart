@@ -6,14 +6,14 @@
     <title>GEM CART</title>
     <script>
         var themeColors={signature:{bg:'#0B2E1E',secondary:'#0d3624',header:'#0B2E1E',text:'#F3D673',hint:'#c4b56a',link:'#D4AF37',button:'#D4AF37',buttonText:'#1a1a1a',bottom:'#0d3624'},obsidian:{bg:'#121212',secondary:'#1a1a1a',header:'#121212',text:'#FFFFFF',hint:'#a0a0a0',link:'#E5C158',button:'#E5C158',buttonText:'#1a1a1a',bottom:'#1a1a1a'},sapphire:{bg:'#0A192F',secondary:'#0f2440',header:'#0A192F',text:'#F7FAFC',hint:'#b0c4d8',link:'#ECC94B',button:'#ECC94B',buttonText:'#1a1a1a',bottom:'#0f2440'},ivory:{bg:'#F9F6F0',secondary:'#ffffff',header:'#F9F6F0',text:'#1C1C1C',hint:'#666',link:'#AA7C11',button:'#AA7C11',buttonText:'#fff',bottom:'#fff'}};
-        function atg(t){if(!window.Telegram||!window.Telegram.WebApp)return;var g=window.Telegram.WebApp,c=themeColors[t]||themeColors.signature;g.expand();g.setHeaderColor(c.header);g.setBackgroundColor(c.bg);g.setBottomBarColor(c.bottom);g.themeParams={bg_color:c.bg,text_color:c.text,hint_color:c.hint,link_color:c.link,button_color:c.button,button_text_color:c.buttonText,secondary_bg_color:c.secondary,header_bg_color:c.header,bottom_bar_bg_color:c.bottom};g.ready()}
+        function atg(t){if(!window.Telegram||!window.Telegram.WebApp)return;var g=window.Telegram.WebApp,c=themeColors[t]||themeColors.signature;g.expand();g.setHeaderColor(c.header);g.setBackgroundColor(c.bg);g.setBottomBarColor(c.bottom);g.ready()}
         if(window.Telegram&&window.Telegram.WebApp)atg(localStorage.getItem('gc_theme')||'signature');
     </script>
     <style>
         :root{--bg:#0B2E1E;--c:#0d3624;--t:#F3D673;--ts:#c4b56a;--a:#D4AF37;--ag:rgba(212,175,55,0.4);--g:#D4AF37;--gg:linear-gradient(135deg,#D4AF37,#F3D673,#D4AF37);--bad:#dc2626;--b:#1A533E;--nb:#0d3624;--sh:0 4px 20px rgba(0,0,0,0.4);--hb:#0B2E1E;--ib:#0a2818;--ibr:#1A533E;--cib:#0f3a28;--ta:#D4AF37;--ti:#6b8a7a;--tb:#1a1a1a;--tt:#F3D673;--su:#10b981;--wa:#f59e0b;--da:#ef4444;--pb:#D4AF37;--sb:rgba(212,175,55,0.08)}
-        body.theme-obsidian{--bg:#121212;--c:#1a1a1a;--t:#FFF;--ts:#a0a0a0;--a:#E5C158;--ag:rgba(229,193,88,0.4);--g:#E5C158;--b:#242424;--nb:#1a1a1a;--ib:#1e1e1e;--ibr:#242424;--cib:#1a1a1a;--ta:#E5C158;--ti:#555;--pb:#E5C158;--sb:rgba(229,193,88,0.06)}
-        body.theme-sapphire{--bg:#0A192F;--c:#0f2440;--t:#F7FAFC;--ts:#b0c4d8;--a:#ECC94B;--ag:rgba(236,201,75,0.4);--g:#ECC94B;--b:#172A45;--nb:#0f2440;--ib:#0c1e38;--ibr:#172A45;--cib:#122a48;--ta:#ECC94B;--ti:#5a7a9a;--pb:#ECC94B;--sb:rgba(236,201,75,0.06)}
-        body.theme-ivory{--bg:#F9F6F0;--c:#fff;--t:#1C1C1C;--ts:#666;--a:#AA7C11;--ag:rgba(170,124,17,0.25);--g:#AA7C11;--b:#EAE3D2;--nb:#fff;--ib:#f5f1e8;--ibr:#EAE3D2;--cib:#faf8f3;--ta:#AA7C11;--ti:#999;--pb:#AA7C11;--sb:rgba(170,124,17,0.05)}
+        body.theme-obsidian{--bg:#121212;--c:#1a1a1a;--t:#FFF;--ts:#a0a0a0;--a:#E5C158;--b:#242424;--nb:#1a1a1a;--ib:#1e1e1e;--ibr:#242424;--cib:#1a1a1a;--ta:#E5C158;--ti:#555;--pb:#E5C158;--sb:rgba(229,193,88,0.06)}
+        body.theme-sapphire{--bg:#0A192F;--c:#0f2440;--t:#F7FAFC;--ts:#b0c4d8;--a:#ECC94B;--b:#172A45;--nb:#0f2440;--ib:#0c1e38;--ibr:#172A45;--cib:#122a48;--ta:#ECC94B;--ti:#5a7a9a;--pb:#ECC94B;--sb:rgba(236,201,75,0.06)}
+        body.theme-ivory{--bg:#F9F6F0;--c:#fff;--t:#1C1C1C;--ts:#666;--a:#AA7C11;--b:#EAE3D2;--nb:#fff;--ib:#f5f1e8;--ibr:#EAE3D2;--cib:#faf8f3;--ta:#AA7C11;--ti:#999;--pb:#AA7C11;--sb:rgba(170,124,17,0.05)}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Georgia',serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:80px;transition:all 0.5s}
         .hdr{background:var(--hb);padding:16px 24px;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--pb);display:flex;align-items:center;justify-content:space-between}
@@ -131,7 +131,7 @@ var pP=[],bP=null,iaO=false,cat='All',gen='All',cM=null,th='signature';
 var TL={signature:'Signature',obsidian:'Obsidian Noir',sapphire:'Royal Sapphire',ivory:'Alabaster Ivory'};
 var MAXF=5;
 function ag(p,cb){fetch(A+p).then(r=>r.json()).then(cb).catch(e=>console.log(e))}
-function ap(p,d,cb){fetch(A+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json()).then(cb).catch(e=>console.log(e))}
+function ap2(p,d,cb){fetch(A+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json()).then(cb).catch(e=>console.log(e))}
 function aput(p,d,cb){fetch(A+p,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json()).then(cb).catch(e=>console.log(e))}
 function adel(p,cb){fetch(A+p,{method:'DELETE'}).then(r=>r.json()).then(cb).catch(e=>console.log(e))}
 function lP(){ag('/api/products',d=>{P=d;rP();rW();if(iaO)lAP()})}
@@ -164,27 +164,28 @@ function rC(){if(C.length===0){document.getElementById('citems').innerHTML='';do
 window.chQ=function(id,d){var c=C.find(x=>x.id===id);if(!c)return;var p=fP(id);if(d>0&&p&&c.qty>=p.stock){toast('⚠️ Stock limit!');return}c.qty+=d;if(c.qty<=0)C=C.filter(x=>x.id!==id);sC();rC();uCB()};
 window.rFC=function(id){C=C.filter(c=>c.id!==id);sC();rC();uCB()};
 
-// CHECKOUT - FIXED: Cart clears only after API confirms
+// ============ CHECKOUT - CART CLEARS ONLY AFTER API CONFIRMS ============
 window.chk=function(){
     if(C.length===0)return;
     if(!U.n||!U.n.trim()){if(window.Telegram&&window.Telegram.WebApp){var u1=window.Telegram.WebApp.initDataUnsafe.user;if(u1&&u1.first_name){U.n=u1.first_name;if(u1.last_name)U.n+=' '+u1.last_name}}if(!U.n||!U.n.trim()){var n=prompt('👤 Enter your name:');if(!n||!n.trim()){toast('⚠️ Name required!');return}U.n=n.trim()}sU();uUB()}
-    if(!U.u||!U.u.trim()||U.u==='(hidden)'){if(window.Telegram&&window.Telegram.WebApp){var u2=window.Telegram.WebApp.initDataUnsafe.user;if(u2&&u2.username)U.u='@'+u2.username}if(!U.u||!U.u.trim()||U.u==='(hidden)'){var u=prompt('📧 Telegram username hidden.\nEnter it so we can contact you:\n(Example: @yourname)');if(!u||!u.trim()){toast('⚠️ Username required!');return}U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim()}sU();uUB()}
+    if(!U.u||!U.u.trim()||U.u==='(hidden)'){if(window.Telegram&&window.Telegram.WebApp){var u2=window.Telegram.WebApp.initDataUnsafe.user;if(u2&&u2.username)U.u='@'+u2.username}if(!U.u||!U.u.trim()||U.u==='(hidden)'){var u=prompt('📧 Enter your Telegram username:\n(Example: @yourname)');if(!u||!u.trim()){toast('⚠️ Username required!');return}U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim()}sU();uUB()}
     var it=C.map(c=>{var p=fP(c.id);return{name:p?p.name:'Unknown',qty:c.qty,price:p?p.price:0,discount:p?p.discount:0}});
     var t=it.reduce((s,i)=>s+Math.round(i.price*(1-i.discount/100))*i.qty,0);
     
-    // Send to API first - DO NOT clear cart yet
-    ap('/api/orders',{customerName:U.n,customerUsername:U.u,customerId:U.tid||'',items:it,total:t},function(res){
+    // Send to API - DO NOT clear cart until response
+    ap2('/api/orders',{customerName:U.n,customerUsername:U.u,customerId:U.tid||'',items:it,total:t},function(res){
         if(res&&res.success){
-            // API confirmed - NOW clear the cart
+            // SUCCESS - Now clear cart
             C=[];sC();uCB();rC();
             toast('✦ Order placed!');uUB();lP();lO();swS('orders');
             alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n📋 '+it.map(i=>i.name+' ×'+i.qty).join(', ')+'\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to complete.');
         }else{
-            // API failed - keep cart as is
+            // FAILED - Keep cart
             toast('❌ Order failed. Please try again.');
         }
     });
 };
+
 window.bN=function(){if(!cM||cM.sold||cM.stock<=0)return;var ex=C.find(c=>c.id===cM.id);if(!ex){C.push({id:cM.id,qty:1});sC();uCB()}clM();swS('cart');setTimeout(()=>{if(C.length>0)window.chk()},400)};
 function rO2(){var mo=O.filter(o=>o.customerUsername===U.u||o.customerName===U.n);if(mo.length===0){document.getElementById('olist').innerHTML='';document.getElementById('oempty').style.display='block';return}document.getElementById('oempty').style.display='none';var h='';mo.forEach(o=>{h+='<div class="oc"><div class="oh"><b>'+o.id+'</b><span class="sb2 s'+o.status+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customerName+'</p><p>'+o.items.map(i=>i.name+' ×'+i.qty).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'});document.getElementById('olist').innerHTML=h}
 function rCB(){if(BC.length===0){document.getElementById('blist').innerHTML='';document.getElementById('bempty').style.display='block';return}document.getElementById('bempty').style.display='none';var h='';BC.forEach(b=>{h+='<div class="bc"><p style="font-size:11px;color:var(--g)">📣 '+new Date(b.time).toLocaleString()+'</p>'+(b.photo?'<img src="'+b.photo+'" style="width:100%;max-width:300px;border-radius:12px;margin:8px 0">':'')+'<p>'+b.message+'</p></div>'});document.getElementById('blist').innerHTML=h}
@@ -200,7 +201,7 @@ window.rPP2=function(i){pP.splice(i,1);rPP()};
 window.aCat=function(){var n=document.getElementById('ncn').value.trim();if(!n){toast('⚠️ Enter name');return}if(CAT.indexOf(n)!==-1){toast('⚠️ Exists!');return}CAT.push(n);sCAT();document.getElementById('ncn').value='';rCS();toast('✅ Added!')};
 window.dCat=function(i){if(!confirm('Delete?'))return;CAT.splice(i,1);sCAT();rCS();toast('🗑️ Deleted')};
 function lD(){var rev=O.filter(o=>o.status!=='pending').reduce((s,o)=>s+o.total,0);var pend=O.filter(o=>o.status==='pending').length;document.getElementById('dStats').innerHTML='<div class="sc"><div class="sv">'+P.length+'</div><div class="sl">📦 Products</div></div><div class="sc"><div class="sv">'+O.length+'</div><div class="sl">📋 Orders</div></div><div class="sc"><div class="sv">'+pend+'</div><div class="sl">⏳ Pending</div></div><div class="sc"><div class="sv">'+rev.toLocaleString()+'</div><div class="sl">💰 Revenue</div></div>'}
-function aP(){var n=document.getElementById('apn').value.trim(),pr=parseInt(document.getElementById('app').value);if(!n||!pr||pr<=0){toast('⚠️ Name and price required');return}var m=pP.length>0?pP.slice():['https://placehold.co/400x400/D4AF37/0B2E1E?text='+encodeURIComponent(n.substring(0,12))];ap('/api/products',{name:n,category:document.getElementById('apc').value,gender:document.getElementById('apg').value,price:pr,description:document.getElementById('apd').value.trim(),size:document.getElementById('apsz').value.trim()||null,photos:m,stock:parseInt(document.getElementById('aps').value)||1,discount:parseInt(document.getElementById('apdi').value)||0,featured:false,visible:true,sold:false},function(){toast('✦ Added!');document.getElementById('apn').value='';document.getElementById('app').value='';document.getElementById('apd').value='';document.getElementById('apsz').value='';document.getElementById('aps').value='1';document.getElementById('apdi').value='0';pP=[];document.getElementById('ppv').innerHTML='';lP()})}
+function aP(){var n=document.getElementById('apn').value.trim(),pr=parseInt(document.getElementById('app').value);if(!n||!pr||pr<=0){toast('⚠️ Name and price required');return}var m=pP.length>0?pP.slice():['https://placehold.co/400x400/D4AF37/0B2E1E?text='+encodeURIComponent(n.substring(0,12))];ap2('/api/products',{name:n,category:document.getElementById('apc').value,gender:document.getElementById('apg').value,price:pr,description:document.getElementById('apd').value.trim(),size:document.getElementById('apsz').value.trim()||null,photos:m,stock:parseInt(document.getElementById('aps').value)||1,discount:parseInt(document.getElementById('apdi').value)||0,featured:false,visible:true,sold:false},function(){toast('✦ Added!');document.getElementById('apn').value='';document.getElementById('app').value='';document.getElementById('apd').value='';document.getElementById('apsz').value='';document.getElementById('aps').value='1';document.getElementById('apdi').value='0';pP=[];document.getElementById('ppv').innerHTML='';lP()})}
 function lAP(){var f=document.getElementById('apf').value.toLowerCase();var list=P.filter(p=>!f||p.name.toLowerCase().indexOf(f)!==-1||p.category.toLowerCase().indexOf(f)!==-1);var h='';list.forEach(p=>{h+='<div class="api"><img src="'+p.photos[0]+'"><div class="apii"><b>'+p.name+'</b> '+(p.sold?'🔴':'')+' '+(p.visible===false?'👻':'')+'<div>'+p.category+' · '+p.gender+' · '+p.price.toLocaleString()+' '+SET.cu+'</div><div>Stock: <input type="number" value="'+p.stock+'" id="si'+p.id+'" style="width:55px"> <button class="btn btn-xs btn-s" onclick="uS('+p.id+')">Update</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',5)">+5</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',10)">+10</button></div></div><button class="btn btn-xs '+(p.sold?'btn-g':'btn-s')+'" onclick="tS('+p.id+')">'+(p.sold?'Avail':'Sell')+'</button> <button class="btn btn-xs btn-s" onclick="tV('+p.id+')">'+(p.visible===false?'Show':'Hide')+'</button> <button class="btn btn-xs btn-d" onclick="dP('+p.id+')">🗑️</button></div>'});document.getElementById('aplist').innerHTML=h||'<p style="text-align:center;padding:20px">No products.</p>'}
 window.uS=function(id){var p=fP(id),inp=document.getElementById('si'+id);if(p&&inp){p.stock=Math.max(0,parseInt(inp.value)||0);if(p.stock>0)p.sold=false;else p.sold=true;aput('/api/products/'+id,p,function(){lP();toast('📦 Updated!')})}};
 window.qS=function(id,add){var p=fP(id);if(p){p.stock+=add;if(p.stock>0)p.sold=false;aput('/api/products/'+id,p,function(){lP();toast('📦 +'+add+'!')})}};
@@ -209,7 +210,7 @@ window.tV=function(id){var p=fP(id);if(p){p.visible=p.visible===false?true:false
 window.dP=function(id){if(!confirm('Delete?'))return;adel('/api/products/'+id,function(){lP();toast('🗑️ Deleted')})};
 function lAO(){if(O.length===0){document.getElementById('aolist').innerHTML='<p style="text-align:center;padding:30px">No orders.</p>';return}var h='';O.forEach(o=>{h+='<div class="oc" style="margin:0 0 10px"><div class="oh"><b>'+o.id+'</b><span class="sb2 s'+o.status+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customerName+' <span style="color:var(--g)">'+(o.customerUsername||'')+'</span></p><p>'+o.items.map(i=>i.name+' ×'+i.qty).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p><div style="margin-top:6px"><button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'paid\')">💵 Paid</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'shipped\')">🚚 Shipped</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'delivered\')">✅ Delivered</button></div></div>'});document.getElementById('aolist').innerHTML=h}
 window.uOS=function(id,s){aput('/api/orders/'+id,{status:s},function(){lO();toast('✦ Updated!')})};
-function sB(){var m=document.getElementById('bmsg').value.trim();if(!m&&!bP){toast('⚠️ Enter message');return}ap('/api/broadcasts',{message:m,photo:bP},function(){document.getElementById('bmsg').value='';document.getElementById('bppv').innerHTML='';bP=null;lB();toast('📣 Sent!')})}
+function sB(){var m=document.getElementById('bmsg').value.trim();if(!m&&!bP){toast('⚠️ Enter message');return}ap2('/api/broadcasts',{message:m,photo:bP},function(){document.getElementById('bmsg').value='';document.getElementById('bppv').innerHTML='';bP=null;lB();toast('📣 Sent!')})}
 function lBH(){var h='';BC.forEach(b=>{h+='<div style="background:var(--cib);padding:14px;border-radius:14px;margin-bottom:10px;border:1px solid var(--pb)"><p style="font-size:11px;color:var(--g)">'+new Date(b.time).toLocaleString()+'</p>'+(b.photo?'<img src="'+b.photo+'" style="width:100%;max-width:250px;border-radius:12px;margin:8px 0">':'')+'<p>'+(b.message||'')+'</p></div>'});document.getElementById('bhist').innerHTML=h||'<p style="text-align:center;padding:20px">No broadcasts.</p>'}
 function sSD(){SET.sn=document.getElementById('ssn').value.trim()||'GEM CART';SET.le=document.getElementById('sle').value.trim()||'💎';SET.cu=document.getElementById('scu').value.trim()||'Birr';SET.gr=document.getElementById('sgr').value.trim();SET.om=document.getElementById('som').value.trim();SET.th=document.getElementById('sth').value;SET.pw=document.getElementById('spw').value.trim()||'sadmin';sS();th=SET.th;aTH();toast('💾 Saved!')}
 
@@ -240,7 +241,7 @@ function init(){
     document.getElementById('aOverlay').onclick=function(e){if(e.target===this)window.cAP()};
     document.getElementById('tPopup').onclick=function(e){if(e.target===this)this.classList.remove('active')};
     document.getElementById('pModal').onclick=function(e){if(e.target===this)clM()};
-    setTimeout(()=>document.getElementById('luxuryLoader')&&document.getElementById('luxuryLoader').classList.add('hidden'),2000);
+    setTimeout(()=>{var ll=document.getElementById('luxuryLoader');if(ll)ll.classList.add('hidden')},2000);
     lAll();
 }
 init();
