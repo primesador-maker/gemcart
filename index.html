@@ -2,227 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>GEM CART • Telegram Mini Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>GEM CART</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: Georgia, serif;
     }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-      background: #f5f7fa;
-      transition: background 0.3s, color 0.3s;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 0 70px 0;
-    }
-
-    /* theme colors */
     :root {
-      --primary: #0d9488;
-      --gold: #d4a017;
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --text: #1e293b;
-      --text-secondary: #475569;
-      --border: #e2e8f0;
-      --card-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      --badge-sold: #dc2626;
-      --badge-discount: #16a34a;
+      --bg: #0B2E1E;
+      --bg2: #0A2719;
+      --gold: #D4AF37;
+      --gold-light: #F0D060;
+      --text: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --card-bg: #112F21;
+      --border: #2C4A34;
+      --danger: #DC3545;
+      --success: #28A745;
+      --info: #17A2B8;
+      --radius: 12px;
+      --header-height: 60px;
+      --loading-bar-color: var(--gold);
     }
-
-    body.dark {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --text: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --border: #334155;
-      --card-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    body.signature {
+      --bg: #0B2E1E;
+      --bg2: #0A2719;
+      --card-bg: #112F21;
+      --border: #2C4A34;
     }
-
-    body.neon {
-      --bg: #0b0f19;
-      --surface: #131b2e;
-      --text: #e0f2fe;
-      --text-secondary: #b0c4ff;
-      --border: #2dd4bf;
-      --primary: #2dd4bf;
-      --gold: #facc15;
-      --card-shadow: 0 0 20px #2dd4bf80;
+    body.obsidian {
+      --bg: #1A1A1A;
+      --bg2: #111111;
+      --card-bg: #252525;
+      --border: #3A3A3A;
+      --gold: #C0C0C0;
+      --gold-light: #E0E0E0;
     }
-
-    .app-container {
-      max-width: 1000px;
-      width: 100%;
+    body.royal {
+      --bg: #0B1B3D;
+      --bg2: #09162E;
+      --card-bg: #112244;
+      --border: #1E3460;
+      --gold: #1E90FF;
+      --gold-light: #60AFFF;
+    }
+    body.alabaster {
+      --bg: #F8F8F8;
+      --bg2: #F0F0F0;
+      --card-bg: #FFFFFF;
+      --border: #E0E0E0;
+      --text: #111111;
+      --text-secondary: #666666;
+      --gold: #D4AF37;
+      --gold-light: #F0D060;
+    }
+    body {
       background: var(--bg);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 30px rgba(0,0,0,0.1);
-      transition: background 0.3s;
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      padding-top: var(--header-height);
     }
-
-    /* header */
-    .top-bar {
-      background: var(--primary);
-      color: white;
-      padding: 12px 16px;
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+    .loading-animation svg {
+      width: 100px;
+      height: 100px;
+      stroke: var(--gold);
+    }
+    .loading-dot {
+      margin-top: 20px;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+    #loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--loading-bar-color);
+      transition: width 0.3s;
+      z-index: 10000;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      padding: 0 16px;
+      z-index: 1000;
     }
     .logo-img {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: white;
-      object-fit: contain;
-      padding: 4px;
+      height: 36px;
     }
-    .brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
-      color: white;
-    }
-    .brand span {
-      color: var(--gold);
-    }
-    .theme-toggles {
+    .header-icons {
       display: flex;
-      gap: 6px;
-      background: rgba(255,255,255,0.15);
-      padding: 5px 8px;
-      border-radius: 30px;
-    }
-    .theme-btn {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 0.9rem;
-      padding: 4px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: 0.2s;
-    }
-    .theme-btn.active {
-      background: white;
-      color: #0d9488;
-    }
-
-    /* user bar */
-    .user-bar {
-      background: var(--surface);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .avatar {
-      width: 40px;
-      height: 40px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-    .admin-link {
-      background: var(--gold);
-      border: none;
-      color: #0f172a;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* main content */
-    .main-content {
-      flex: 1;
-      padding: 16px;
-      background: var(--bg);
-    }
-
-    /* product grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
+      align-items: center;
     }
-    @media (min-width: 768px) {
-      .grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    .card {
-      background: var(--surface);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-      transition: 0.2s;
+    .icon-btn {
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 1.4rem;
+      cursor: pointer;
       position: relative;
-      border: 1px solid var(--border);
-    }
-    .card-img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      background: #e2e8f0;
-    }
-    .card-body {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
     }
     .badge {
       position: absolute;
+      top: -5px;
+      right: -8px;
+      background: var(--gold);
+      color: var(--bg);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-selector select {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    main {
+      padding: 16px;
+      min-height: calc(100vh - var(--header-height));
+    }
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .tab {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+    .tab.active {
+      background: var(--gold);
+      color: var(--bg);
+      border-color: var(--gold);
+    }
+    .gender-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .gender-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .gender-btn.active {
+      background: var(--gold);
+      color: var(--bg);
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+    }
+    .product-card .img-container {
+      height: 160px;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .product-card img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+    .sold-badge {
+      position: absolute;
       top: 8px;
       left: 8px;
-      background: var(--badge-sold);
+      background: var(--danger);
       color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
       font-size: 0.7rem;
-      font-weight: bold;
-      padding: 3px 8px;
-      border-radius: 20px;
-      z-index: 2;
     }
-    .discount-badge {
-      background: var(--badge-discount);
-      left: auto;
-      right: 8px;
-    }
-    .heart-icon {
+    .wishlist-heart {
       position: absolute;
       top: 8px;
       right: 8px;
-      background: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.5);
       border-radius: 50%;
       width: 28px;
       height: 28px;
@@ -230,423 +236,816 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      color: white;
       font-size: 1rem;
-      z-index: 2;
-      color: #b91c1c;
     }
-    .product-name {
-      font-weight: 600;
-      color: var(--text);
+    .wishlist-heart.active {
+      color: var(--gold);
+    }
+    .card-info {
+      padding: 8px;
     }
     .price {
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    /* bottom nav */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid var(--border);
-      padding: 8px 4px;
-      z-index: 20;
-      max-width: 1000px;
-      margin: 0 auto;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-    }
-    .nav-item {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.7rem;
-      cursor: pointer;
-      padding: 4px 8px;
-    }
-    .nav-item.active {
-      color: var(--primary);
+      color: var(--gold);
       font-weight: bold;
     }
-
-    button {
-      cursor: pointer;
-      border: none;
-      background: var(--primary);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-    .gold-btn {
-      background: var(--gold);
-      color: #0f172a;
-    }
-    .modal {
-      display: none;
+    .modal-overlay {
       position: fixed;
-      top:0; left:0; width:100%; height:100%;
-      background: rgba(0,0,0,0.5);
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 2000;
+      display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
     }
-    .modal.active {
-      display: flex;
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
     }
-    .modal-content {
-      background: var(--surface);
-      padding: 20px;
-      border-radius: 24px;
-      max-width: 500px;
+    .modal {
+      background: var(--bg);
+      border-radius: var(--radius);
       width: 90%;
-      max-height: 85vh;
+      max-width: 500px;
+      max-height: 90vh;
       overflow-y: auto;
+      padding: 16px;
+    }
+    .gallery {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .gallery img, .gallery video {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .btn {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin: 6px 0;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quantity-control button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 1.2rem;
+      border: none;
+      cursor: pointer;
+    }
+    .admin-section {
+      display: none;
+    }
+    .admin-section.active {
+      display: block;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 20px;
+      z-index: 3000;
+      animation: fadeInOut 2s forwards;
+    }
+    @keyframes fadeInOut {
+      0% {opacity:0; bottom:10px}
+      10% {opacity:1; bottom:20px}
+      90% {opacity:1; bottom:20px}
+      100% {opacity:0; bottom:30px}
+    }
+    .hide { display: none; }
+    .admin-password-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4000;
     }
   </style>
 </head>
-<body class="light" id="mainBody">
-<div class="app-container" id="appContainer">
-  <!-- header dynamically filled --></div>
+<body class="signature">
+  <div id="loading-bar"></div>
+  <div id="loading-screen">
+    <div class="loading-animation">
+      <svg viewBox="0 0 100 100">
+        <polyline points="10,90 50,10 90,90" fill="none" stroke-width="4" stroke-dasharray="150" stroke-dashoffset="150">
+          <animate attributeName="stroke-dashoffset" from="150" to="0" dur="1.5s" fill="freeze" id="drawLine"/>
+        </polyline>
+      </svg>
+    </div>
+    <div class="loading-dot">GEM CART</div>
+  </div>
 
-<script>
-// ========== GLOBAL STORAGE & HELPERS ==========
-const PREFIX = "gc_";
-function save(key, val) { localStorage.setItem(PREFIX+key, JSON.stringify(val)); }
-function load(key, def) { const d=localStorage.getItem(PREFIX+key); return d ? JSON.parse(d) : def; }
-
-// Sample data init
-function initData() {
-  if (!load("products", null)) {
-    let products = [
-      { id: 'p1', name: 'Emerald Ring', category: 'Rings', gender: 'unisex', price: 240, stock: 3, description: 'Natural emerald stone', size: '7', discount: 10, photos: ['https://placehold.co/300x300/0d9488/white?text=Ring'], sold: false, hidden: false },
-      { id: 'p2', name: 'Gold Bracelet', category: 'Bracelets', gender: 'women', price: 180, stock: 0, description: '18k gold plated', size: 'M', discount: 0, photos: ['https://placehold.co/300x300/d4a017/black?text=Bracelet'], sold: true, hidden: false },
-      { id: 'p3', name: 'Diamond Necklace', category: 'Necklaces', gender: 'women', price: 520, stock: 2, description: '0.5 carat diamond', size: '45cm', discount: 5, photos: ['https://placehold.co/300x300/0d9488/white?text=Necklace'], sold: false, hidden: false },
-      { id: 'p4', name: 'Silver Cufflinks', category: 'Accessories', gender: 'men', price: 95, stock: 5, description: 'Sterling silver', size: 'one', discount: 0, photos: ['https://placehold.co/300x300/aaaaaa/black?text=Cufflinks'], sold: false, hidden: false }
-    ];
-    save("products", products);
-  }
-  if (!load("orders", null)) {
-    save("orders", [ { id:'o1', customer:'Alex', telegram:'@alex_test', items:[{id:'p1',name:'Emerald Ring',price:240,qty:1}], total:216, status:'Pending', date: new Date().toISOString() } ]);
-  }
-  if (!load("broadcasts", null)) {
-    save("broadcasts", [ { id:'b1', message:'Welcome to GEM CART! New arrivals every week.', photo:'', date: new Date().toISOString() } ]);
-  }
-}
-initData();
-
-// Detect Telegram
-function getTelegramUser() {
-  if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-    let u = window.Telegram.WebApp.initDataUnsafe.user;
-    return { first: u.first_name || 'User', username: u.username || ('@'+(u.id||'tg')) };
-  }
-  return null;
-}
-window.getTelegramUser = getTelegramUser;
-
-// ========== APP STATE ==========
-let currentUser = { name: 'Guest', username: '@guest' };
-let currentTab = 'home';
-let adminLogged = false;
-let selectedProduct = null;
-
-// ========== RENDER ENGINE ==========
-function renderApp() {
-  const tg = getTelegramUser();
-  if (tg) { currentUser = { name: tg.first, username: tg.username }; }
-  let orders = load("orders",[]);
-  let userOrders = orders.filter(o=> o.telegram === currentUser.username || o.customer === currentUser.name);
-  document.getElementById('appContainer').innerHTML = getFullHTML(userOrders);
-  applyTheme();
-  if (currentTab==='home') renderProductGrid();
-  else if (currentTab==='cart') renderCart();
-  else if (currentTab==='wishlist') renderWishlist();
-  else if (currentTab==='orders') renderOrders();
-  else if (currentTab==='news') renderNews();
-  if (adminLogged) renderAdminPanel();
-}
-window.renderApp = renderApp;
-
-function getFullHTML(userOrders) {
-  return `
-    <div class="top-bar">
-      <div class="logo-area">
-        <img src="https://gemini.google.com/share/1e5a8bde6f3a" class="logo-img" onerror="this.style.display='none'" alt="logo">
-        <div class="brand">GEM<span>CART</span></div>
+  <header>
+    <img src="https://drive.google.com/uc?export=view&id=13QnFE7zWZAK3YcqdpGyXygueThZNsHoV" class="logo-img" alt="GEM CART" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 40%22%3E%3Ctext x=%225%22 y=%2230%22 fill=%22%23D4AF37%22 font-size=%2220%22%3EGEM CART%3C/text%3E%3C/svg%3E'">
+    <div class="header-icons">
+      <div class="theme-selector">
+        <select id="themeSelect" onchange="switchTheme(this.value)">
+          <option value="signature">Signature</option>
+          <option value="obsidian">Obsidian Noir</option>
+          <option value="royal">Royal Sapphire</option>
+          <option value="alabaster">Alabaster Ivory</option>
+        </select>
       </div>
-      <div class="theme-toggles" id="themeToggleContainer">
-        <button class="theme-btn active" data-theme="light">☀️</button>
-        <button class="theme-btn" data-theme="dark">🌙</button>
-        <button class="theme-btn" data-theme="neon">🌀</button>
-      </div>
+      <button class="icon-btn" onclick="openWishlist()">♡ <span id="wishlistCount" class="badge">0</span></button>
+      <button class="icon-btn" onclick="openCart()">🛒 <span id="cartCount" class="badge">0</span></button>
+      <button id="adminLinkBtn" class="icon-btn hide" onclick="showAdminPassword()" title="Admin">⚙️</button>
     </div>
-    <div class="user-bar">
-      <div class="user-info"><div class="avatar">👤</div><div><strong>${currentUser.name}</strong> <small>${currentUser.username}</small></div></div>
-      <div><span style="margin-right:12px;">📦 ${userOrders.length} orders</span><button class="admin-link" onclick="window.promptAdmin()">🔐 Admin</button></div>
+  </header>
+
+  <main id="main-content">
+    <!-- Tabs & filters -->
+    <div class="tabs" id="categoryTabs"></div>
+    <div class="gender-filter">
+      <button class="gender-btn active" data-gender="All">All</button>
+      <button class="gender-btn" data-gender="Male">Male</button>
+      <button class="gender-btn" data-gender="Female">Female</button>
+      <button class="gender-btn" data-gender="Unisex">Unisex</button>
     </div>
-    <div class="main-content" id="mainContent"></div>
-    <div class="bottom-nav">
-      <button class="nav-item ${currentTab==='home'?'active':''}" data-tab="home">🏠Home</button>
-      <button class="nav-item ${currentTab==='cart'?'active':''}" data-tab="cart">🛒Cart</button>
-      <button class="nav-item ${currentTab==='wishlist'?'active':''}" data-tab="wishlist">❤️Wish</button>
-      <button class="nav-item ${currentTab==='orders'?'active':''}" data-tab="orders">📋Orders</button>
-      <button class="nav-item ${currentTab==='news'?'active':''}" data-tab="news">📰News</button>
-    </div>
-    <div class="modal" id="productModal"><div class="modal-content" id="modalContent"></div></div>
-    <div class="modal" id="checkoutModal"><div class="modal-content" id="checkoutContent"></div></div>
-  `;
-}
+    <div class="product-grid" id="productGrid"></div>
 
-// Attach events after render
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('theme-btn')) {
-    document.getElementById('mainBody').className = e.target.dataset.theme;
-    document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
-    e.target.classList.add('active');
+    <!-- Modals will be injected dynamically -->
+    <div id="productModal" class="modal-overlay"></div>
+    <div id="cartModal" class="modal-overlay"></div>
+    <div id="wishlistModal" class="modal-overlay"></div>
+    <div id="checkoutModal" class="modal-overlay"></div>
+    <div id="ordersModal" class="modal-overlay"></div>
+
+    <!-- Admin panel container -->
+    <div id="adminPanel" class="admin-section"></div>
+  </main>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    // ====================== GLOBAL STATE ======================
+    const API = 'https://gemcart-shop-api.onrender.com';
+    let tg = window.Telegram.WebApp;
+    let currentUser = null;
+    let isAdmin = false;
+    let adminToken = null;
+    let products = [];
+    let categories = [];
+    let cart = JSON.parse(localStorage.getItem('gc_cart') || '[]');
+    let wishlist = JSON.parse(localStorage.getItem('gc_wishlist') || '[]');
+    let currentCategory = 'All';
+    let currentGender = 'All';
+
+    // Loading bar
+    function showLoadingBar() {
+      document.getElementById('loading-bar').style.width = '80%';
+    }
+    function hideLoadingBar() {
+      document.getElementById('loading-bar').style.width = '0%';
+    }
+
+    async function api(url, options = {}) {
+      showLoadingBar();
+      try {
+        let res = await fetch(url, options);
+        hideLoadingBar();
+        if (!res.ok) throw new Error(await res.text());
+        return await res.json();
+      } catch (e) {
+        hideLoadingBar();
+        showToast(e.message);
+        throw e;
+      }
+    }
+
+    function showToast(msg) {
+      let toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+
+    // ====================== INIT ======================
+async function initApp() {
+  // Clear old data
+  localStorage.removeItem('gc_user');
+  // Auto-detect user from Telegram
+  if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    let u = tg.initDataUnsafe.user;
+    currentUser = {
+      id: u.id,
+      first_name: u.first_name || '',
+      last_name: u.last_name || '',
+      username: u.username || ''
+    };
+  } else {
+    // fallback for testing outside Telegram
+    currentUser = { id: 0, first_name: '', last_name: '', username: '' };
   }
-  if (e.target.classList.contains('nav-item') || e.target.closest('.nav-item')) {
-    let tab = (e.target.closest('.nav-item')?.dataset?.tab) || e.target.dataset.tab;
-    if (tab) { currentTab = tab; adminLogged = false; renderApp(); }
+  if (currentUser.id === 7715442708) {
+    isAdmin = true;
+    document.getElementById('adminLinkBtn').classList.remove('hide');
   }
-});
-
-window.promptAdmin = function(){
-  let p = prompt('Admin password:');
-  if (p==='sadmin') { adminLogged = true; renderApp(); }
-  else if (p) alert('Wrong password');
-};
-window.logoutAdmin = ()=>{ adminLogged=false; renderApp(); };
-
-// ========== PRODUCT GRID ==========
-function renderProductGrid(){
-  let products = load("products",[]).filter(p=>!p.hidden);
-  let html = '<div class="grid">';
-  products.forEach(p=>{
-    let soldBadge = p.sold ? '<span class="badge">SOLD</span>' : '';
-    let discBadge = p.discount>0 ? `<span class="badge discount-badge">-${p.discount}%</span>` : '';
-    html += `<div class="card" onclick="window.openProductDetail('${p.id}')">
-      <img src="${p.photos?.[0] || 'https://placehold.co/300'}" class="card-img" alt="${p.name}">
-      ${soldBadge} ${discBadge}
-      <span class="heart-icon" onclick="event.stopPropagation();window.toggleWishlist('${p.id}')">${isWishlisted(p.id)?'❤️':'🤍'}</span>
-      <div class="card-body"><span class="product-name">${p.name}</span><small>${p.category}</small><span class="price">$${p.price}</span><small>Stock: ${p.stock}</small></div>
-    </div>`;
-  });
-  html += '</div>';
-  document.getElementById('mainContent').innerHTML = html;
-}
-
-window.toggleWishlist = function(id){
-  let wish = load("wishlist",[]);
-  if (wish.includes(id)) wish = wish.filter(i=>i!==id);
-  else wish.push(id);
-  save("wishlist", wish);
-  renderApp();
-};
-function isWishlisted(id){ return load("wishlist",[]).includes(id); }
-
-// Product Detail Modal
-window.openProductDetail = function(id){
-  let products = load("products",[]);
-  selectedProduct = products.find(p=>p.id===id);
-  if (!selectedProduct) return;
-  let p = selectedProduct;
-  let photosHtml = p.photos.map(src=>`<img src="${src}" style="width:80px;height:80px;object-fit:cover;margin:4px;border-radius:12px;">`).join('');
-  document.getElementById('modalContent').innerHTML = `
-    <h3>${p.name}</h3><div>${photosHtml}</div>
-    <p>${p.description}</p><p>Size: ${p.size} | Price: $${p.price} | Stock: ${p.stock}</p>
-    ${p.sold?'<p style="color:red;">SOLD OUT</p>':''}
-    <button onclick="window.addToCart('${p.id}')">🛒 Add to Cart</button>
-    <button class="gold-btn" onclick="window.buyNow('${p.id}')">⚡Buy Now</button>
-    <button onclick="window.toggleWishlist('${p.id}');window.openProductDetail('${p.id}')">${isWishlisted(p.id)?'❤️':'🤍'}</button>
-    <button onclick="document.getElementById('productModal').classList.remove('active')">← Continue</button>
-  `;
-  document.getElementById('productModal').classList.add('active');
-};
-window.closeModal = ()=> document.getElementById('productModal').classList.remove('active');
-
-// Cart functions
-window.addToCart = function(id){
-  let cart = load("cart",[]);
-  let prod = load("products",[]).find(p=>p.id===id);
-  if (!prod || prod.sold) return alert('Item unavailable');
-  let existing = cart.find(i=>i.id===id);
-  if (existing) existing.qty +=1;
-  else cart.push({id: prod.id, name:prod.name, price:prod.price, qty:1});
-  save("cart",cart);
-  renderApp();
-  alert('Added to cart');
-};
-window.buyNow = function(id){
-  window.addToCart(id);
-  currentTab='cart';
-  renderApp();
-  document.getElementById('productModal').classList.remove('active');
-};
-
-function renderCart(){
-  let cart = load("cart",[]);
-  let total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
-  let html = '<h3>🛒 Cart</h3>';
-  if(!cart.length) html+='<p>Empty cart</p>';
-  cart.forEach((item,idx)=>{
-    html+=`<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;">${item.name} $${item.price} 
-      <button onclick="window.changeQty(${idx},-1)">-</button> ${item.qty} <button onclick="window.changeQty(${idx},1)">+</button>
-      <button onclick="window.removeCartItem(${idx})">🗑</button></div>`;
-  });
-  html+=`<strong>Total: $${total.toFixed(2)}</strong><br><button onclick="window.openCheckout()">✅ Place Order</button>`;
-  document.getElementById('mainContent').innerHTML = html;
-}
-window.changeQty = (idx, delta)=>{
-  let cart=load("cart",[]); if(cart[idx]){ cart[idx].qty+=delta; if(cart[idx].qty<1) cart.splice(idx,1); save("cart",cart); renderCart(); }
-};
-window.removeCartItem = (idx)=>{ let c=load("cart",[]); c.splice(idx,1); save("cart",c); renderCart(); };
-
-window.openCheckout = ()=>{
-  document.getElementById('checkoutContent').innerHTML = `
-    <h3>Checkout</h3><input id="custName" placeholder="Your name" value="${currentUser.name}"><br>
-    <input id="custTg" placeholder="@username" value="${currentUser.username}"><br>
-    <button onclick="window.placeOrder()">Place Order</button>`;
-  document.getElementById('checkoutModal').classList.add('active');
-};
-window.placeOrder = function(){
-  let name = document.getElementById('custName')?.value.trim();
-  let tg = document.getElementById('custTg')?.value.trim();
-  if(!name) return alert('Enter name');
-  let cart = load("cart",[]);
-  if(!cart.length) return alert('Cart empty');
-  let products = load("products",[]);
-  for (let item of cart){
-    let p = products.find(p=>p.id===item.id);
-    if(!p || p.sold || p.stock<item.qty) return alert(`Not enough stock for ${item.name}`);
+  updateCartBadge();
+  updateWishlistBadge();
+  try {
+    await loadCategories();
+    await loadProducts();
+  } catch (err) {
+    console.warn('Could not load data from API:', err);
   }
-  cart.forEach(item=>{
-    let p = products.find(p=>p.id===item.id);
-    if(p) p.stock -= item.qty;
-  });
-  save("products", products);
-  let total = cart.reduce((s,i)=>s+(i.price*i.qty),0);
-  let orders = load("orders",[]);
-  orders.push({ id:'o'+Date.now(), customer:name, telegram:tg, items:cart, total, status:'Pending', date:new Date().toISOString() });
-  save("orders", orders);
-  save("cart", []);
-  document.getElementById('checkoutModal').classList.remove('active');
-  alert('Order placed!');
-  renderApp();
-};
+  // render categories & products (fix the missing renderAll)
+  renderCategoryTabs();
+  renderProducts();
 
-// Wishlist, Orders, News
-function renderWishlist(){
-  let wish = load("wishlist",[]);
-  let prods = load("products",[]).filter(p=>wish.includes(p.id));
-  let html = '<h3>❤️ Wishlist</h3><div class="grid">';
-  prods.forEach(p=> html+=`<div class="card">${p.sold?'<span class="badge">SOLD</span>':''}<img src="${p.photos[0]}" class="card-img"><div class="card-body">${p.name} $${p.price}</div></div>`);
-  html+='</div>'; document.getElementById('mainContent').innerHTML=html;
-}
-function renderOrders(){
-  let orders = load("orders",[]).filter(o=>o.telegram===currentUser.username || o.customer===currentUser.name);
-  let html='<h3>📋 Orders</h3>';
-  orders.forEach(o=> html+=`<div style="background:var(--surface);padding:10px;margin:6px;border-radius:12px;"><b>${o.id}</b> - ${o.status} - $${o.total}</div>`);
-  document.getElementById('mainContent').innerHTML=html;
-}
-function renderNews(){
-  let bc = load("broadcasts",[]);
-  let html='<h3>📰 News</h3>';
-  bc.forEach(b=> html+=`<div style="background:var(--surface);padding:12px;margin:8px;border-radius:16px;">${b.message} ${b.photo?`<br><img src="${b.photo}" width="100">`:''}</div>`);
-  document.getElementById('mainContent').innerHTML=html;
+  // Hide loading screen after animation
+  setTimeout(() => {
+    document.getElementById('loading-screen').style.display = 'none';
+    // restart the SVG animation for effect
+    let animateElem = document.querySelector('.loading-animation svg polyline animate');
+    if (animateElem) animateElem.beginElement();
+  }, 2000);
 }
 
-// ========== ADMIN PANEL ==========
-function renderAdminPanel(){
-  if(!adminLogged) return;
-  let main = document.getElementById('mainContent');
-  let products = load("products",[]);
-  let orders = load("orders",[]);
-  main.innerHTML = `
-    <div style="background:var(--surface);padding:16px;border-radius:20px;">
-      <h2>🛡️ Admin Panel</h2><button onclick="window.logoutAdmin()">Close</button>
-      <div><strong>Stats:</strong> Products: ${products.length} | Orders: ${orders.length}</div>
-      <hr>
-      <h4>➕ Add Product</h4>
-      <input id="pName" placeholder="Name"><input id="pCat" placeholder="Category"><input id="pGender" placeholder="gender"><br>
-      <input id="pPrice" type="number" placeholder="Price"><input id="pStock" type="number" placeholder="Stock"><br>
-      <input id="pDesc" placeholder="Description"><input id="pSize" placeholder="Size"><input id="pDisc" type="number" placeholder="Discount %"><br>
-      <label>Photos: <input type="file" id="photoUpload" multiple accept="image/*"></label>
-      <div id="photoPreviews"></div>
-      <button onclick="window.adminAddProduct()">Add Product</button>
-      <hr><h4>📦 Manage Products</h4><div id="adminProductList"></div>
-      <hr><h4>📋 Orders</h4><div id="adminOrderList"></div>
-      <hr><h4>📢 Broadcast</h4>
-      <textarea id="broadcastMsg" placeholder="Message"></textarea><input id="broadcastPhoto" placeholder="photo url"><button onclick="window.sendBroadcast()">Send</button>
-    </div>`;
-  renderAdminProductList();
-  renderAdminOrders();
-}
-window.adminAddProduct = function(){
-  let name = document.getElementById('pName')?.value.trim();
-  if(!name) return alert('Name required');
-  let files = document.getElementById('photoUpload')?.files;
-  let photoUrls = [];
-  if(files) for(let f of files) photoUrls.push(URL.createObjectURL(f));
-  let newP = {
-    id: 'p'+Date.now(), name, category: document.getElementById('pCat')?.value||'',
-    gender: document.getElementById('pGender')?.value||'unisex',
-    price: parseFloat(document.getElementById('pPrice')?.value)||0,
-    stock: parseInt(document.getElementById('pStock')?.value)||0,
-    description: document.getElementById('pDesc')?.value||'',
-    size: document.getElementById('pSize')?.value||'',
-    discount: parseFloat(document.getElementById('pDisc')?.value)||0,
-    photos: photoUrls.length?photoUrls:['https://placehold.co/300'],
-    sold: false, hidden: false
-  };
-  let prods = load("products",[]); prods.push(newP); save("products",prods);
-  renderApp(); adminLogged=true; renderApp();
-};
-window.renderAdminProductList = ()=>{
-  let prods = load("products",[]);
-  let html = prods.map(p=>`<div style="margin:6px 0;">${p.name} Stock:<input id="stock_${p.id}" value="${p.stock}" size="3"> 
-    <button onclick="window.updateStock('${p.id}')">Update</button>
-    <button onclick="window.quickStock('${p.id}',5)">+5</button><button onclick="window.quickStock('${p.id}',10)">+10</button>
-    <button onclick="window.toggleSold('${p.id}')">${p.sold?'Sell':'Avail'}</button>
-    <button onclick="window.toggleHide('${p.id}')">${p.hidden?'Show':'Hide'}</button>
-    <button onclick="window.deleteProduct('${p.id}')">🗑</button></div>`).join('');
-  let listDiv = document.getElementById('adminProductList'); if(listDiv) listDiv.innerHTML=html;
-};
-window.updateStock = (id)=>{ let v=document.getElementById('stock_'+id)?.value; let p=load("products",[]); let idx=p.findIndex(x=>x.id===id); if(idx>-1){ p[idx].stock=parseInt(v)||0; save("products",p); renderApp(); adminLogged=true; renderApp(); }};
-window.quickStock = (id,add)=>{ let p=load("products",[]); let i=p.findIndex(x=>x.id===id); if(i>-1){ p[i].stock+=add; save("products",p); renderApp(); adminLogged=true; renderApp(); }};
-window.toggleSold = (id)=>{ let p=load("products",[]); let i=p.findIndex(x=>x.id===id); if(i>-1){ p[i].sold=!p[i].sold; save("products",p); renderApp(); adminLogged=true; renderApp(); }};
-window.toggleHide = (id)=>{ let p=load("products",[]); let i=p.findIndex(x=>x.id===id); if(i>-1){ p[i].hidden=!p[i].hidden; save("products",p); renderApp(); adminLogged=true; renderApp(); }};
-window.deleteProduct = (id)=>{ let p=load("products",[]).filter(x=>x.id!==id); save("products",p); renderApp(); adminLogged=true; renderApp(); };
-window.sendBroadcast = ()=>{
-  let msg = document.getElementById('broadcastMsg')?.value.trim();
-  if(!msg) return;
-  let bc = load("broadcasts",[]);
-  bc.push({id:'b'+Date.now(), message:msg, photo: document.getElementById('broadcastPhoto')?.value||'', date:new Date().toISOString()});
-  save("broadcasts",bc); renderApp(); adminLogged=true; renderApp();
-};
-function renderAdminOrders(){
-  let orders = load("orders",[]);
-  let html = orders.map(o=>`<div>${o.id} - ${o.customer} (${o.status}) 
-    <select id="status_${o.id}"><option>Pending</option><option>Processing</option><option>Shipped</option></select>
-    <button onclick="window.updateOrderStatus('${o.id}')">Update</button></div>`).join('');
-  let d=document.getElementById('adminOrderList'); if(d) d.innerHTML=html;
-}
-window.updateOrderStatus = (id)=>{
-  let sel = document.getElementById('status_'+id); if(!sel) return;
-  let orders=load("orders",[]); let o=orders.find(x=>x.id===id); if(o){ o.status=sel.value; save("orders",orders); renderApp(); adminLogged=true; renderApp(); }
-};
+    function updateCartBadge() {
+      document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.quantity,0);
+    }
+    function updateWishlistBadge() {
+      document.getElementById('wishlistCount').textContent = wishlist.length;
+    }
 
-function applyTheme(){
-  let saved = localStorage.getItem('gc_theme')||'light';
-  document.getElementById('mainBody').className = saved;
-}
-window.onload = ()=>{ renderApp(); };
-</script>
+    // ====================== API CALLS ======================
+    async function loadCategories() {
+      let data = await api(`${API}/api/categories`);
+      categories = data.categories || [];
+      renderCategoryTabs();
+    }
+    async function loadProducts() {
+      let data = await api(`${API}/api/products`);
+      products = data.products || [];
+      renderProducts();
+    }
+
+    function filterProducts() {
+      return products.filter(p => {
+        if (p.is_hidden) return false;
+        if (currentCategory !== 'All' && p.category !== currentCategory) return false;
+        if (currentGender !== 'All' && p.gender !== currentGender) return false;
+        return true;
+      });
+    }
+
+    // ====================== RENDER ======================
+    function renderCategoryTabs() {
+      let container = document.getElementById('categoryTabs');
+      container.innerHTML = `<button class="tab ${currentCategory==='All'?'active':''}" onclick="setCategory('All')">All</button>`;
+      categories.forEach(cat => {
+        container.innerHTML += `<button class="tab ${currentCategory===cat?'active':''}" onclick="setCategory('${cat}')">${cat}</button>`;
+      });
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderCategoryTabs();
+      renderProducts();
+    }
+
+    document.querySelectorAll('.gender-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('active'));
+        this.classList.add('active');
+        currentGender = this.dataset.gender;
+        renderProducts();
+      });
+    });
+
+    function renderProducts() {
+      let grid = document.getElementById('productGrid');
+      let filtered = filterProducts();
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card" onclick="openProductDetail(${p.id})">
+          <div class="img-container">
+            ${p.images && p.images.length ? `<img src="${API}/static/${p.images[0]}" alt="">` : '<span>No Image</span>'}
+            ${p.is_sold ? '<span class="sold-badge">SOLD</span>' : ''}
+            <span class="wishlist-heart ${wishlist.includes(p.id)?'active':''}" onclick="event.stopPropagation(); toggleWishlist(${p.id})">${wishlist.includes(p.id)?'♥':'♡'}</span>
+          </div>
+          <div class="card-info">
+            <div class="price">ETB ${p.price}</div>
+            <small>${p.name}</small>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleWishlist(prodId) {
+      if (wishlist.includes(prodId)) wishlist = wishlist.filter(id=>id!==prodId);
+      else wishlist.push(prodId);
+      localStorage.setItem('gc_wishlist', JSON.stringify(wishlist));
+      updateWishlistBadge();
+      renderProducts(); // re-render to update heart
+    }
+
+    // ====================== PRODUCT DETAIL MODAL ======================
+    function openProductDetail(id) {
+      let p = products.find(x=>x.id===id);
+      if (!p) return;
+      let modal = document.getElementById('productModal');
+      let imagesHtml = p.images && p.images.length ? p.images.map(img => `<img src="${API}/static/${img}" onclick="event.stopPropagation()">`).join('') : '';
+      if (p.video) imagesHtml += `<video controls src="${API}/static/${p.video}"></video>`;
+      modal.innerHTML = `
+        <div class="modal">
+          <h2>${p.name}</h2>
+          <p>${p.description || ''}</p>
+          <div class="gallery">${imagesHtml}</div>
+          <p class="price">ETB ${p.price}</p>
+          <p>Stock: ${p.stock} ${p.is_sold ? '(Sold out)' : ''}</p>
+          <div class="quantity-control">
+            <button onclick="changeDetailQty(-1)">-</button>
+            <span id="detailQty">1</span>
+            <button onclick="changeDetailQty(1)">+</button>
+          </div>
+          <button class="btn" onclick="addToCartFromDetail(${p.id})" ${p.is_sold?'disabled':''}>Add to Cart</button>
+          <button class="btn btn-outline" onclick="buyNow(${p.id})" ${p.is_sold?'disabled':''}>Buy Now</button>
+          <button class="btn btn-outline" onclick="closeModal('productModal')">Close</button>
+        </div>
+      `;
+      modal.classList.add('active');
+      modal.dataset.productId = id;
+      document.getElementById('detailQty').textContent = '1';
+    }
+
+    let detailQty = 1;
+    function changeDetailQty(delta) {
+      let p = products.find(x=>x.id==document.getElementById('productModal').dataset.productId);
+      if (!p) return;
+      detailQty = Math.max(1, Math.min(detailQty+delta, p.stock));
+      document.getElementById('detailQty').textContent = detailQty;
+    }
+
+    function addToCartFromDetail(prodId) {
+      let p = products.find(x=>x.id==prodId);
+      if (!p || p.is_sold) return;
+      let qty = detailQty || 1;
+      let existing = cart.find(i=>i.product_id===prodId);
+      if (existing) {
+        existing.quantity = Math.min(existing.quantity + qty, p.stock);
+      } else {
+        cart.push({product_id: prodId, name: p.name, price: p.price, quantity: qty, stock: p.stock});
+      }
+      saveCart();
+      closeModal('productModal');
+      showToast('Added to cart');
+    }
+
+    function buyNow(prodId) {
+      addToCartFromDetail(prodId);
+      openCheckout();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // ====================== CART ======================
+    function openCart() {
+      let modal = document.getElementById('cartModal');
+      if (cart.length === 0) {
+        modal.innerHTML = `<div class="modal"><h3>Your cart is empty</h3><button class="btn" onclick="closeModal('cartModal')">Close</button></div>`;
+      } else {
+        modal.innerHTML = `
+          <div class="modal">
+            <h3>Your Cart</h3>
+            ${cart.map((item, idx) => `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
+                <span>${item.name} (ETB ${item.price})</span>
+                <div class="quantity-control">
+                  <button onclick="changeCartQty(${idx}, -1)">-</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="changeCartQty(${idx}, 1)">+</button>
+                </div>
+                <button onclick="removeCartItem(${idx})" style="background:none;color:var(--danger);border:none;">✕</button>
+              </div>
+            `).join('')}
+            <p>Total: ETB ${cart.reduce((s,i)=>s+(i.price*i.quantity),0)}</p>
+            <button class="btn" onclick="openCheckout()">Checkout</button>
+            <button class="btn btn-outline" onclick="closeModal('cartModal')">Close</button>
+          </div>
+        `;
+      }
+      modal.classList.add('active');
+    }
+
+    function changeCartQty(idx, delta) {
+      let item = cart[idx];
+      let p = products.find(x=>x.id===item.product_id);
+      if (!p) return;
+      item.quantity = Math.max(1, Math.min(item.quantity+delta, p.stock));
+      saveCart();
+      openCart(); // refresh modal
+    }
+
+    function removeCartItem(idx) {
+      cart.splice(idx,1);
+      saveCart();
+      openCart();
+    }
+
+    function saveCart() {
+      localStorage.setItem('gc_cart', JSON.stringify(cart));
+      updateCartBadge();
+    }
+
+    // ====================== CHECKOUT ======================
+    function openCheckout() {
+      if (cart.length === 0) return showToast('Cart empty');
+      let needsName = !currentUser.first_name && !currentUser.username;
+      let modal = document.getElementById('checkoutModal');
+      modal.innerHTML = `
+        <div class="modal">
+          <h3>Checkout</h3>
+          <input id="checkName" placeholder="Full Name" value="${currentUser.first_name || ''} ${currentUser.last_name || ''}">
+          <input id="checkUsername" placeholder="Username (optional)" value="${currentUser.username || ''}">
+          <p>Payment: Telebirr to <b>251990066832 (Biruk)</b></p>
+          <button class="btn" onclick="placeOrder()">Confirm Order</button>
+          <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Cancel</button>
+        </div>
+      `;
+      modal.classList.add('active');
+    }
+
+    async function placeOrder() {
+      let name = document.getElementById('checkName').value.trim();
+      let username = document.getElementById('checkUsername').value.trim();
+      if (!name) return showToast('Name required');
+      if (!username) username = '';
+      let orderData = {
+        customer_id: currentUser.id,
+        customer_name: name,
+        customer_username: username,
+        items: cart.map(i => ({product_id: i.product_id, quantity: i.quantity})),
+        payment_method: 'Telebirr'
+      };
+      try {
+        let res = await api(`${API}/api/orders`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(orderData)
+        });
+        alert(`Order placed! Pay via Telebirr to 251990066832 (Biruk). Order ID: ${res.order_id}`);
+        cart = [];
+        saveCart();
+        closeModal('checkoutModal');
+        loadProducts(); // refresh stock
+      } catch(e) {}
+    }
+
+    // ====================== ORDERS HISTORY ======================
+    async function openOrders() {
+      let modal = document.getElementById('ordersModal');
+      modal.innerHTML = `<div class="modal"><p>Loading...</p></div>`;
+      modal.classList.add('active');
+      let orders = await api(`${API}/api/orders?customer_id=${currentUser.id}`);
+      modal.innerHTML = `
+        <div class="modal">
+          <h3>Your Orders</h3>
+          ${orders.length ? orders.map(o => `
+            <div style="border-bottom:1px solid var(--border); padding:10px 0;">
+              <p><b>Order #${o.id}</b> - ${o.status}</p>
+              <p>Items: ${o.items.map(i=>`${i.name} x${i.quantity}`).join(', ')}</p>
+              <p>Total: ETB ${o.total}</p>
+            </div>
+          `).join('') : '<p>No orders yet</p>'}
+          <button class="btn" onclick="closeModal('ordersModal')">Close</button>
+        </div>
+      `;
+    }
+
+    // ====================== WISHLIST ======================
+    function openWishlist() {
+      let modal = document.getElementById('wishlistModal');
+      if (wishlist.length===0) {
+        modal.innerHTML = `<div class="modal"><h3>Wishlist empty</h3><button class="btn" onclick="closeModal('wishlistModal')">Close</button></div>`;
+      } else {
+        let items = products.filter(p=>wishlist.includes(p.id));
+        modal.innerHTML = `
+          <div class="modal">
+            <h3>Wishlist</h3>
+            ${items.map(p => `
+              <div style="display:flex; gap:10px; align-items:center; margin:10px 0;">
+                <img src="${API}/static/${p.images?.[0] || ''}" width="60" height="60" style="object-fit:cover; border-radius:8px;">
+                <span>${p.name} - ETB ${p.price}</span>
+                <button class="btn" onclick="addToCart(${p.id}); closeModal('wishlistModal')">Add to Cart</button>
+              </div>
+            `).join('')}
+            <button class="btn btn-outline" onclick="closeModal('wishlistModal')">Close</button>
+          </div>
+        `;
+      }
+      modal.classList.add('active');
+    }
+
+    function addToCart(prodId) {
+      let p = products.find(x=>x.id===prodId);
+      if (!p || p.is_sold) return;
+      let existing = cart.find(i=>i.product_id===prodId);
+      if (existing) existing.quantity = Math.min(existing.quantity+1, p.stock);
+      else cart.push({product_id:prodId, name:p.name, price:p.price, quantity:1, stock:p.stock});
+      saveCart();
+      showToast('Added to cart');
+    }
+
+    // ====================== ADMIN ======================
+    function showAdminPassword() {
+      let modal = document.createElement('div');
+      modal.className = 'admin-password-modal';
+      modal.innerHTML = `
+        <div style="background:var(--bg); padding:20px; border-radius:12px; width:80%; max-width:300px;">
+          <h3>Admin Password</h3>
+          <input id="adminPassInput" type="password" placeholder="Password">
+          <button class="btn" onclick="loginAdmin()">Login</button>
+          <button class="btn btn-outline" onclick="this.parentElement.parentElement.remove()">Cancel</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    async function loginAdmin() {
+      let pass = document.getElementById('adminPassInput').value;
+      try {
+        let res = await api(`${API}/api/admin/login`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({password: pass})
+        });
+        adminToken = res.token;
+        localStorage.setItem('gc_admin_token', adminToken);
+        document.querySelector('.admin-password-modal').remove();
+        renderAdminPanel();
+      } catch(e) {}
+    }
+
+    function renderAdminPanel() {
+      let panel = document.getElementById('adminPanel');
+      panel.innerHTML = `
+        <h2>Admin Panel</h2>
+        <div class="tabs">
+          <button class="tab active" onclick="showAdminSection('dashboard')">Dashboard</button>
+          <button class="tab" onclick="showAdminSection('addProduct')">Add Product</button>
+          <button class="tab" onclick="showAdminSection('manageProducts')">Manage Products</button>
+          <button class="tab" onclick="showAdminSection('categories')">Categories</button>
+          <button class="tab" onclick="showAdminSection('orders')">All Orders</button>
+          <button class="tab" onclick="showAdminSection('broadcast')">Broadcast</button>
+        </div>
+        <div id="adminDashboard" class="admin-section active">Loading...</div>
+        <div id="adminAddProduct" class="admin-section"></div>
+        <div id="adminManageProducts" class="admin-section"></div>
+        <div id="adminCategories" class="admin-section"></div>
+        <div id="adminOrders" class="admin-section"></div>
+        <div id="adminBroadcast" class="admin-section"></div>
+      `;
+      panel.style.display = 'block';
+      loadDashboard();
+    }
+
+    function showAdminSection(name) {
+      document.querySelectorAll('#adminPanel .tab').forEach(t=>t.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('#adminPanel .admin-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById(`admin${name.charAt(0).toUpperCase()+name.slice(1)}`).classList.add('active');
+      if (name==='dashboard') loadDashboard();
+      else if (name==='orders') loadAllOrders();
+      else if (name==='manageProducts') loadManageProducts();
+      else if (name==='categories') loadCategoriesAdmin();
+      else if (name==='broadcast') initBroadcast();
+    }
+
+    async function loadDashboard() {
+      let div = document.getElementById('adminDashboard');
+      let prodCount = products.length;
+      let orderRes = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
+      div.innerHTML = `<p>Products: ${prodCount}</p><p>Orders: ${orderRes.length}</p>`;
+    }
+
+    // Add product form with multi-file upload
+    document.addEventListener('click', function(e) {
+      if (e.target.id === 'showAddProduct') {
+        let div = document.getElementById('adminAddProduct');
+        div.innerHTML = `
+          <h3>Add Product</h3>
+          <input id="prodName" placeholder="Name">
+          <textarea id="prodDesc" placeholder="Description"></textarea>
+          <input id="prodPrice" type="number" placeholder="Price">
+          <select id="prodCategory"></select>
+          <select id="prodGender"><option>Male</option><option>Female</option><option>Unisex</option></select>
+          <input id="prodStock" type="number" value="1">
+          <input type="file" id="prodFiles" multiple accept="image/*,video/*" max="5">
+          <button class="btn" onclick="addProduct()">Add Product</button>
+        `;
+        populateCategorySelect();
+      }
+    });
+
+    async function addProduct() {
+      let formData = new FormData();
+      formData.append('name', document.getElementById('prodName').value);
+      formData.append('description', document.getElementById('prodDesc').value);
+      formData.append('price', document.getElementById('prodPrice').value);
+      formData.append('category', document.getElementById('prodCategory').value);
+      formData.append('gender', document.getElementById('prodGender').value);
+      formData.append('stock', document.getElementById('prodStock').value);
+      let files = document.getElementById('prodFiles').files;
+      for (let f of files) formData.append('files', f);
+      await api(`${API}/api/products`, {
+        method: 'POST',
+        headers: {'Authorization':'Bearer '+adminToken},
+        body: formData
+      });
+      showToast('Product added');
+      loadProducts();
+    }
+
+    // Manage products, stock, sell/avail, hide/show, delete
+    async function loadManageProducts() {
+      let div = document.getElementById('adminManageProducts');
+      let allProd = products; // already loaded
+      div.innerHTML = allProd.map(p => `
+        <div style="border:1px solid var(--border); padding:8px; margin:8px 0;">
+          <b>${p.name}</b> (Stock: ${p.stock}) ${p.is_sold?'SOLD':''} ${p.is_hidden?'HIDDEN':''}
+          <button onclick="updateStock(${p.id}, 5)">+5</button>
+          <button onclick="updateStock(${p.id}, 10)">+10</button>
+          <button onclick="toggleSold(${p.id})">${p.is_sold?'Avail':'Sell'}</button>
+          <button onclick="toggleHidden(${p.id})">${p.is_hidden?'Show':'Hide'}</button>
+          <button onclick="deleteProduct(${p.id})">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    async function updateStock(id, amount) {
+      await api(`${API}/api/products/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
+        body: JSON.stringify({stock_increment: amount})
+      });
+      loadProducts();
+      loadManageProducts();
+    }
+    async function toggleSold(id) {
+      let p = products.find(x=>x.id===id);
+      await api(`${API}/api/products/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
+        body: JSON.stringify({is_sold: !p.is_sold})
+      });
+      loadProducts();
+      loadManageProducts();
+    }
+    async function toggleHidden(id) {
+      let p = products.find(x=>x.id===id);
+      await api(`${API}/api/products/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
+        body: JSON.stringify({is_hidden: !p.is_hidden})
+      });
+      loadProducts();
+      loadManageProducts();
+    }
+    async function deleteProduct(id) {
+      await api(`${API}/api/products/${id}`, {method:'DELETE', headers:{'Authorization':'Bearer '+adminToken}});
+      loadProducts();
+      loadManageProducts();
+    }
+
+    // Categories
+    function populateCategorySelect() {
+      let sel = document.getElementById('prodCategory');
+      if (!sel) return;
+      sel.innerHTML = categories.map(c=>`<option>${c}</option>`).join('');
+    }
+    async function loadCategoriesAdmin() {
+      let div = document.getElementById('adminCategories');
+      div.innerHTML = `
+        <input id="newCatName" placeholder="New category">
+        <button class="btn" onclick="addCategory()">Add</button>
+        <hr>
+        ${categories.map(c=>`<div>${c} <button onclick="deleteCategory('${c}')">Delete</button></div>`).join('')}
+      `;
+    }
+    async function addCategory() {
+      let name = document.getElementById('newCatName').value.trim();
+      await api(`${API}/api/categories`, {method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken}, body: JSON.stringify({name})});
+      await loadCategories();
+      loadCategoriesAdmin();
+    }
+    async function deleteCategory(name) {
+      await api(`${API}/api/categories/${name}`, {method:'DELETE', headers:{'Authorization':'Bearer '+adminToken}});
+      await loadCategories();
+      loadCategoriesAdmin();
+    }
+
+    // All orders
+    async function loadAllOrders() {
+      let div = document.getElementById('adminOrders');
+      let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
+      div.innerHTML = orders.map(o => `
+        <div style="border-bottom:1px solid var(--border); padding:8px;">
+          <p>Order #${o.id} - ${o.customer_name} (${o.status})</p>
+          <select onchange="updateOrderStatus(${o.id}, this.value)">
+            <option ${o.status==='pending'?'selected':''}>pending</option>
+            <option ${o.status==='confirmed'?'selected':''}>confirmed</option>
+            <option ${o.status==='shipped'?'selected':''}>shipped</option>
+            <option ${o.status==='delivered'?'selected':''}>delivered</option>
+            <option ${o.status==='cancelled'?'selected':''}>cancelled</option>
+          </select>
+        </div>
+      `).join('');
+    }
+    async function updateOrderStatus(id, status) {
+      await api(`${API}/api/orders/${id}/status`, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
+        body: JSON.stringify({status})
+      });
+      showToast('Updated');
+    }
+
+    // Broadcast
+    function initBroadcast() {
+      document.getElementById('adminBroadcast').innerHTML = `
+        <h3>Send Broadcast</h3>
+        <textarea id="broadcastMsg" placeholder="Message"></textarea>
+        <input type="file" id="broadcastPhoto" accept="image/*">
+        <button class="btn" onclick="sendBroadcast()">Send to All Users</button>
+      `;
+    }
+    async function sendBroadcast() {
+      let msg = document.getElementById('broadcastMsg').value;
+      let file = document.getElementById('broadcastPhoto').files[0];
+      let formData = new FormData();
+      formData.append('message', msg);
+      if (file) formData.append('photo', file);
+      await api(`${API}/api/broadcast`, {
+        method: 'POST',
+        headers: {'Authorization':'Bearer '+adminToken},
+        body: formData
+      });
+      showToast('Broadcast sent');
+    }
+
+    // Theme switching
+    function switchTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem('gc_theme', theme);
+      let bgColor = getComputedStyle(document.body).getPropertyValue('--bg').trim();
+      tg.setHeaderColor(bgColor);
+      tg.setBackgroundColor(bgColor);
+    }
+
+    // Load saved theme
+    (function() {
+      let savedTheme = localStorage.getItem('gc_theme') || 'signature';
+      document.getElementById('themeSelect').value = savedTheme;
+      switchTheme(savedTheme);
+    })();
+
+    // Expose openOrders to a button maybe in header? We'll add an icon later if needed.
+    // For now, we can add a "Orders" tab in main. Simple: add after gender filter.
+    document.querySelector('.gender-filter').insertAdjacentHTML('afterend', '<button class="btn-outline" style="margin-bottom:12px;" onclick="openOrders()">📋 My Orders</button>');
+
+    initApp();
+  </script>
 </body>
 </html>
