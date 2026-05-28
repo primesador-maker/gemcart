@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEM CART</title>
     <style>
-        :root{--bg:#0B2E1E;--c:#0d3624;--t:#F3D673;--ts:#c4b56a;--a:#D4AF37;--g:#D4AF37;--gg:linear-gradient(135deg,#D4AF37,#F3D673,#D4AF37);--bad:#dc2626;--b:#1A533E;--pb:#D4AF37;--sb:rgba(212,175,55,0.08);--ib:#0a2818;--cib:#0f3a28;--da:#ef4444;--su:#10b981;--tb:#1a1a1a;--tt:#F3D673}
-        body.theme-obsidian{--bg:#121212;--c:#1a1a1a;--t:#FFF;--ts:#a0a0a0;--a:#E5C158;--g:#E5C158;--b:#242424;--pb:#E5C158;--ib:#1e1e1e;--cib:#1a1a1a}
-        body.theme-sapphire{--bg:#0A192F;--c:#0f2440;--t:#F7FAFC;--ts:#b0c4d8;--a:#ECC94B;--g:#ECC94B;--b:#172A45;--pb:#ECC94B;--ib:#0c1e38;--cib:#122a48}
-        body.theme-ivory{--bg:#F9F6F0;--c:#fff;--t:#1C1C1C;--ts:#666;--a:#AA7C11;--g:#AA7C11;--b:#EAE3D2;--pb:#AA7C11;--ib:#f5f1e8;--cib:#faf8f3}
+        :root{--bg:#0B2E1E;--c:#0d3624;--t:#F3D673;--ts:#c4b56a;--a:#D4AF37;--g:#D4AF37;--gg:linear-gradient(135deg,#D4AF37,#F3D673,#D4AF37);--bad:#dc2626;--pb:#D4AF37;--sb:rgba(212,175,55,0.08);--ib:#0a2818;--cib:#0f3a28;--da:#ef4444;--su:#10b981}
+        body.theme-obsidian{--bg:#121212;--c:#1a1a1a;--t:#FFF;--ts:#a0a0a0;--a:#E5C158;--g:#E5C158;--pb:#E5C158;--ib:#1e1e1e;--cib:#1a1a1a}
+        body.theme-sapphire{--bg:#0A192F;--c:#0f2440;--t:#F7FAFC;--ts:#b0c4d8;--a:#ECC94B;--g:#ECC94B;--pb:#ECC94B;--ib:#0c1e38;--cib:#122a48}
+        body.theme-ivory{--bg:#F9F6F0;--c:#fff;--t:#1C1C1C;--ts:#666;--a:#AA7C11;--g:#AA7C11;--pb:#AA7C11;--ib:#f5f1e8;--cib:#faf8f3}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Georgia',serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:80px;transition:all 0.5s}
         #loadingBar{position:fixed;top:0;left:0;height:3px;background:var(--gg);z-index:9999;width:0%;transition:width 0.3s}
@@ -90,9 +90,9 @@
         .sc{background:var(--sb);padding:20px;border-radius:18px;text-align:center;border:1px solid var(--pb)}.sc .sv{font-size:30px;font-weight:700;color:var(--g)}.sc .sl{font-size:11px;color:var(--ts)}
         .tp{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:350;display:none;align-items:center;justify-content:center}.tp.active{display:flex}
         .tc{background:var(--c);border-radius:24px;padding:28px;width:92%;max-width:440px;border:2px solid var(--pb)}
-        .to2{padding:14px 18px;border-radius:16px;margin-bottom:8px;cursor:pointer;border:2px solid var(--b);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+        .to2{padding:14px 18px;border-radius:16px;margin-bottom:8px;cursor:pointer;border:2px solid var(--pb);font-weight:600;display:flex;justify-content:space-between;align-items:center}
         .to2.selected{border-color:var(--g);background:var(--sb)}
-        .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--tb);color:var(--tt);padding:14px 28px;border-radius:30px;font-size:14px;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none;border:1px solid var(--pb)}.toast.show{opacity:1}
+        .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:var(--tt);padding:14px 28px;border-radius:30px;font-size:14px;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none;border:1px solid var(--pb)}.toast.show{opacity:1}
         .es{text-align:center;padding:60px 24px;color:var(--ts)}.es .ic2{font-size:60px;margin-bottom:16px;display:block}
         hr{border:none;border-top:1px solid var(--pb);margin:20px 0}
     </style>
@@ -103,7 +103,7 @@
 <div id="startupLoader"><div class="loader-gem"><div class="gem-shape"></div></div><div class="loader-text">GEM CART</div><p style="color:var(--ts);margin-top:8px">Luxury Collection</p></div>
 
 <div class="hdr"><div><span class="logo">💎</span><span class="sn">GEM CART</span></div><div><button class="btn btn-sm btn-s" id="tbtn">🎨</button> <button class="btn btn-sm btn-s" id="abtn">⚙️</button></div></div>
-<div class="ub"><span id="ug">👤 Welcome to GEM CART</span><button id="snbtn">✏️ Set Name</button></div>
+<div class="ub"><span id="ug">👤 Welcome</span><button id="snbtn">✏️ Set Name</button></div>
 <div class="sbar"><span>🔍</span><input type="text" placeholder="Search..." id="si"></div>
 
 <div class="sec active" id="sec-home"><div class="cats" id="ctabs"></div><div class="gf" id="gfilt"></div><p style="padding:14px 24px;font-weight:700;color:var(--g)">✦ Products</p><div class="pg" id="pgrid"></div></div>
@@ -142,7 +142,29 @@ function sU(){localStorage.setItem('gc_user',JSON.stringify(U))}
 function sC(){localStorage.setItem('gc_cart',JSON.stringify(C))}
 function sW2(){localStorage.setItem('gc_wishlist',JSON.stringify(W))}
 function sCAT2(){localStorage.setItem('gc_categories',JSON.stringify(CAT))}
-function uUB(){var g=document.getElementById('ug'),n=U.n||'',u=U.u||'';var c=O.filter(function(o){return o.customerUsername===U.u||o.customerName===U.n||(U.tid&&o.customerId===String(U.tid))}).length;if(n&&u)g.textContent='👤 '+n+' ('+u+') · Orders: '+c+(U.ia?' · 🔐 Admin':'');else if(n)g.textContent='👤 '+n+' · Orders: '+c;else g.textContent='👤 Welcome to GEM CART'}
+
+function detectTelegramUser(){
+    if(!window.Telegram||!window.Telegram.WebApp)return;
+    try{
+        var tg=window.Telegram.WebApp;tg.ready();
+        var user=tg.initDataUnsafe&&tg.initDataUnsafe.user;
+        if(user){
+            if(user.first_name){U.n=user.first_name;if(user.last_name)U.n+=' '+user.last_name}
+            U.u=user.username?'@'+user.username:'';
+            U.tid=user.id;
+            if(AD.indexOf(user.id)!==-1)U.ia=true;
+            sU();
+        }
+    }catch(e){console.log(e)}
+}
+
+function uUB(){
+    var g=document.getElementById('ug'),n=U.n||'',u=U.u||'';
+    var myOrders=O.filter(function(o){return(U.u&&o.customerUsername===U.u)||(U.tid&&o.customerId===String(U.tid))||(U.n&&o.customerName===U.n)});
+    var c=myOrders.length;
+    if(n)g.textContent='👤 '+n+(u?' ('+u+')':'')+' · Orders: '+c+(U.ia?' · 🔐':'');
+    else g.textContent='👤 Welcome to GEM CART';
+}
 
 function rP(){
     var s=document.getElementById('si').value.toLowerCase();
@@ -153,28 +175,55 @@ function rP(){
     document.querySelectorAll('#pgrid .wbtn').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();tW(parseInt(this.dataset.wid))}});
 }
 
-function rW(){var it=P.filter(function(p){return W.indexOf(p.id)!==-1});document.getElementById('wgrid').innerHTML=it.length?it.map(function(p){var d=p.discount>0?Math.round(p.price*(1-p.discount/100)):null;return'<div class="pc'+(p.sold?' sold':'')+'" data-pid="'+p.id+'"><img src="'+p.photos[0]+'" class="pi">'+(p.sold?'<span class="sbad">SOLD</span>':'')+'<button class="wbtn liked" data-wid="'+p.id+'">❤️</button><div class="pinfo"><p class="pn">'+p.name+'</p><p class="pp">'+(d||p.price).toLocaleString()+' '+SET.cu+'</p></div></div>'}).join(''):'';document.getElementById('wempty').style.display=it.length?'none':'block';
-    document.querySelectorAll('#wgrid .wbtn').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();tW(parseInt(this.dataset.wid))}});
-}
-
+function rW(){var it=P.filter(function(p){return W.indexOf(p.id)!==-1});document.getElementById('wgrid').innerHTML=it.length?it.map(function(p){return'<div class="pc'+(p.sold?' sold':'')+'" data-pid="'+p.id+'"><img src="'+p.photos[0]+'" class="pi">'+(p.sold?'<span class="sbad">SOLD</span>':'')+'<button class="wbtn liked" data-wid="'+p.id+'">❤️</button><div class="pinfo"><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p></div></div>'}).join(''):'';document.getElementById('wempty').style.display=it.length?'none':'block';document.querySelectorAll('#wgrid .wbtn').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();tW(parseInt(this.dataset.wid))}})}
 function oP(id){var p=fP(id);if(!p||p.sold)return;cM=p;var gal='';p.photos.forEach(function(f){if(f.match(/\.(mp4|webm)$/)||f.startsWith('data:video/'))gal+='<video src="'+f+'" controls playsinline style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0"></video>';else gal+='<img src="'+f+'" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0">'});document.getElementById('mGal').innerHTML=gal;document.getElementById('mCat').textContent=p.category+' · '+p.gender;document.getElementById('mName').textContent=p.name;var dp=p.discount>0?Math.round(p.price*(1-p.discount/100)):null;document.getElementById('mPrice').textContent=(dp||p.price).toLocaleString()+' '+SET.cu+(dp?' (was '+p.price.toLocaleString()+')':'');document.getElementById('mDesc').textContent=p.desc||'';document.getElementById('mSize').innerHTML=p.size?'📏 Size: '+p.size:'';document.getElementById('mStock').textContent=p.stock>0?(p.stock<=3?'⚠️ Only '+p.stock+' left!':'✅ In Stock'):'❌ Sold Out';document.getElementById('mWish').textContent=W.indexOf(p.id)!==-1?'❤️':'🤍';document.getElementById('mAdd').style.opacity=p.stock<=0?'0.5':'1';document.getElementById('mAdd').textContent=p.stock<=0?'SOLD OUT':'Add to Cart';document.getElementById('mAdd').onclick=function(){aTC(p.id)};document.getElementById('mBuy').style.display=p.stock<=0?'none':'inline-block';document.getElementById('mBuy').onclick=function(){bN()};document.getElementById('pModal').classList.add('active')}
 function clM(){document.getElementById('pModal').classList.remove('active');cM=null}
-
 function aTC(id){var p=fP(id);if(!p||p.sold||p.stock<=0)return;var ex=C.find(function(c){return c.id===id});if(ex&&ex.qty>=p.stock){toast('⚠️ Stock limit!');return}ex?ex.qty++:C.push({id:id,qty:1});sC();toast('🛒 Added!');uCB();if(cM&&cM.id===id)oP(id)}
 function uCB(){var t=C.reduce(function(s,c){return s+c.qty},0);var b=document.getElementById('cBadge');if(t>0){b.textContent=t;b.style.display='inline'}else{b.style.display='none'}}
 function rC(){if(C.length===0){document.getElementById('citems').innerHTML='';document.getElementById('ctot').style.display='none';document.getElementById('cobtn').style.display='none';document.getElementById('cempty').style.display='block';return}document.getElementById('cempty').style.display='none';document.getElementById('ctot').style.display='flex';document.getElementById('cobtn').style.display='block';var t=0,h='';C.forEach(function(c){var p=fP(c.id);if(!p)return;var dp=p.discount>0?Math.round(p.price*(1-p.discount/100)):p.price;t+=dp*c.qty;h+='<div class="ci"><img src="'+p.photos[0]+'" class="cii"><div class="cinfo"><b>'+p.name+'</b><br>'+dp.toLocaleString()+' '+SET.cu+' × '+c.qty+'<div style="margin-top:6px"><button class="qb" onclick="chQ('+c.id+',-1)">−</button> '+c.qty+' <button class="qb" onclick="chQ('+c.id+',1)">+</button> <button class="btn btn-sm btn-d" onclick="rFC('+c.id+')">🗑️</button></div></div></div>'});document.getElementById('citems').innerHTML=h;document.getElementById('tpr').textContent=t.toLocaleString()+' '+SET.cu}
 window.chQ=function(id,d){var c=C.find(function(x){return x.id===id});if(!c)return;var p=fP(id);if(d>0&&p&&c.qty>=p.stock){toast('⚠️ Stock limit!');return}c.qty+=d;if(c.qty<=0)C=C.filter(function(x){return x.id!==id});sC();rC();uCB()};
 window.rFC=function(id){C=C.filter(function(c){return c.id!==id});sC();rC();uCB()};
-window.chk=function(){if(C.length===0)return;if(!U.n||!U.n.trim()){if(window.Telegram&&window.Telegram.WebApp){var u1=window.Telegram.WebApp.initDataUnsafe.user;if(u1&&u1.first_name){U.n=u1.first_name;if(u1.last_name)U.n+=' '+u1.last_name}}if(!U.n||!U.n.trim()){var n=prompt('👤 Enter your name:');if(!n||!n.trim()){toast('⚠️ Name required!');return}U.n=n.trim()}sU();uUB()}if(!U.u||!U.u.trim()||U.u==='(hidden)'){if(window.Telegram&&window.Telegram.WebApp){var u2=window.Telegram.WebApp.initDataUnsafe.user;if(u2&&u2.username)U.u='@'+u2.username}if(!U.u||!U.u.trim()||U.u==='(hidden)'){var u=prompt('📧 Enter your Telegram username:\n(Example: @yourname)');if(!u||!u.trim()){toast('⚠️ Username required!');return}U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim()}sU();uUB()}var it=C.map(function(c){var p=fP(c.id);return{name:p?p.name:'Unknown',qty:c.qty,price:p?p.price:0}});var t=it.reduce(function(s,i){return s+i.price*i.qty},0);showLoading();fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName:U.n,customerUsername:U.u,customerId:U.tid||'',items:it,total:t})}).then(function(r){return r.json()}).then(function(res){hideLoading();if(res&&res.success){C=[];sC();uCB();rC();toast('✦ Order placed!');lP();swS('orders');alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to complete.')}else{toast('❌ Failed.')}}).catch(function(){hideLoading();toast('❌ Network error')})};
+
+// CHECKOUT - Forces user identity before order
+window.chk=function(){
+    if(C.length===0)return;
+    detectTelegramUser();
+    // Require name
+    if(!U.n||!U.n.trim()){var n=prompt('👤 Please enter your name to complete the order:');if(!n||!n.trim()){toast('⚠️ Name is required!');return}U.n=n.trim();sU()}
+    // Require username
+    if(!U.u||!U.u.trim()){var u=prompt('📧 Please enter your Telegram username so we can contact you:\n(Example: @yourname)');if(!u||!u.trim()){toast('⚠️ Username is required!');return}U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim();sU()}
+    uUB();
+    var it=C.map(function(c){var p=fP(c.id);return{name:p?p.name:'Unknown',qty:c.qty,price:p?p.price:0}});
+    var t=it.reduce(function(s,i){return s+i.price*i.qty},0);
+    showLoading();
+    fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName:U.n,customerUsername:U.u,customerId:U.tid||'',items:it,total:t})})
+    .then(function(r){return r.json()}).then(function(res){hideLoading();if(res&&res.success){C=[];sC();uCB();rC();toast('✦ Order placed!');lP();swS('orders');alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to complete.')}else{toast('❌ Failed.')}})
+    .catch(function(){hideLoading();toast('❌ Network error')});
+};
 window.bN=function(){if(!cM||cM.stock<=0)return;aTC(cM.id);clM();swS('cart');setTimeout(function(){window.chk()},500)};
 function tW(id){var i=W.indexOf(id);i>-1?W.splice(i,1):W.push(id);sW2();rP();rW();if(cM&&cM.id===id)document.getElementById('mWish').textContent=W.indexOf(id)!==-1?'❤️':'🤍'}
 
 function swS(s){document.querySelectorAll('.sec').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.ni').forEach(function(e){e.classList.remove('active')});document.getElementById('sec-'+s).classList.add('active');var n=document.querySelector('[data-sec="'+s+'"]');if(n)n.classList.add('active');if(s==='cart')rC();if(s==='wish')rW();if(s==='home')rP();if(s==='orders'){showLoading();lO();setTimeout(hideLoading,800)}if(s==='bc'){showLoading();lB();setTimeout(hideLoading,800)}}
-function rO2(){var mo=O.filter(function(o){if(U.u&&U.u!=='(hidden)'&&o.customerUsername===U.u)return true;if(U.n&&o.customerName===U.n)return true;if(U.tid&&o.customerId===String(U.tid))return true;return false});document.getElementById('olist').innerHTML=mo.length?mo.map(function(o){return'<div class="oc"><div class="oh"><b>'+o.id+'</b><span class="sb2 s'+o.status+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customerName+'</p><p>'+o.items.map(function(i){return i.name+' ×'+i.qty}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'}).join(''):'';document.getElementById('oempty').style.display=mo.length?'none':'block'}
+
+// PRIVATE ORDERS - Strict filtering by Telegram ID first, then username, then name
+function rO2(){
+    var mo=[];
+    for(var i=0;i<O.length;i++){
+        var o=O[i];
+        // Match by Telegram ID (most secure)
+        if(U.tid&&o.customerId&&String(o.customerId)===String(U.tid)){mo.push(o);continue;}
+        // Match by username
+        if(U.u&&U.u!=='(hidden)'&&o.customerUsername===U.u){mo.push(o);continue;}
+        // Match by name (only if no other users share this name - fallback)
+        if(U.n&&o.customerName===U.n&&!U.u){mo.push(o);continue;}
+    }
+    document.getElementById('olist').innerHTML=mo.length?mo.map(function(o){return'<div class="oc"><div class="oh"><b>'+o.id+'</b><span class="sb2 s'+o.status+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customerName+'</p><p>'+o.items.map(function(i){return i.name+' ×'+i.qty}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'}).join(''):'';
+    document.getElementById('oempty').style.display=mo.length?'none':'block';
+}
 function rCB(){document.getElementById('blist').innerHTML=BC.length?BC.map(function(b){return'<div class="bc"><p style="font-size:11px;color:var(--g)">📣 '+new Date(b.time).toLocaleString()+'</p>'+(b.photo?'<img src="'+b.photo+'" style="width:100%;max-width:300px;border-radius:12px;margin:8px 0">':'')+'<p>'+b.message+'</p></div>'}).join(''):'';document.getElementById('bempty').style.display=BC.length?'none':'block'}
 
 function lP(){fetch(API+'/api/products').then(function(r){return r.json()}).then(function(d){P=d;rP();rW();if(iaO)lAP()})}
-function lO(){fetch(API+'/api/orders').then(function(r){return r.json()}).then(function(d){O=d;rO2();if(iaO)lAO()})}
+function lO(){fetch(API+'/api/orders').then(function(r){return r.json()}).then(function(d){O=d;rO2();uUB();if(iaO)lAO()})}
 function lB(){fetch(API+'/api/broadcasts').then(function(r){return r.json()}).then(function(d){BC=d;rCB()})}
 function lAll(){showLoading();lP();lO();lB();setTimeout(hideLoading,1000)}
 
@@ -205,6 +254,7 @@ function rCats(){var all=['All'].concat(CAT),h='';all.forEach(function(c){h+='<s
 function rGF(){var g=['All','Male','Female','Unisex'],l={All:'🌐 All',Male:'👦 Male',Female:'👧 Female',Unisex:'💜 Unisex'},h='';g.forEach(function(g2){h+='<span class="gc'+(g2===gen?' active':'')+'" data-gen="'+g2+'">'+l[g2]+'</span>'});document.getElementById('gfilt').innerHTML=h;document.querySelectorAll('#gfilt .gc').forEach(function(el){el.onclick=function(){gen=this.dataset.gen;rGF();rP()}})}
 
 function init(){
+    detectTelegramUser();
     var lp=JSON.parse(localStorage.getItem('gc_products')||'null');if(lp)P=lp;
     var lc=JSON.parse(localStorage.getItem('gc_cart')||'[]');if(lc)C=lc;
     var lw=JSON.parse(localStorage.getItem('gc_wishlist')||'[]');if(lw)W=lw;
@@ -212,7 +262,6 @@ function init(){
     var lu=JSON.parse(localStorage.getItem('gc_user')||'null');if(lu)U=lu;
     var lcat=JSON.parse(localStorage.getItem('gc_categories')||'null');if(lcat&&lcat.length>0)CAT=lcat;
     th=SET.th||'signature';
-    if(window.Telegram&&window.Telegram.WebApp){try{var tg=window.Telegram.WebApp;tg.ready();var user=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(user){if(user.first_name){U.n=user.first_name;if(user.last_name)U.n+=' '+user.last_name}U.u=user.username?'@'+user.username:'(hidden)';U.tid=user.id;if(AD.indexOf(user.id)!==-1)U.ia=true;sU()}}catch(e){}}
     aTH();uUB();rCats();rGF();rP();uCB();swS('home');
     document.getElementById('si').addEventListener('input',rP);
     document.getElementById('tbtn').onclick=function(){document.getElementById('tPopup').classList.add('active')};
@@ -220,18 +269,14 @@ function init(){
     document.querySelectorAll('#tPopup .to2').forEach(function(o){o.onclick=function(){th=this.dataset.theme;aTH()}});
     document.getElementById('abtn').onclick=window.oAP;
     document.getElementById('snbtn').onclick=function(){var n=prompt('Name:');if(n){U.n=n;sU();uUB()}var u=prompt('Username (@):');if(u){U.u=u;sU();uUB()}};
-    document.getElementById('cmBtn').onclick=clM;
-    document.getElementById('mBack').onclick=function(){clM();swS('home')};
-    document.getElementById('mWish').onclick=function(){if(cM)tW(cM.id)};
-    document.getElementById('cobtn').onclick=window.chk;
+    document.getElementById('cmBtn').onclick=clM;document.getElementById('mBack').onclick=function(){clM();swS('home')};
+    document.getElementById('mWish').onclick=function(){if(cM)tW(cM.id)};document.getElementById('cobtn').onclick=window.chk;
     document.getElementById('acBtn').onclick=window.aCat;
     document.querySelectorAll('.ni').forEach(function(item){item.onclick=function(){swS(this.dataset.sec)}});
     document.getElementById('aOverlay').onclick=function(e){if(e.target===this)window.cAP()};
     document.getElementById('tPopup').onclick=function(e){if(e.target===this)this.classList.remove('active')};
     document.getElementById('pModal').onclick=function(e){if(e.target===this)clM()};
-    document.getElementById('apBtn').onclick=aP;
-    document.getElementById('sbBtn').onclick=sB;
-    document.getElementById('ssBtn').onclick=sSD;
+    document.getElementById('apBtn').onclick=aP;document.getElementById('sbBtn').onclick=sB;document.getElementById('ssBtn').onclick=sSD;
     document.getElementById('rsBtn').onclick=function(){if(confirm('Delete everything?')){localStorage.clear();location.reload()}};
     document.getElementById('caBtn').onclick=window.cAP;
     document.querySelectorAll('.atb').forEach(function(t){t.onclick=function(){sAT(this.dataset.atab)}});
