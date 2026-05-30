@@ -5,361 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>GEM CART</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Georgia, serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Georgia, serif; }
     :root {
-      --bg: #0B2E1E;
-      --bg2: #0A2719;
-      --gold: #D4AF37;
-      --gold-light: #F0D060;
-      --text: #FFFFFF;
-      --text-secondary: #A0A0A0;
-      --card-bg: #112F21;
-      --border: #2C4A34;
-      --danger: #DC3545;
-      --success: #28A745;
-      --info: #17A2B8;
-      --radius: 12px;
-      --header-height: 60px;
-      --loading-bar-color: var(--gold);
+      --bg: #0B2E1E; --bg2: #0A2719; --gold: #D4AF37; --gold-light: #F0D060;
+      --text: #FFFFFF; --text-secondary: #A0A0A0; --card-bg: #112F21;
+      --border: #2C4A34; --danger: #DC3545; --success: #28A745; --info: #17A2B8;
+      --radius: 12px; --header-height: 60px;
     }
-    body.signature {
-      --bg: #0B2E1E;
-      --bg2: #0A2719;
-      --card-bg: #112F21;
-      --border: #2C4A34;
-    }
-    body.obsidian {
-      --bg: #1A1A1A;
-      --bg2: #111111;
-      --card-bg: #252525;
-      --border: #3A3A3A;
-      --gold: #C0C0C0;
-      --gold-light: #E0E0E0;
-    }
-    body.royal {
-      --bg: #0B1B3D;
-      --bg2: #09162E;
-      --card-bg: #112244;
-      --border: #1E3460;
-      --gold: #1E90FF;
-      --gold-light: #60AFFF;
-    }
-    body.alabaster {
-      --bg: #F8F8F8;
-      --bg2: #F0F0F0;
-      --card-bg: #FFFFFF;
-      --border: #E0E0E0;
-      --text: #111111;
-      --text-secondary: #666666;
-      --gold: #D4AF37;
-      --gold-light: #F0D060;
-    }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
-      padding-top: var(--header-height);
-    }
-    #loading-screen {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 9999;
-    }
-    .loading-animation svg {
-      width: 100px;
-      height: 100px;
-      stroke: var(--gold);
-    }
-    .loading-dot {
-      margin-top: 20px;
-      color: var(--gold);
-      font-size: 1.2rem;
-    }
-    #loading-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 3px;
-      background: var(--loading-bar-color);
-      transition: width 0.3s;
-      z-index: 10000;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--header-height);
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      z-index: 1000;
-    }
-    .logo-img {
-      height: 36px;
-    }
-    .header-icons {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .icon-btn {
-      background: none;
-      border: none;
-      color: var(--gold);
-      font-size: 1.4rem;
-      cursor: pointer;
-      position: relative;
-    }
-    .badge {
-      position: absolute;
-      top: -5px;
-      right: -8px;
-      background: var(--gold);
-      color: var(--bg);
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 0.7rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .theme-selector select {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 4px 8px;
-      border-radius: 6px;
-    }
-    main {
-      padding: 16px;
-      min-height: calc(100vh - var(--header-height));
-    }
-    .tabs {
-      display: flex;
-      overflow-x: auto;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .tab {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: 0.2s;
-    }
-    .tab.active {
-      background: var(--gold);
-      color: var(--bg);
-      border-color: var(--gold);
-    }
-    .gender-filter {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .gender-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .gender-btn.active {
-      background: var(--gold);
-      color: var(--bg);
-    }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 16px;
-    }
-    .product-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      position: relative;
-    }
-    .product-card .img-container {
-      height: 160px;
-      background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .product-card img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: cover;
-    }
-    .sold-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: var(--danger);
-      color: white;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.7rem;
-    }
-    .wishlist-heart {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.5);
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: white;
-      font-size: 1rem;
-    }
-    .wishlist-heart.active {
-      color: var(--gold);
-    }
-    .card-info {
-      padding: 8px;
-    }
-    .price {
-      color: var(--gold);
-      font-weight: bold;
-    }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.3s;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .modal {
-      background: var(--bg);
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 16px;
-    }
-    .gallery {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      margin: 10px 0;
-    }
-    .gallery img, .gallery video {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .btn {
-      background: var(--gold);
-      color: var(--bg);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      margin: 6px 0;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-    }
-    .quantity-control {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .quantity-control button {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--gold);
-      color: var(--bg);
-      font-size: 1.2rem;
-      border: none;
-      cursor: pointer;
-    }
-    .admin-section {
-      display: none;
-    }
-    .admin-section.active {
-      display: block;
-    }
-    textarea, input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-    }
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: var(--bg);
-      padding: 10px 20px;
-      border-radius: 20px;
-      z-index: 3000;
-      animation: fadeInOut 2s forwards;
-    }
-    @keyframes fadeInOut {
-      0% {opacity:0; bottom:10px}
-      10% {opacity:1; bottom:20px}
-      90% {opacity:1; bottom:20px}
-      100% {opacity:0; bottom:30px}
-    }
+    body.signature { --bg: #0B2E1E; --bg2: #0A2719; --card-bg: #112F21; --border: #2C4A34; }
+    body.obsidian { --bg: #1A1A1A; --bg2: #111111; --card-bg: #252525; --border: #3A3A3A; --gold: #C0C0C0; --gold-light: #E0E0E0; }
+    body.royal { --bg: #0B1B3D; --bg2: #09162E; --card-bg: #112244; --border: #1E3460; --gold: #1E90FF; --gold-light: #60AFFF; }
+    body.alabaster { --bg: #F8F8F8; --bg2: #F0F0F0; --card-bg: #FFFFFF; --border: #E0E0E0; --text: #111111; --text-secondary: #666666; }
+    body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; padding-top: var(--header-height); }
+    #loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; }
+    .loading-animation svg { width: 100px; height: 100px; stroke: var(--gold); }
+    .loading-dot { margin-top: 20px; color: var(--gold); font-size: 1.2rem; }
+    #loading-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gold); transition: width 0.3s; z-index: 10000; }
+    header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-height); background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 1000; }
+    .logo-img { height: 36px; }
+    .header-icons { display: flex; gap: 16px; align-items: center; }
+    .icon-btn { background: none; border: none; color: var(--gold); font-size: 1.4rem; cursor: pointer; position: relative; }
+    .badge { position: absolute; top: -5px; right: -8px; background: var(--gold); color: var(--bg); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+    .theme-selector select { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; }
+    main { padding: 16px; min-height: calc(100vh - var(--header-height)); }
+    .tabs { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 12px; }
+    .tab { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .tab.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+    .gender-filter { display: flex; gap: 8px; margin-bottom: 16px; }
+    .gender-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; cursor: pointer; }
+    .gender-btn.active { background: var(--gold); color: var(--bg); }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+    .product-card { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; }
+    .product-card .img-container { height: 160px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; position: relative; }
+    .product-card img { max-width: 100%; max-height: 100%; object-fit: cover; }
+    .sold-badge { position: absolute; top: 8px; left: 8px; background: var(--danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+    .wishlist-heart { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 1rem; }
+    .wishlist-heart.active { color: var(--gold); }
+    .card-info { padding: 8px; }
+    .price { color: var(--gold); font-weight: bold; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal { background: var(--bg); border-radius: var(--radius); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 16px; }
+    .gallery { display: flex; overflow-x: auto; gap: 10px; margin: 10px 0; }
+    .gallery img, .gallery video { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; }
+    .btn { background: var(--gold); color: var(--bg); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; width: 100%; margin: 6px 0; }
+    .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+    .quantity-control { display: flex; align-items: center; gap: 10px; }
+    .quantity-control button { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--bg); font-size: 1.2rem; border: none; cursor: pointer; }
+    textarea, input, select { width: 100%; padding: 10px; margin: 8px 0; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--bg); padding: 10px 20px; border-radius: 20px; z-index: 3000; animation: fadeInOut 2s forwards; }
+    @keyframes fadeInOut { 0% {opacity:0; bottom:10px} 10% {opacity:1; bottom:20px} 90% {opacity:1; bottom:20px} 100% {opacity:0; bottom:30px} }
     .hide { display: none; }
-    .admin-password-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 4000;
-    }
+    .admin-section { display: none; }
+    .admin-section.active { display: block; }
+    .admin-password-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 4000; }
   </style>
 </head>
 <body class="signature">
@@ -368,7 +67,7 @@
     <div class="loading-animation">
       <svg viewBox="0 0 100 100">
         <polyline points="10,90 50,10 90,90" fill="none" stroke-width="4" stroke-dasharray="150" stroke-dashoffset="150">
-          <animate attributeName="stroke-dashoffset" from="150" to="0" dur="1.5s" fill="freeze" id="drawLine"/>
+          <animate attributeName="stroke-dashoffset" from="150" to="0" dur="1.5s" fill="freeze"/>
         </polyline>
       </svg>
     </div>
@@ -376,7 +75,7 @@
   </div>
 
   <header>
-    <img src="https://drive.google.com/uc?export=view&id=13QnFE7zWZAK3YcqdpGyXygueThZNsHoV" class="logo-img" alt="GEM CART" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 40%22%3E%3Ctext x=%225%22 y=%2230%22 fill=%22%23D4AF37%22 font-size=%2220%22%3EGEM CART%3C/text%3E%3C/svg%3E'">
+    <div style="color:var(--gold); font-weight:bold; font-size:1.2rem;">GEM CART</div>
     <div class="header-icons">
       <div class="theme-selector">
         <select id="themeSelect" onchange="switchTheme(this.value)">
@@ -393,7 +92,6 @@
   </header>
 
   <main id="main-content">
-    <!-- Tabs & filters -->
     <div class="tabs" id="categoryTabs"></div>
     <div class="gender-filter">
       <button class="gender-btn active" data-gender="All">All</button>
@@ -401,27 +99,25 @@
       <button class="gender-btn" data-gender="Female">Female</button>
       <button class="gender-btn" data-gender="Unisex">Unisex</button>
     </div>
+    <button class="btn-outline" style="margin-bottom:12px;" onclick="openOrders()">📋 My Orders</button>
     <div class="product-grid" id="productGrid"></div>
-
-    <!-- Modals will be injected dynamically -->
     <div id="productModal" class="modal-overlay"></div>
     <div id="cartModal" class="modal-overlay"></div>
     <div id="wishlistModal" class="modal-overlay"></div>
     <div id="checkoutModal" class="modal-overlay"></div>
     <div id="ordersModal" class="modal-overlay"></div>
-
-    <!-- Admin panel container -->
     <div id="adminPanel" class="admin-section"></div>
   </main>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
-    // ====================== GLOBAL STATE ======================
-    const API = 'https://gemcart-shop-api.onrender.com';
+    // ====================== CONFIG ======================
+    const API = 'https://gemcart-backend-x6qi.onrender.com';
+    const ADMIN_ID = 7715442708;
     let tg = window.Telegram.WebApp;
     let currentUser = null;
     let isAdmin = false;
-    let adminToken = null;
+    let adminToken = localStorage.getItem('gc_admin_token') || null;
     let products = [];
     let categories = [];
     let cart = JSON.parse(localStorage.getItem('gc_cart') || '[]');
@@ -429,28 +125,10 @@
     let currentCategory = 'All';
     let currentGender = 'All';
 
-    // Loading bar
-    function showLoadingBar() {
-      document.getElementById('loading-bar').style.width = '80%';
-    }
-    function hideLoadingBar() {
-      document.getElementById('loading-bar').style.width = '0%';
-    }
-
-    async function api(url, options = {}) {
-      showLoadingBar();
-      try {
-        let res = await fetch(url, options);
-        hideLoadingBar();
-        if (!res.ok) throw new Error(await res.text());
-        return await res.json();
-      } catch (e) {
-        hideLoadingBar();
-        showToast(e.message);
-        throw e;
-      }
-    }
-
+    // ====================== HELPERS ======================
+    function showLoadingBar() { document.getElementById('loading-bar').style.width = '80%'; }
+    function hideLoadingBar() { document.getElementById('loading-bar').style.width = '0%'; }
+    
     function showToast(msg) {
       let toast = document.createElement('div');
       toast.className = 'toast';
@@ -459,47 +137,22 @@
       setTimeout(() => toast.remove(), 2000);
     }
 
-    // ====================== INIT ======================
-async function initApp() {
-  // Clear old data
-  localStorage.removeItem('gc_user');
-  // Auto-detect user from Telegram
-  if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-    let u = tg.initDataUnsafe.user;
-    currentUser = {
-      id: u.id,
-      first_name: u.first_name || '',
-      last_name: u.last_name || '',
-      username: u.username || ''
-    };
-  } else {
-    // fallback for testing outside Telegram
-    currentUser = { id: 0, first_name: '', last_name: '', username: '' };
-  }
-  if (currentUser.id === 7715442708) {
-    isAdmin = true;
-    document.getElementById('adminLinkBtn').classList.remove('hide');
-  }
-  updateCartBadge();
-  updateWishlistBadge();
-  try {
-    await loadCategories();
-    await loadProducts();
-  } catch (err) {
-    console.warn('Could not load data from API:', err);
-  }
-  // render categories & products (fix the missing renderAll)
-  renderCategoryTabs();
-  renderProducts();
-
-  // Hide loading screen after animation
-  setTimeout(() => {
-    document.getElementById('loading-screen').style.display = 'none';
-    // restart the SVG animation for effect
-    let animateElem = document.querySelector('.loading-animation svg polyline animate');
-    if (animateElem) animateElem.beginElement();
-  }, 2000);
-}
+    async function api(url, options = {}) {
+      showLoadingBar();
+      try {
+        let res = await fetch(url, options);
+        hideLoadingBar();
+        if (!res.ok) {
+          let err = await res.text();
+          throw new Error(err);
+        }
+        return await res.json();
+      } catch (e) {
+        hideLoadingBar();
+        showToast('Network error: ' + e.message);
+        throw e;
+      }
+    }
 
     function updateCartBadge() {
       document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.quantity,0);
@@ -508,16 +161,44 @@ async function initApp() {
       document.getElementById('wishlistCount').textContent = wishlist.length;
     }
 
-    // ====================== API CALLS ======================
+    // ====================== INIT ======================
+    async function initApp() {
+      localStorage.removeItem('gc_user');
+      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        let u = tg.initDataUnsafe.user;
+        currentUser = { id: u.id, first_name: u.first_name || '', last_name: u.last_name || '', username: u.username || '' };
+      } else {
+        currentUser = { id: 0, first_name: '', last_name: '', username: '' };
+      }
+      if (currentUser.id === ADMIN_ID) {
+        isAdmin = true;
+        document.getElementById('adminLinkBtn').classList.remove('hide');
+      }
+      updateCartBadge();
+      updateWishlistBadge();
+      try {
+        await loadCategories();
+        await loadProducts();
+      } catch(e) {
+        console.warn('Could not load from API:', e);
+      }
+      renderCategoryTabs();
+      renderProducts();
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+        let anim = document.querySelector('.loading-animation svg polyline animate');
+        if (anim) anim.beginElement();
+      }, 2000);
+    }
+
+    // ====================== DATA LOADING ======================
     async function loadCategories() {
       let data = await api(`${API}/api/categories`);
       categories = data.categories || [];
-      renderCategoryTabs();
     }
     async function loadProducts() {
       let data = await api(`${API}/api/products`);
       products = data.products || [];
-      renderProducts();
     }
 
     function filterProducts() {
@@ -576,15 +257,15 @@ async function initApp() {
       else wishlist.push(prodId);
       localStorage.setItem('gc_wishlist', JSON.stringify(wishlist));
       updateWishlistBadge();
-      renderProducts(); // re-render to update heart
+      renderProducts();
     }
 
-    // ====================== PRODUCT DETAIL MODAL ======================
+    // ====================== PRODUCT DETAIL ======================
     function openProductDetail(id) {
       let p = products.find(x=>x.id===id);
       if (!p) return;
       let modal = document.getElementById('productModal');
-      let imagesHtml = p.images && p.images.length ? p.images.map(img => `<img src="${API}/static/${img}" onclick="event.stopPropagation()">`).join('') : '';
+      let imagesHtml = p.images && p.images.length ? p.images.map(img => `<img src="${API}/static/${img}">`).join('') : '';
       if (p.video) imagesHtml += `<video controls src="${API}/static/${p.video}"></video>`;
       modal.innerHTML = `
         <div class="modal">
@@ -621,11 +302,8 @@ async function initApp() {
       if (!p || p.is_sold) return;
       let qty = detailQty || 1;
       let existing = cart.find(i=>i.product_id===prodId);
-      if (existing) {
-        existing.quantity = Math.min(existing.quantity + qty, p.stock);
-      } else {
-        cart.push({product_id: prodId, name: p.name, price: p.price, quantity: qty, stock: p.stock});
-      }
+      if (existing) existing.quantity = Math.min(existing.quantity + qty, p.stock);
+      else cart.push({product_id: prodId, name: p.name, price: p.price, quantity: qty, stock: p.stock});
       saveCart();
       closeModal('productModal');
       showToast('Added to cart');
@@ -647,15 +325,12 @@ async function initApp() {
         modal.innerHTML = `<div class="modal"><h3>Your cart is empty</h3><button class="btn" onclick="closeModal('cartModal')">Close</button></div>`;
       } else {
         modal.innerHTML = `
-          <div class="modal">
-            <h3>Your Cart</h3>
+          <div class="modal"><h3>Your Cart</h3>
             ${cart.map((item, idx) => `
-              <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;">
                 <span>${item.name} (ETB ${item.price})</span>
                 <div class="quantity-control">
-                  <button onclick="changeCartQty(${idx}, -1)">-</button>
-                  <span>${item.quantity}</span>
-                  <button onclick="changeCartQty(${idx}, 1)">+</button>
+                  <button onclick="changeCartQty(${idx},-1)">-</button><span>${item.quantity}</span><button onclick="changeCartQty(${idx},1)">+</button>
                 </div>
                 <button onclick="removeCartItem(${idx})" style="background:none;color:var(--danger);border:none;">✕</button>
               </div>
@@ -663,8 +338,7 @@ async function initApp() {
             <p>Total: ETB ${cart.reduce((s,i)=>s+(i.price*i.quantity),0)}</p>
             <button class="btn" onclick="openCheckout()">Checkout</button>
             <button class="btn btn-outline" onclick="closeModal('cartModal')">Close</button>
-          </div>
-        `;
+          </div>`;
       }
       modal.classList.add('active');
     }
@@ -675,35 +349,24 @@ async function initApp() {
       if (!p) return;
       item.quantity = Math.max(1, Math.min(item.quantity+delta, p.stock));
       saveCart();
-      openCart(); // refresh modal
-    }
-
-    function removeCartItem(idx) {
-      cart.splice(idx,1);
-      saveCart();
       openCart();
     }
 
-    function saveCart() {
-      localStorage.setItem('gc_cart', JSON.stringify(cart));
-      updateCartBadge();
-    }
+    function removeCartItem(idx) { cart.splice(idx,1); saveCart(); openCart(); }
+    function saveCart() { localStorage.setItem('gc_cart', JSON.stringify(cart)); updateCartBadge(); }
 
     // ====================== CHECKOUT ======================
     function openCheckout() {
       if (cart.length === 0) return showToast('Cart empty');
-      let needsName = !currentUser.first_name && !currentUser.username;
       let modal = document.getElementById('checkoutModal');
       modal.innerHTML = `
-        <div class="modal">
-          <h3>Checkout</h3>
-          <input id="checkName" placeholder="Full Name" value="${currentUser.first_name || ''} ${currentUser.last_name || ''}">
-          <input id="checkUsername" placeholder="Username (optional)" value="${currentUser.username || ''}">
+        <div class="modal"><h3>Checkout</h3>
+          <input id="checkName" placeholder="Full Name" value="${currentUser.first_name||''} ${currentUser.last_name||''}">
+          <input id="checkUsername" placeholder="Username (optional)" value="${currentUser.username||''}">
           <p>Payment: Telebirr to <b>251990066832 (Biruk)</b></p>
           <button class="btn" onclick="placeOrder()">Confirm Order</button>
           <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Cancel</button>
-        </div>
-      `;
+        </div>`;
       modal.classList.add('active');
     }
 
@@ -711,11 +374,10 @@ async function initApp() {
       let name = document.getElementById('checkName').value.trim();
       let username = document.getElementById('checkUsername').value.trim();
       if (!name) return showToast('Name required');
-      if (!username) username = '';
       let orderData = {
         customer_id: currentUser.id,
         customer_name: name,
-        customer_username: username,
+        customer_username: username || '',
         items: cart.map(i => ({product_id: i.product_id, quantity: i.quantity})),
         payment_method: 'Telebirr'
       };
@@ -729,52 +391,48 @@ async function initApp() {
         cart = [];
         saveCart();
         closeModal('checkoutModal');
-        loadProducts(); // refresh stock
+        loadProducts();
       } catch(e) {}
     }
 
-    // ====================== ORDERS HISTORY ======================
+    // ====================== ORDERS ======================
     async function openOrders() {
       let modal = document.getElementById('ordersModal');
       modal.innerHTML = `<div class="modal"><p>Loading...</p></div>`;
       modal.classList.add('active');
-      let orders = await api(`${API}/api/orders?customer_id=${currentUser.id}`);
-      modal.innerHTML = `
-        <div class="modal">
-          <h3>Your Orders</h3>
-          ${orders.length ? orders.map(o => `
-            <div style="border-bottom:1px solid var(--border); padding:10px 0;">
-              <p><b>Order #${o.id}</b> - ${o.status}</p>
-              <p>Items: ${o.items.map(i=>`${i.name} x${i.quantity}`).join(', ')}</p>
-              <p>Total: ETB ${o.total}</p>
-            </div>
-          `).join('') : '<p>No orders yet</p>'}
-          <button class="btn" onclick="closeModal('ordersModal')">Close</button>
-        </div>
-      `;
+      try {
+        let orders = await api(`${API}/api/orders?customer_id=${currentUser.id}`);
+        modal.innerHTML = `
+          <div class="modal"><h3>Your Orders</h3>
+            ${orders.length ? orders.map(o => `
+              <div style="border-bottom:1px solid var(--border);padding:10px 0;">
+                <p><b>Order #${o.id}</b> - ${o.status}</p>
+                <p>Items: ${o.items.map(i=>`${i.name} x${i.quantity}`).join(', ')}</p>
+                <p>Total: ETB ${o.total}</p>
+              </div>
+            `).join('') : '<p>No orders yet</p>'}
+            <button class="btn" onclick="closeModal('ordersModal')">Close</button>
+          </div>`;
+      } catch(e) {
+        modal.innerHTML = `<div class="modal"><h3>Error</h3><p>Could not load orders.</p><button class="btn" onclick="closeModal('ordersModal')">Close</button></div>`;
+      }
     }
 
     // ====================== WISHLIST ======================
     function openWishlist() {
       let modal = document.getElementById('wishlistModal');
-      if (wishlist.length===0) {
-        modal.innerHTML = `<div class="modal"><h3>Wishlist empty</h3><button class="btn" onclick="closeModal('wishlistModal')">Close</button></div>`;
-      } else {
-        let items = products.filter(p=>wishlist.includes(p.id));
-        modal.innerHTML = `
-          <div class="modal">
-            <h3>Wishlist</h3>
-            ${items.map(p => `
-              <div style="display:flex; gap:10px; align-items:center; margin:10px 0;">
-                <img src="${API}/static/${p.images?.[0] || ''}" width="60" height="60" style="object-fit:cover; border-radius:8px;">
-                <span>${p.name} - ETB ${p.price}</span>
-                <button class="btn" onclick="addToCart(${p.id}); closeModal('wishlistModal')">Add to Cart</button>
-              </div>
-            `).join('')}
-            <button class="btn btn-outline" onclick="closeModal('wishlistModal')">Close</button>
-          </div>
-        `;
-      }
+      let items = products.filter(p=>wishlist.includes(p.id));
+      modal.innerHTML = items.length ? `
+        <div class="modal"><h3>Wishlist</h3>
+          ${items.map(p => `
+            <div style="display:flex;gap:10px;align-items:center;margin:10px 0;">
+              <img src="${API}/static/${p.images?.[0]||''}" width="60" height="60" style="object-fit:cover;border-radius:8px;">
+              <span>${p.name} - ETB ${p.price}</span>
+              <button class="btn" onclick="addToCart(${p.id});closeModal('wishlistModal')">Add to Cart</button>
+            </div>
+          `).join('')}
+          <button class="btn btn-outline" onclick="closeModal('wishlistModal')">Close</button>
+        </div>` : `<div class="modal"><h3>Wishlist empty</h3><button class="btn" onclick="closeModal('wishlistModal')">Close</button></div>`;
       modal.classList.add('active');
     }
 
@@ -793,29 +451,42 @@ async function initApp() {
       let modal = document.createElement('div');
       modal.className = 'admin-password-modal';
       modal.innerHTML = `
-        <div style="background:var(--bg); padding:20px; border-radius:12px; width:80%; max-width:300px;">
+        <div style="background:var(--bg);padding:20px;border-radius:12px;width:80%;max-width:300px;">
           <h3>Admin Password</h3>
           <input id="adminPassInput" type="password" placeholder="Password">
           <button class="btn" onclick="loginAdmin()">Login</button>
           <button class="btn btn-outline" onclick="this.parentElement.parentElement.remove()">Cancel</button>
-        </div>
-      `;
+        </div>`;
       document.body.appendChild(modal);
     }
 
     async function loginAdmin() {
       let pass = document.getElementById('adminPassInput').value;
+      let modal = document.querySelector('.admin-password-modal');
+      if (!pass) { showToast('Enter password'); return; }
+      showLoadingBar();
       try {
-        let res = await api(`${API}/api/admin/login`, {
+        let res = await fetch(`${API}/api/admin/login`, {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({password: pass})
         });
-        adminToken = res.token;
-        localStorage.setItem('gc_admin_token', adminToken);
-        document.querySelector('.admin-password-modal').remove();
-        renderAdminPanel();
-      } catch(e) {}
+        let data = await res.json();
+        hideLoadingBar();
+        if (res.ok && data.token) {
+          adminToken = data.token;
+          localStorage.setItem('gc_admin_token', adminToken);
+          if (modal) modal.remove();
+          renderAdminPanel();
+          showToast('✅ Admin logged in');
+        } else {
+          showToast(data.error || 'Wrong password');
+        }
+      } catch(e) {
+        hideLoadingBar();
+        showToast('Connection failed. Backend may be down.');
+        console.error(e);
+      }
     }
 
     function renderAdminPanel() {
@@ -823,12 +494,12 @@ async function initApp() {
       panel.innerHTML = `
         <h2>Admin Panel</h2>
         <div class="tabs">
-          <button class="tab active" onclick="showAdminSection('dashboard')">Dashboard</button>
-          <button class="tab" onclick="showAdminSection('addProduct')">Add Product</button>
-          <button class="tab" onclick="showAdminSection('manageProducts')">Manage Products</button>
-          <button class="tab" onclick="showAdminSection('categories')">Categories</button>
-          <button class="tab" onclick="showAdminSection('orders')">All Orders</button>
-          <button class="tab" onclick="showAdminSection('broadcast')">Broadcast</button>
+          <button class="tab active" onclick="showAdminTab('dashboard')">Dashboard</button>
+          <button class="tab" onclick="showAdminTab('addProduct')">Add Product</button>
+          <button class="tab" onclick="showAdminTab('manageProducts')">Manage</button>
+          <button class="tab" onclick="showAdminTab('categories')">Categories</button>
+          <button class="tab" onclick="showAdminTab('orders')">Orders</button>
+          <button class="tab" onclick="showAdminTab('broadcast')">Broadcast</button>
         </div>
         <div id="adminDashboard" class="admin-section active">Loading...</div>
         <div id="adminAddProduct" class="admin-section"></div>
@@ -841,43 +512,44 @@ async function initApp() {
       loadDashboard();
     }
 
-    function showAdminSection(name) {
+    function showAdminTab(name) {
       document.querySelectorAll('#adminPanel .tab').forEach(t=>t.classList.remove('active'));
       event.target.classList.add('active');
       document.querySelectorAll('#adminPanel .admin-section').forEach(s=>s.classList.remove('active'));
-      document.getElementById(`admin${name.charAt(0).toUpperCase()+name.slice(1)}`).classList.add('active');
+      let targetId = 'admin' + name.charAt(0).toUpperCase() + name.slice(1);
+      document.getElementById(targetId).classList.add('active');
       if (name==='dashboard') loadDashboard();
       else if (name==='orders') loadAllOrders();
       else if (name==='manageProducts') loadManageProducts();
       else if (name==='categories') loadCategoriesAdmin();
+      else if (name==='addProduct') showAddProductForm();
       else if (name==='broadcast') initBroadcast();
     }
 
     async function loadDashboard() {
       let div = document.getElementById('adminDashboard');
-      let prodCount = products.length;
-      let orderRes = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
-      div.innerHTML = `<p>Products: ${prodCount}</p><p>Orders: ${orderRes.length}</p>`;
+      try {
+        let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
+        div.innerHTML = `<p>📦 Products: ${products.length}</p><p>🛒 Orders: ${orders.length}</p>`;
+      } catch(e) {
+        div.innerHTML = '<p>Error loading dashboard. Check token.</p>';
+      }
     }
 
-    // Add product form with multi-file upload
-    document.addEventListener('click', function(e) {
-      if (e.target.id === 'showAddProduct') {
-        let div = document.getElementById('adminAddProduct');
-        div.innerHTML = `
-          <h3>Add Product</h3>
-          <input id="prodName" placeholder="Name">
-          <textarea id="prodDesc" placeholder="Description"></textarea>
-          <input id="prodPrice" type="number" placeholder="Price">
-          <select id="prodCategory"></select>
-          <select id="prodGender"><option>Male</option><option>Female</option><option>Unisex</option></select>
-          <input id="prodStock" type="number" value="1">
-          <input type="file" id="prodFiles" multiple accept="image/*,video/*" max="5">
-          <button class="btn" onclick="addProduct()">Add Product</button>
-        `;
-        populateCategorySelect();
-      }
-    });
+    function showAddProductForm() {
+      let div = document.getElementById('adminAddProduct');
+      div.innerHTML = `
+        <h3>Add Product</h3>
+        <input id="prodName" placeholder="Product Name">
+        <textarea id="prodDesc" placeholder="Description"></textarea>
+        <input id="prodPrice" type="number" placeholder="Price (ETB)">
+        <select id="prodCategory">${categories.map(c=>`<option>${c}</option>`).join('')}<option>Uncategorized</option></select>
+        <select id="prodGender"><option>Male</option><option>Female</option><option>Unisex</option></select>
+        <input id="prodStock" type="number" value="1" placeholder="Stock">
+        <input type="file" id="prodFiles" multiple accept="image/*,video/*" max="5">
+        <button class="btn" onclick="addProduct()">Add Product</button>
+      `;
+    }
 
     async function addProduct() {
       let formData = new FormData();
@@ -889,161 +561,128 @@ async function initApp() {
       formData.append('stock', document.getElementById('prodStock').value);
       let files = document.getElementById('prodFiles').files;
       for (let f of files) formData.append('files', f);
-      await api(`${API}/api/products`, {
-        method: 'POST',
-        headers: {'Authorization':'Bearer '+adminToken},
-        body: formData
-      });
-      showToast('Product added');
-      loadProducts();
+      try {
+        await api(`${API}/api/products`, {method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:formData});
+        showToast('Product added!');
+        loadProducts();
+      } catch(e) {}
     }
 
-    // Manage products, stock, sell/avail, hide/show, delete
     async function loadManageProducts() {
       let div = document.getElementById('adminManageProducts');
-      let allProd = products; // already loaded
-      div.innerHTML = allProd.map(p => `
-        <div style="border:1px solid var(--border); padding:8px; margin:8px 0;">
+      div.innerHTML = products.map(p => `
+        <div style="border:1px solid var(--border);padding:8px;margin:8px 0;">
           <b>${p.name}</b> (Stock: ${p.stock}) ${p.is_sold?'SOLD':''} ${p.is_hidden?'HIDDEN':''}
-          <button onclick="updateStock(${p.id}, 5)">+5</button>
-          <button onclick="updateStock(${p.id}, 10)">+10</button>
+          <button onclick="updateStock(${p.id},5)">+5</button>
+          <button onclick="updateStock(${p.id},10)">+10</button>
           <button onclick="toggleSold(${p.id})">${p.is_sold?'Avail':'Sell'}</button>
           <button onclick="toggleHidden(${p.id})">${p.is_hidden?'Show':'Hide'}</button>
-          <button onclick="deleteProduct(${p.id})">Delete</button>
+          <button onclick="deleteProduct(${p.id})" style="color:var(--danger)">Delete</button>
         </div>
       `).join('');
     }
 
-    async function updateStock(id, amount) {
-      await api(`${API}/api/products/${id}`, {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
-        body: JSON.stringify({stock_increment: amount})
-      });
-      loadProducts();
-      loadManageProducts();
+    async function updateStock(id, amt) {
+      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock_increment:amt})});
+      loadProducts(); loadManageProducts();
     }
     async function toggleSold(id) {
       let p = products.find(x=>x.id===id);
-      await api(`${API}/api/products/${id}`, {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
-        body: JSON.stringify({is_sold: !p.is_sold})
-      });
-      loadProducts();
-      loadManageProducts();
+      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_sold:!p.is_sold})});
+      loadProducts(); loadManageProducts();
     }
     async function toggleHidden(id) {
       let p = products.find(x=>x.id===id);
-      await api(`${API}/api/products/${id}`, {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
-        body: JSON.stringify({is_hidden: !p.is_hidden})
-      });
-      loadProducts();
-      loadManageProducts();
+      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_hidden:!p.is_hidden})});
+      loadProducts(); loadManageProducts();
     }
     async function deleteProduct(id) {
-      await api(`${API}/api/products/${id}`, {method:'DELETE', headers:{'Authorization':'Bearer '+adminToken}});
-      loadProducts();
-      loadManageProducts();
+      if (!confirm('Delete this product?')) return;
+      await api(`${API}/api/products/${id}`, {method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}});
+      loadProducts(); loadManageProducts();
     }
 
-    // Categories
-    function populateCategorySelect() {
-      let sel = document.getElementById('prodCategory');
-      if (!sel) return;
-      sel.innerHTML = categories.map(c=>`<option>${c}</option>`).join('');
-    }
     async function loadCategoriesAdmin() {
       let div = document.getElementById('adminCategories');
       div.innerHTML = `
-        <input id="newCatName" placeholder="New category">
-        <button class="btn" onclick="addCategory()">Add</button>
+        <input id="newCatName" placeholder="New category name">
+        <button class="btn" onclick="addCategory()">Add Category</button>
         <hr>
-        ${categories.map(c=>`<div>${c} <button onclick="deleteCategory('${c}')">Delete</button></div>`).join('')}
+        ${categories.map(c=>`<div>${c} <button onclick="deleteCategory('${c}')" style="color:var(--danger)">Delete</button></div>`).join('')}
       `;
     }
     async function addCategory() {
       let name = document.getElementById('newCatName').value.trim();
-      await api(`${API}/api/categories`, {method:'POST', headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken}, body: JSON.stringify({name})});
+      if (!name) return;
+      await api(`${API}/api/categories`, {method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({name})});
       await loadCategories();
+      renderCategoryTabs();
       loadCategoriesAdmin();
     }
     async function deleteCategory(name) {
-      await api(`${API}/api/categories/${name}`, {method:'DELETE', headers:{'Authorization':'Bearer '+adminToken}});
+      await api(`${API}/api/categories/${name}`, {method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}});
       await loadCategories();
+      renderCategoryTabs();
       loadCategoriesAdmin();
     }
 
-    // All orders
     async function loadAllOrders() {
       let div = document.getElementById('adminOrders');
-      let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
-      div.innerHTML = orders.map(o => `
-        <div style="border-bottom:1px solid var(--border); padding:8px;">
-          <p>Order #${o.id} - ${o.customer_name} (${o.status})</p>
-          <select onchange="updateOrderStatus(${o.id}, this.value)">
-            <option ${o.status==='pending'?'selected':''}>pending</option>
-            <option ${o.status==='confirmed'?'selected':''}>confirmed</option>
-            <option ${o.status==='shipped'?'selected':''}>shipped</option>
-            <option ${o.status==='delivered'?'selected':''}>delivered</option>
-            <option ${o.status==='cancelled'?'selected':''}>cancelled</option>
-          </select>
-        </div>
-      `).join('');
+      try {
+        let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
+        div.innerHTML = orders.length ? orders.map(o => `
+          <div style="border-bottom:1px solid var(--border);padding:8px;">
+            <p>Order #${o.id} - ${o.customer_name} (${o.status})</p>
+            <select onchange="updateOrderStatus(${o.id},this.value)">
+              <option ${o.status==='pending'?'selected':''}>pending</option>
+              <option ${o.status==='confirmed'?'selected':''}>confirmed</option>
+              <option ${o.status==='shipped'?'selected':''}>shipped</option>
+              <option ${o.status==='delivered'?'selected':''}>delivered</option>
+              <option ${o.status==='cancelled'?'selected':''}>cancelled</option>
+            </select>
+          </div>
+        `).join('') : '<p>No orders yet</p>';
+      } catch(e) { div.innerHTML = '<p>Error loading orders</p>'; }
     }
     async function updateOrderStatus(id, status) {
-      await api(`${API}/api/orders/${id}/status`, {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+adminToken},
-        body: JSON.stringify({status})
-      });
-      showToast('Updated');
+      await api(`${API}/api/orders/${id}/status`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({status})});
+      showToast('Status updated');
     }
 
-    // Broadcast
     function initBroadcast() {
       document.getElementById('adminBroadcast').innerHTML = `
         <h3>Send Broadcast</h3>
-        <textarea id="broadcastMsg" placeholder="Message"></textarea>
+        <textarea id="broadcastMsg" placeholder="Message to all users..."></textarea>
         <input type="file" id="broadcastPhoto" accept="image/*">
         <button class="btn" onclick="sendBroadcast()">Send to All Users</button>
       `;
     }
     async function sendBroadcast() {
       let msg = document.getElementById('broadcastMsg').value;
-      let file = document.getElementById('broadcastPhoto').files[0];
       let formData = new FormData();
       formData.append('message', msg);
-      if (file) formData.append('photo', file);
-      await api(`${API}/api/broadcast`, {
-        method: 'POST',
-        headers: {'Authorization':'Bearer '+adminToken},
-        body: formData
-      });
-      showToast('Broadcast sent');
+      let photo = document.getElementById('broadcastPhoto').files[0];
+      if (photo) formData.append('photo', photo);
+      await api(`${API}/api/broadcast`, {method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:formData});
+      showToast('Broadcast sent!');
     }
 
-    // Theme switching
+    // ====================== THEME ======================
     function switchTheme(theme) {
       document.body.className = theme;
       localStorage.setItem('gc_theme', theme);
-      let bgColor = getComputedStyle(document.body).getPropertyValue('--bg').trim();
-      tg.setHeaderColor(bgColor);
-      tg.setBackgroundColor(bgColor);
+      try {
+        let bg = getComputedStyle(document.body).getPropertyValue('--bg').trim();
+        tg.setHeaderColor(bg);
+        tg.setBackgroundColor(bg);
+      } catch(e) {}
     }
 
-    // Load saved theme
     (function() {
-      let savedTheme = localStorage.getItem('gc_theme') || 'signature';
-      document.getElementById('themeSelect').value = savedTheme;
-      switchTheme(savedTheme);
+      let saved = localStorage.getItem('gc_theme') || 'signature';
+      document.getElementById('themeSelect').value = saved;
+      switchTheme(saved);
     })();
-
-    // Expose openOrders to a button maybe in header? We'll add an icon later if needed.
-    // For now, we can add a "Orders" tab in main. Simple: add after gender filter.
-    document.querySelector('.gender-filter').insertAdjacentHTML('afterend', '<button class="btn-outline" style="margin-bottom:12px;" onclick="openOrders()">📋 My Orders</button>');
 
     initApp();
   </script>
