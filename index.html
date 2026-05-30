@@ -1,690 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>GEM CART</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Georgia, serif; }
-    :root {
-      --bg: #0B2E1E; --bg2: #0A2719; --gold: #D4AF37; --gold-light: #F0D060;
-      --text: #FFFFFF; --text-secondary: #A0A0A0; --card-bg: #112F21;
-      --border: #2C4A34; --danger: #DC3545; --success: #28A745; --info: #17A2B8;
-      --radius: 12px; --header-height: 60px;
-    }
-    body.signature { --bg: #0B2E1E; --bg2: #0A2719; --card-bg: #112F21; --border: #2C4A34; }
-    body.obsidian { --bg: #1A1A1A; --bg2: #111111; --card-bg: #252525; --border: #3A3A3A; --gold: #C0C0C0; --gold-light: #E0E0E0; }
-    body.royal { --bg: #0B1B3D; --bg2: #09162E; --card-bg: #112244; --border: #1E3460; --gold: #1E90FF; --gold-light: #60AFFF; }
-    body.alabaster { --bg: #F8F8F8; --bg2: #F0F0F0; --card-bg: #FFFFFF; --border: #E0E0E0; --text: #111111; --text-secondary: #666666; }
-    body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; padding-top: var(--header-height); }
-    #loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; }
-    .loading-animation svg { width: 100px; height: 100px; stroke: var(--gold); }
-    .loading-dot { margin-top: 20px; color: var(--gold); font-size: 1.2rem; }
-    #loading-bar { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gold); transition: width 0.3s; z-index: 10000; }
-    header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-height); background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 1000; }
-    .logo-img { height: 36px; }
-    .header-icons { display: flex; gap: 16px; align-items: center; }
-    .icon-btn { background: none; border: none; color: var(--gold); font-size: 1.4rem; cursor: pointer; position: relative; }
-    .badge { position: absolute; top: -5px; right: -8px; background: var(--gold); color: var(--bg); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
-    .theme-selector select { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; }
-    main { padding: 16px; min-height: calc(100vh - var(--header-height)); }
-    .tabs { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 12px; }
-    .tab { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-    .tab.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
-    .gender-filter { display: flex; gap: 8px; margin-bottom: 16px; }
-    .gender-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; cursor: pointer; }
-    .gender-btn.active { background: var(--gold); color: var(--bg); }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
-    .product-card { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; }
-    .product-card .img-container { height: 160px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; position: relative; }
-    .product-card img { max-width: 100%; max-height: 100%; object-fit: cover; }
-    .sold-badge { position: absolute; top: 8px; left: 8px; background: var(--danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
-    .wishlist-heart { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 1rem; }
-    .wishlist-heart.active { color: var(--gold); }
-    .card-info { padding: 8px; }
-    .price { color: var(--gold); font-weight: bold; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal { background: var(--bg); border-radius: var(--radius); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 16px; }
-    .gallery { display: flex; overflow-x: auto; gap: 10px; margin: 10px 0; }
-    .gallery img, .gallery video { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; }
-    .btn { background: var(--gold); color: var(--bg); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; width: 100%; margin: 6px 0; }
-    .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-    .quantity-control { display: flex; align-items: center; gap: 10px; }
-    .quantity-control button { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--bg); font-size: 1.2rem; border: none; cursor: pointer; }
-    textarea, input, select { width: 100%; padding: 10px; margin: 8px 0; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--bg); padding: 10px 20px; border-radius: 20px; z-index: 3000; animation: fadeInOut 2s forwards; }
-    @keyframes fadeInOut { 0% {opacity:0; bottom:10px} 10% {opacity:1; bottom:20px} 90% {opacity:1; bottom:20px} 100% {opacity:0; bottom:30px} }
-    .hide { display: none; }
-    .admin-section { display: none; }
-    .admin-section.active { display: block; }
-    .admin-password-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 4000; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>GEM CART</title>
+    <style>
+        :root{--bg:#0B2E1E;--c:#0d3624;--t:#F3D673;--ts:#c4b56a;--a:#D4AF37;--g:#D4AF37;--gg:linear-gradient(135deg,#D4AF37,#F3D673,#D4AF37);--bad:#dc2626;--pb:#D4AF37;--sb:rgba(212,175,55,0.08);--ib:#0a2818;--cib:#0f3a28;--da:#ef4444;--su:#10b981}
+        body.theme-obsidian{--bg:#121212;--c:#1a1a1a;--t:#FFF;--ts:#a0a0a0;--a:#E5C158;--g:#E5C158;--pb:#E5C158;--ib:#1e1e1e;--cib:#1a1a1a}
+        body.theme-sapphire{--bg:#0A192F;--c:#0f2440;--t:#F7FAFC;--ts:#b0c4d8;--a:#ECC94B;--g:#ECC94B;--pb:#ECC94B;--ib:#0c1e38;--cib:#122a48}
+        body.theme-ivory{--bg:#F9F6F0;--c:#fff;--t:#1C1C1C;--ts:#666;--a:#AA7C11;--g:#AA7C11;--pb:#AA7C11;--ib:#f5f1e8;--cib:#faf8f3}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Georgia',serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:80px;transition:all 0.5s}
+        #loadingBar{position:fixed;top:0;left:0;height:3px;background:var(--gg);z-index:9999;width:0%;transition:width 0.3s}
+        #startupLoader{position:fixed;inset:0;z-index:9998;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s}
+        #startupLoader.hidden{opacity:0;pointer-events:none}
+        .loader-gem{width:80px;height:80px;position:relative;animation:gemFloat 2s ease-in-out infinite}
+        .loader-gem .gem-shape{width:60px;height:60px;background:var(--gg);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);margin:10px;animation:gemRotate 3s infinite;box-shadow:0 0 40px rgba(212,175,55,0.4)}
+        @keyframes gemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+        @keyframes gemRotate{0%,100%{transform:rotateY(0)}50%{transform:rotateY(180deg)}}
+        .loader-text{margin-top:30px;font-size:28px;font-weight:700;background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hdr{background:var(--bg);padding:16px 24px;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--pb);display:flex;align-items:center;justify-content:space-between}
+        .logo{width:44px;height:44px;background:var(--gg);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#1a1a1a;border:2px solid var(--g)}
+        .sn{font-weight:800;font-size:21px;background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .ub{background:var(--sb);padding:10px 24px;font-size:12px;color:var(--a);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--pb)}
+        .ub button{background:var(--gg);color:#1a1a1a;font-weight:700;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:11px}
+        .sbar{display:flex;align-items:center;background:var(--c);border:2px solid var(--pb);border-radius:16px;padding:12px 18px;gap:10px;margin:14px 24px}
+        .sbar input{border:none;background:transparent;flex:1;font-size:15px;outline:none;color:var(--t)}
+        .cats{display:flex;gap:8px;padding:14px 24px;overflow-x:auto}
+        .cc{padding:9px 18px;border-radius:22px;background:var(--c);border:1px solid var(--pb);font-size:13px;white-space:nowrap;cursor:pointer;color:var(--ts)}
+        .cc.active{background:var(--gg);color:#1a1a1a;font-weight:700}
+        .gf{display:flex;gap:8px;padding:0 24px 16px;flex-wrap:wrap}
+        .gc{padding:7px 16px;border-radius:18px;background:var(--c);border:1px solid var(--pb);font-size:12px;cursor:pointer;color:var(--ts)}
+        .gc.active{background:rgba(212,175,55,0.2);color:var(--g);border-color:var(--g);font-weight:600}
+        .pg{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 24px 24px}
+        @media(min-width:768px){.pg{grid-template-columns:repeat(3,1fr)}}
+        .pc{background:var(--c);border-radius:20px;overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--pb);transition:all 0.3s}
+        .pc:hover{transform:translateY(-4px);border-color:var(--g)}
+        .pi{width:100%;height:190px;object-fit:cover;display:block}
+        .pc.sold .pi{filter:brightness(0.4) grayscale(0.6)}
+        .sbad{position:absolute;top:14px;right:14px;background:var(--bad);color:#fff;padding:6px 16px;border-radius:10px;font-size:11px;font-weight:700;z-index:2}
+        .dbadge{position:absolute;top:14px;left:14px;background:var(--gg);color:#1a1a1a;font-weight:700;padding:6px 14px;border-radius:10px;font-size:11px;z-index:2}
+        .pinfo{padding:16px}.pn{font-weight:600;font-size:15px}.pp{font-weight:700;font-size:18px;color:var(--g)}
+        .wbtn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.4);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3}
+        .wbtn.liked{background:var(--gg);color:#1a1a1a}
+        .btn{padding:13px 22px;border-radius:16px;border:none;font-size:14px;font-weight:600;cursor:pointer}
+        .btn-p{background:var(--gg);color:#1a1a1a;font-weight:700}.btn-s{background:var(--ib);color:var(--t);border:1px solid var(--pb)}.btn-d{background:var(--da);color:#fff}.btn-g{background:var(--su);color:#fff}
+        .btn-sm{padding:9px 16px;font-size:12px;border-radius:12px}.btn-xs{padding:5px 12px;font-size:11px;border-radius:9px}
+        .bn{position:fixed;bottom:0;left:0;right:0;background:var(--bg);display:flex;justify-content:space-around;padding:10px 0 16px;z-index:95;border-top:2px solid var(--pb)}
+        .ni{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(--ts);font-size:10px;background:none;border:none}
+        .ni.active{color:var(--g);font-weight:700}.ni .ic{font-size:22px}
+        .sec{display:none;min-height:60vh}.sec.active{display:block}
+        .ci{display:flex;gap:14px;background:var(--cib);border-radius:16px;padding:14px;margin:0 24px 12px;align-items:center;border:1px solid var(--pb)}
+        .cii{width:65px;height:65px;border-radius:12px;object-fit:cover}.cinfo{flex:1}
+        .qb{width:32px;height:32px;border-radius:10px;border:1px solid var(--pb);background:var(--c);cursor:pointer;font-size:16px;color:var(--g);display:flex;align-items:center;justify-content:center}
+        .ct{background:var(--sb);border:1px solid var(--pb);border-radius:18px;padding:20px;margin:18px 24px;display:flex;justify-content:space-between;font-weight:700}
+        .oc{background:var(--c);border-radius:18px;padding:18px;margin:0 24px 14px;border:1px solid var(--pb)}
+        .oh{display:flex;justify-content:space-between;margin-bottom:10px}
+        .sb2{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600}
+        .sp{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid #f59e0b}.spa{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid #10b981}.ssh{background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid #3b82f6}.sd{background:rgba(139,92,246,0.15);color:#8b5cf6;border:1px solid #8b5cf6}
+        .mo{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:flex-end;justify-content:center}
+        .mo.active{display:flex}
+        .ms{background:var(--c);width:100%;max-width:540px;border-radius:28px 28px 0 0;max-height:88vh;overflow-y:auto;padding-bottom:32px;border-top:3px solid var(--g);animation:slideUp 0.4s}
+        @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+        .mg{display:flex;overflow-x:auto}.mg img,.mg video{width:100%;max-height:400px;object-fit:cover;flex-shrink:0}
+        .mc{padding:22px}.ma{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+        .ao{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;display:none;align-items:center;justify-content:center}
+        .ao.active{display:flex}
+        .ap{background:var(--c);border-radius:24px;width:96%;max-width:980px;max-height:90vh;overflow-y:auto;padding:28px;border:2px solid var(--pb)}
+        .ah{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:16px;border-bottom:2px solid var(--pb)}
+        .at{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+        .atb{padding:9px 18px;border-radius:22px;border:1px solid var(--pb);background:var(--c);cursor:pointer;font-size:13px;color:var(--ts)}
+        .atb.active{background:var(--gg);color:#1a1a1a;font-weight:700;border-color:var(--g)}
+        .asec{display:none}.asec.active{display:block}
+        .fg{margin-bottom:16px}.fg label{display:block;font-weight:600;margin-bottom:6px;font-size:13px;color:var(--g)}
+        .fg input,.fg textarea,.fg select{width:100%;padding:11px 16px;border-radius:14px;border:2px solid var(--pb);background:var(--ib);font-size:14px;color:var(--t)}
+        .fg textarea{min-height:75px;resize:vertical}.fr{display:flex;gap:12px;flex-wrap:wrap}.fr .fg{flex:1;min-width:150px}
+        .fua{border:2px dashed var(--pb);border-radius:16px;padding:28px;text-align:center;cursor:pointer;margin-bottom:14px;background:var(--sb)}
+        .pt{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+        .pti{position:relative;width:70px;height:70px}
+        .pti img,.pti video{width:70px;height:70px;border-radius:12px;object-fit:cover;border:2px solid var(--pb)}
+        .rt{position:absolute;top:-8px;right:-8px;background:var(--da);color:#fff;border:none;width:24px;height:24px;border-radius:50%;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:5}
+        .api{display:flex;align-items:center;gap:12px;padding:14px;background:var(--cib);border-radius:16px;margin-bottom:10px;flex-wrap:wrap;border:1px solid var(--pb)}
+        .api img{width:55px;height:55px;border-radius:12px;object-fit:cover}.apii{flex:1;min-width:140px}
+        .catch{display:inline-block;background:var(--sb);border:1px solid var(--pb);padding:8px 14px;border-radius:10px;margin:4px;font-size:13px}
+        .catch button{margin-left:6px;background:none;border:none;color:var(--da);cursor:pointer;font-weight:700;font-size:14px}
+        .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+        .sc{background:var(--sb);padding:20px;border-radius:18px;text-align:center;border:1px solid var(--pb)}.sc .sv{font-size:30px;font-weight:700;color:var(--g)}.sc .sl{font-size:11px;color:var(--ts)}
+        .tp{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:350;display:none;align-items:center;justify-content:center}.tp.active{display:flex}
+        .tc{background:var(--c);border-radius:24px;padding:28px;width:92%;max-width:440px;border:2px solid var(--pb)}
+        .to2{padding:14px 18px;border-radius:16px;margin-bottom:8px;cursor:pointer;border:2px solid var(--pb);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+        .to2.selected{border-color:var(--g);background:var(--sb)}
+        .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:var(--t);padding:14px 28px;border-radius:30px;font-size:14px;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none;border:1px solid var(--pb)}.toast.show{opacity:1}
+        .es{text-align:center;padding:60px 24px;color:var(--ts)}.es .ic2{font-size:60px;margin-bottom:16px;display:block}
+        hr{border:none;border-top:1px solid var(--pb);margin:20px 0}
+    </style>
 </head>
-<body class="signature">
-  <div id="loading-bar"></div>
-  <div id="loading-screen">
-    <div class="loading-animation">
-      <svg viewBox="0 0 100 100">
-        <polyline points="10,90 50,10 90,90" fill="none" stroke-width="4" stroke-dasharray="150" stroke-dashoffset="150">
-          <animate attributeName="stroke-dashoffset" from="150" to="0" dur="1.5s" fill="freeze"/>
-        </polyline>
-      </svg>
-    </div>
-    <div class="loading-dot">GEM CART</div>
-  </div>
+<body>
 
-  <header>
-    <div style="color:var(--gold); font-weight:bold; font-size:1.2rem;">GEM CART</div>
-    <div class="header-icons">
-      <div class="theme-selector">
-        <select id="themeSelect" onchange="switchTheme(this.value)">
-          <option value="signature">Signature</option>
-          <option value="obsidian">Obsidian Noir</option>
-          <option value="royal">Royal Sapphire</option>
-          <option value="alabaster">Alabaster Ivory</option>
-        </select>
-      </div>
-      <button class="icon-btn" onclick="openWishlist()">♡ <span id="wishlistCount" class="badge">0</span></button>
-      <button class="icon-btn" onclick="openCart()">🛒 <span id="cartCount" class="badge">0</span></button>
-      <button id="adminLinkBtn" class="icon-btn hide" onclick="showAdminPassword()" title="Admin">⚙️</button>
-    </div>
-  </header>
+<div id="loadingBar"></div>
+<div id="startupLoader"><div class="loader-gem"><div class="gem-shape"></div></div><div class="loader-text">GEM CART</div><p style="color:var(--ts);margin-top:8px">Luxury Collection</p></div>
 
-  <main id="main-content">
-    <div class="tabs" id="categoryTabs"></div>
-    <div class="gender-filter">
-      <button class="gender-btn active" data-gender="All">All</button>
-      <button class="gender-btn" data-gender="Male">Male</button>
-      <button class="gender-btn" data-gender="Female">Female</button>
-      <button class="gender-btn" data-gender="Unisex">Unisex</button>
-    </div>
-    <button class="btn-outline" style="margin-bottom:12px;" onclick="openOrders()">📋 My Orders</button>
-    <div class="product-grid" id="productGrid"></div>
-    <div id="productModal" class="modal-overlay"></div>
-    <div id="cartModal" class="modal-overlay"></div>
-    <div id="wishlistModal" class="modal-overlay"></div>
-    <div id="checkoutModal" class="modal-overlay"></div>
-    <div id="ordersModal" class="modal-overlay"></div>
-    <div id="adminPanel" class="admin-section"></div>
-  </main>
+<div class="hdr"><div><span class="logo">💎</span><span class="sn">GEM CART</span></div><div><button class="btn btn-sm btn-s" id="tbtn">🎨</button> <button class="btn btn-sm btn-s" id="abtn">⚙️</button></div></div>
+<div class="ub"><span id="ug">👤 Welcome</span><button id="snbtn">✏️ Set Name</button></div>
+<div class="sbar"><span>🔍</span><input type="text" placeholder="Search..." id="si"></div>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-    // ====================== CONFIG ======================
-    const API = 'https://gemcart-backend-x6qi.onrender.com';
-    const ADMIN_ID = 7715442708;
-    let tg = window.Telegram.WebApp;
-    let currentUser = null;
-    let isAdmin = false;
-    let adminToken = localStorage.getItem('gc_admin_token') || null;
-    let products = [];
-    let categories = [];
-    let cart = JSON.parse(localStorage.getItem('gc_cart') || '[]');
-    let wishlist = JSON.parse(localStorage.getItem('gc_wishlist') || '[]');
-    let currentCategory = 'All';
-    let currentGender = 'All';
+<div class="sec active" id="sec-home"><div class="cats" id="ctabs"></div><div class="gf" id="gfilt"></div><p style="padding:14px 24px;font-weight:700;color:var(--g)">✦ Products</p><div class="pg" id="pgrid"></div></div>
+<div class="sec" id="sec-cart"><p style="padding:18px 24px;font-weight:700;color:var(--g)">🛒 Cart</p><div id="citems"></div><div class="ct" id="ctot" style="display:none"><span>Total</span><span id="tpr">0</span></div><button class="btn btn-p" id="cobtn" style="display:none;margin:0 24px;width:calc(100% - 48px)">✦ Place Order</button><div class="es" id="cempty"><span class="ic2">🛒</span><p>Cart is empty</p></div></div>
+<div class="sec" id="sec-wish"><p style="padding:18px 24px;font-weight:700;color:var(--g)">❤️ Wishlist</p><div class="pg" id="wgrid"></div><div class="es" id="wempty"><span class="ic2">💎</span><p>No favorites</p></div></div>
+<div class="sec" id="sec-orders"><p style="padding:18px 24px;font-weight:700;color:var(--g)">📋 Your Orders</p><div id="olist" style="padding:0 24px"></div><div class="es" id="oempty"><span class="ic2">📦</span><p>No orders</p></div></div>
 
-    // ====================== HELPERS ======================
-    function showLoadingBar() { document.getElementById('loading-bar').style.width = '80%'; }
-    function hideLoadingBar() { document.getElementById('loading-bar').style.width = '0%'; }
-    
-    function showToast(msg) {
-      let toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.textContent = msg;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2000);
-    }
+<div class="bn"><button class="ni active" data-sec="home"><span class="ic">🏠</span>Home</button><button class="ni" data-sec="cart"><span class="ic">🛒</span><span id="cBadge" style="background:var(--bad);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;display:none">0</span> Cart</button><button class="ni" data-sec="wish"><span class="ic">❤️</span>Wish</button><button class="ni" data-sec="orders"><span class="ic">📋</span>Orders</button></div>
 
-    async function api(url, options = {}) {
-      showLoadingBar();
-      try {
-        let res = await fetch(url, options);
-        hideLoadingBar();
-        if (!res.ok) {
-          let err = await res.text();
-          throw new Error(err);
-        }
-        return await res.json();
-      } catch (e) {
-        hideLoadingBar();
-        showToast('Network error: ' + e.message);
-        throw e;
-      }
-    }
+<div class="mo" id="pModal"><div class="ms"><button class="btn btn-sm btn-s" style="position:sticky;top:16px;float:right;margin:16px;z-index:10" id="cmBtn">✕</button><div class="mg" id="mGal"></div><div class="mc"><p id="mCat" style="font-size:11px;color:var(--ts)"></p><h2 id="mName" style="font-size:24px;margin:6px 0"></h2><p id="mPrice" style="font-size:24px;color:var(--g)"></p><p id="mDesc" style="color:var(--ts);margin:14px 0"></p><p id="mStock" style="color:var(--g)"></p><div class="ma"><button class="btn btn-p" id="mAdd">Add to Cart</button><button class="btn btn-s" id="mWish">❤️</button><button class="btn btn-g" id="mBuy">Buy Now</button></div><button class="btn btn-s" style="width:100%;margin-top:10px" id="mBack">← Continue Shopping</button></div></div></div>
 
-    function updateCartBadge() {
-      document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.quantity,0);
-    }
-    function updateWishlistBadge() {
-      document.getElementById('wishlistCount').textContent = wishlist.length;
-    }
+<div class="tp" id="tPopup"><div class="tc"><h3 style="margin-bottom:20px;color:var(--g)">🎨 Theme</h3><div class="to2" data-theme="signature">✦ Signature (Emerald & Gold)</div><div class="to2" data-theme="obsidian">✦ Obsidian Noir</div><div class="to2" data-theme="sapphire">✦ Royal Sapphire</div><div class="to2" data-theme="ivory">✦ Alabaster Ivory</div><button class="btn btn-p" style="width:100%;margin-top:14px" id="ctBtn">✅ Apply</button></div></div>
 
-    // ====================== INIT ======================
-    async function initApp() {
-      localStorage.removeItem('gc_user');
-      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        let u = tg.initDataUnsafe.user;
-        currentUser = { id: u.id, first_name: u.first_name || '', last_name: u.last_name || '', username: u.username || '' };
-      } else {
-        currentUser = { id: 0, first_name: '', last_name: '', username: '' };
-      }
-      if (currentUser.id === ADMIN_ID) {
-        isAdmin = true;
-        document.getElementById('adminLinkBtn').classList.remove('hide');
-      }
-      updateCartBadge();
-      updateWishlistBadge();
-      try {
-        await loadCategories();
-        await loadProducts();
-      } catch(e) {
-        console.warn('Could not load from API:', e);
-      }
-      renderCategoryTabs();
-      renderProducts();
-      setTimeout(() => {
-        document.getElementById('loading-screen').style.display = 'none';
-        let anim = document.querySelector('.loading-animation svg polyline animate');
-        if (anim) anim.beginElement();
-      }, 2000);
-    }
+<div class="ao" id="aOverlay"><div class="ap"><div class="ah"><h2 style="color:var(--g)">⚙️ Admin</h2><button class="btn btn-sm btn-d" id="caBtn">✕</button></div><div class="at"><button class="atb active" data-atab="dash">Dashboard</button><button class="atb" data-atab="prods">Products</button><button class="atb" data-atab="ords">Orders</button><button class="atb" data-atab="sets">Settings</button></div>
+<div class="asec active" id="a-dash"><div class="sg" id="dStats"></div></div>
+<div class="asec" id="a-prods"><div class="fg"><label>Name *</label><input id="apn"></div><div class="fg"><label>Category</label><select id="apc"></select></div><div class="fg"><label>Gender</label><select id="apg"><option>Male</option><option>Female</option><option>Unisex</option></select></div><div class="fg"><label>Price (Birr) *</label><input type="number" id="app"></div><div class="fg"><label>Stock</label><input type="number" id="aps" value="1"></div><div class="fg"><label>Description</label><textarea id="apd"></textarea></div><div class="fg"><label>📷 Photos (max 5)</label><div class="fua" id="pdz"><p style="font-size:24px">📷</p><p>Click to upload</p></div><input type="file" id="api2" accept="image/*" multiple style="display:none"><div class="pt" id="ppv"></div></div><button class="btn btn-p" id="apBtn">➕ Add Product</button><hr><h4 style="color:var(--g)">📁 Categories</h4><div class="fr"><div class="fg"><label>Add Category</label><input id="ncn"></div><div class="fg" style="flex:0;min-width:auto;padding-top:24px"><button class="btn btn-p" id="acBtn">➕ Add</button></div></div><div id="clist"></div><hr><h4 style="color:var(--g)">📦 Manage Products</h4><div id="aplist"></div></div>
+<div class="asec" id="a-ords"><div id="aolist"></div></div>
+<div class="asec" id="a-sets"><div class="fg"><label>Shop Name</label><input id="ssn" value="GEM CART"></div><div class="fg"><label>Currency</label><input id="scu" value="Birr"></div><div class="fg"><label>Admin Password</label><input id="spw" value="sadmin"></div><button class="btn btn-p" id="ssBtn">💾 Save</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
 
-    // ====================== DATA LOADING ======================
-    async function loadCategories() {
-      let data = await api(`${API}/api/categories`);
-      categories = data.categories || [];
-    }
-    async function loadProducts() {
-      let data = await api(`${API}/api/products`);
-      products = data.products || [];
-    }
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+var API="https://gemcart-backend-x6qi.onrender.com",AD=[7715442708],TN="251990066832",TNAME="Biruk";
+var P=[],C=[],W=[],O=[],CAT=['Bags','Shoes','Stickers','Bottles','Clothes','Jewelry','Sunglasses','Watches','Others'];
+var SET={sn:'GEM CART',cu:'Birr',th:'signature',pw:'sadmin'},U={n:'',u:'',tid:null,ia:false},cM=null,th='signature',iaO=false,cat='All',gen='All',pP=[],adminToken=localStorage.getItem('gc_admin_token')||null;
 
-    function filterProducts() {
-      return products.filter(p => {
-        if (p.is_hidden) return false;
-        if (currentCategory !== 'All' && p.category !== currentCategory) return false;
-        if (currentGender !== 'All' && p.gender !== currentGender) return false;
-        return true;
-      });
-    }
+function showLoading(){document.getElementById('loadingBar').style.width='100%'}
+function hideLoading(){setTimeout(function(){document.getElementById('loadingBar').style.width='0%'},300)}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},2500)}
+function fP(id){return P.find(function(p){return p.id===id})}
+function getImgUrl(p){if(!p||!p.images||!p.images.length)return 'https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image';var img=p.images[0];if(img.startsWith('http')||img.startsWith('data:'))return img;return API+'/static/'+img}
+function sU(){localStorage.setItem('gc_user',JSON.stringify(U))}
+function sC(){localStorage.setItem('gc_cart',JSON.stringify(C))}
+function sW2(){localStorage.setItem('gc_wishlist',JSON.stringify(W))}
+function sCAT2(){localStorage.setItem('gc_categories',JSON.stringify(CAT))}
 
-    // ====================== RENDER ======================
-    function renderCategoryTabs() {
-      let container = document.getElementById('categoryTabs');
-      container.innerHTML = `<button class="tab ${currentCategory==='All'?'active':''}" onclick="setCategory('All')">All</button>`;
-      categories.forEach(cat => {
-        container.innerHTML += `<button class="tab ${currentCategory===cat?'active':''}" onclick="setCategory('${cat}')">${cat}</button>`;
-      });
-    }
+function detectTelegramUser(){
+    if(window.Telegram&&window.Telegram.WebApp){try{var tg=window.Telegram.WebApp;tg.ready();var user=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(user){if(user.first_name){U.n=user.first_name;if(user.last_name)U.n+=' '+user.last_name}U.u=user.username?'@'+user.username:'';U.tid=user.id;if(AD.indexOf(user.id)!==-1)U.ia=true;sU()}}catch(e){console.log(e)}}
+}
 
-    function setCategory(cat) {
-      currentCategory = cat;
-      renderCategoryTabs();
-      renderProducts();
-    }
+function uUB(){var g=document.getElementById('ug'),n=U.n||'',u=U.u||'';var myOrders=O.filter(function(o){return String(o.customer_id)===String(U.tid)||o.customer_username===U.u||o.customer_name===U.n});var c=myOrders.length;if(n)g.textContent='👤 '+n+(u?' ('+u+')':'')+' · Orders: '+c+(U.ia?' · 🔐':'');else g.textContent='👤 Welcome to GEM CART'}
 
-    document.querySelectorAll('.gender-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('active'));
-        this.classList.add('active');
-        currentGender = this.dataset.gender;
-        renderProducts();
-      });
-    });
+function rP(){
+    var s=document.getElementById('si').value.toLowerCase();
+    var f=P.filter(function(p){if(p.is_hidden)return false;if(cat!=='All'&&p.category!==cat)return false;if(gen!=='All'&&p.gender!==gen)return false;if(s&&p.name.toLowerCase().indexOf(s)===-1)return false;return true});
+    var h='';f.forEach(function(p){var lk=W.indexOf(p.id)!==-1,imgUrl=getImgUrl(p);h+='<div class="pc'+(p.is_sold?' sold':'')+'" data-pid="'+p.id+'"><img src="'+imgUrl+'" class="pi" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">'+(p.is_sold?'<span class="sbad">SOLD</span>':'')+'<button class="wbtn'+(lk?' liked':'')+'" data-wid="'+p.id+'">'+(lk?'❤️':'🤍')+'</button><div class="pinfo"><p style="font-size:11px;color:var(--ts)">'+p.category+' · '+p.gender+'</p><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p><p style="font-size:11px;color:var(--g)">'+(p.is_sold?'❌ Sold Out':'Stock: '+p.stock)+'</p></div></div>'});
+    document.getElementById('pgrid').innerHTML=h;
+    document.querySelectorAll('#pgrid .pc').forEach(function(cd){cd.onclick=function(e){if(e.target.classList.contains('wbtn'))return;var p=fP(parseInt(this.dataset.pid));if(p&&!p.is_sold)oP(p.id)}});
+    document.querySelectorAll('#pgrid .wbtn').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();tW(parseInt(this.dataset.wid))}});
+}
 
-    function renderProducts() {
-      let grid = document.getElementById('productGrid');
-      let filtered = filterProducts();
-      grid.innerHTML = filtered.map(p => `
-        <div class="product-card" onclick="openProductDetail(${p.id})">
-          <div class="img-container">
-            ${p.images && p.images.length ? `<img src="${API}/static/${p.images[0]}" alt="">` : '<span>No Image</span>'}
-            ${p.is_sold ? '<span class="sold-badge">SOLD</span>' : ''}
-            <span class="wishlist-heart ${wishlist.includes(p.id)?'active':''}" onclick="event.stopPropagation(); toggleWishlist(${p.id})">${wishlist.includes(p.id)?'♥':'♡'}</span>
-          </div>
-          <div class="card-info">
-            <div class="price">ETB ${p.price}</div>
-            <small>${p.name}</small>
-          </div>
-        </div>
-      `).join('');
-    }
+function rW(){var it=P.filter(function(p){return W.indexOf(p.id)!==-1});document.getElementById('wgrid').innerHTML=it.length?it.map(function(p){return'<div class="pc'+(p.is_sold?' sold':'')+'"><img src="'+getImgUrl(p)+'" class="pi"><div class="pinfo"><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p></div></div>'}).join(''):'';document.getElementById('wempty').style.display=it.length?'none':'block'}
 
-    function toggleWishlist(prodId) {
-      if (wishlist.includes(prodId)) wishlist = wishlist.filter(id=>id!==prodId);
-      else wishlist.push(prodId);
-      localStorage.setItem('gc_wishlist', JSON.stringify(wishlist));
-      updateWishlistBadge();
-      renderProducts();
-    }
+function oP(id){var p=fP(id);if(!p||p.is_sold)return;cM=p;var gal='';if(p.images&&p.images.length){p.images.forEach(function(img){var url=img.startsWith('http')||img.startsWith('data:')?img:API+'/static/'+img;gal+='<img src="'+url+'" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">'})}else{gal='<img src="https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0">'}document.getElementById('mGal').innerHTML=gal;document.getElementById('mCat').textContent=p.category+' · '+p.gender;document.getElementById('mName').textContent=p.name;document.getElementById('mPrice').textContent=p.price.toLocaleString()+' '+SET.cu;document.getElementById('mDesc').textContent=p.description||'';document.getElementById('mStock').textContent=p.stock>0?(p.stock<=3?'⚠️ Only '+p.stock+' left!':'✅ In Stock'):'❌ Sold Out';document.getElementById('mWish').textContent=W.indexOf(p.id)!==-1?'❤️':'🤍';document.getElementById('mAdd').style.opacity=p.stock<=0?'0.5':'1';document.getElementById('mAdd').textContent=p.stock<=0?'SOLD OUT':'Add to Cart';document.getElementById('mAdd').onclick=function(){aTC(p.id)};document.getElementById('mBuy').style.display=p.stock<=0?'none':'inline-block';document.getElementById('mBuy').onclick=function(){bN()};document.getElementById('pModal').classList.add('active')}
+function clM(){document.getElementById('pModal').classList.remove('active');cM=null}
 
-    // ====================== PRODUCT DETAIL ======================
-    function openProductDetail(id) {
-      let p = products.find(x=>x.id===id);
-      if (!p) return;
-      let modal = document.getElementById('productModal');
-      let imagesHtml = p.images && p.images.length ? p.images.map(img => `<img src="${API}/static/${img}">`).join('') : '';
-      if (p.video) imagesHtml += `<video controls src="${API}/static/${p.video}"></video>`;
-      modal.innerHTML = `
-        <div class="modal">
-          <h2>${p.name}</h2>
-          <p>${p.description || ''}</p>
-          <div class="gallery">${imagesHtml}</div>
-          <p class="price">ETB ${p.price}</p>
-          <p>Stock: ${p.stock} ${p.is_sold ? '(Sold out)' : ''}</p>
-          <div class="quantity-control">
-            <button onclick="changeDetailQty(-1)">-</button>
-            <span id="detailQty">1</span>
-            <button onclick="changeDetailQty(1)">+</button>
-          </div>
-          <button class="btn" onclick="addToCartFromDetail(${p.id})" ${p.is_sold?'disabled':''}>Add to Cart</button>
-          <button class="btn btn-outline" onclick="buyNow(${p.id})" ${p.is_sold?'disabled':''}>Buy Now</button>
-          <button class="btn btn-outline" onclick="closeModal('productModal')">Close</button>
-        </div>
-      `;
-      modal.classList.add('active');
-      modal.dataset.productId = id;
-      document.getElementById('detailQty').textContent = '1';
-    }
+function aTC(id){var p=fP(id);if(!p||p.is_sold||p.stock<=0)return;var ex=C.find(function(c){return c.id===id});if(ex&&ex.qty>=p.stock){toast('⚠️ Stock limit!');return}ex?ex.qty++:C.push({id:id,qty:1});sC();toast('🛒 Added!');uCB();if(cM&&cM.id===id)oP(id)}
+function uCB(){var t=C.reduce(function(s,c){return s+c.qty},0);var b=document.getElementById('cBadge');if(t>0){b.textContent=t;b.style.display='inline'}else{b.style.display='none'}}
+function rC(){if(C.length===0){document.getElementById('citems').innerHTML='';document.getElementById('ctot').style.display='none';document.getElementById('cobtn').style.display='none';document.getElementById('cempty').style.display='block';return}document.getElementById('cempty').style.display='none';document.getElementById('ctot').style.display='flex';document.getElementById('cobtn').style.display='block';var t=0,h='';C.forEach(function(c){var p=fP(c.id);if(!p)return;var dp=p.price;t+=dp*c.qty;h+='<div class="ci"><img src="'+getImgUrl(p)+'" class="cii" onerror="this.src=\'https://placehold.co/100x100/D4AF37/0B2E1E?text=Image\'"><div class="cinfo"><b>'+p.name+'</b><br>'+dp.toLocaleString()+' '+SET.cu+' × '+c.qty+'<div style="margin-top:6px"><button class="qb" onclick="chQ('+c.id+',-1)">−</button> '+c.qty+' <button class="qb" onclick="chQ('+c.id+',1)">+</button> <button class="btn btn-sm btn-d" onclick="rFC('+c.id+')">🗑️</button></div></div></div>'});document.getElementById('citems').innerHTML=h;document.getElementById('tpr').textContent=t.toLocaleString()+' '+SET.cu}
+window.chQ=function(id,d){var c=C.find(function(x){return x.id===id});if(!c)return;var p=fP(id);if(d>0&&p&&c.qty>=p.stock){toast('⚠️ Stock limit!');return}c.qty+=d;if(c.qty<=0)C=C.filter(function(x){return x.id!==id});sC();rC();uCB()};
+window.rFC=function(id){C=C.filter(function(c){return c.id!==id});sC();rC();uCB()};
 
-    let detailQty = 1;
-    function changeDetailQty(delta) {
-      let p = products.find(x=>x.id==document.getElementById('productModal').dataset.productId);
-      if (!p) return;
-      detailQty = Math.max(1, Math.min(detailQty+delta, p.stock));
-      document.getElementById('detailQty').textContent = detailQty;
-    }
+window.chk=function(){
+    if(C.length===0)return;detectTelegramUser();
+    if(!U.n||!U.n.trim()){var n=prompt('👤 Please enter your name:');if(!n)return;U.n=n.trim();sU()}
+    if(!U.u||!U.u.trim()){var u=prompt('📧 Telegram username (@):');if(!u)return;U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim();sU()}
+    uUB();var it=C.map(function(c){var p=fP(c.id);return{product_id:c.id,name:p?p.name:'Unknown',quantity:c.qty,price:p?p.price:0}});
+    var t=it.reduce(function(s,i){return s+i.price*i.quantity},0);showLoading();
+    fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer_id:U.tid||0,customer_name:U.n,customer_username:U.u,items:it,payment_method:'Telebirr'})})
+    .then(function(r){if(!r.ok)throw new Error('Server error');return r.json()}).then(function(res){hideLoading();if(res.order_id){C=[];sC();uCB();rC();toast('✅ Order placed!');lP();swS('orders');alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to confirm.')}else{toast('❌ Failed')}})
+    .catch(function(e){hideLoading();toast('❌ Network error');console.error(e)});
+};
+window.bN=function(){if(!cM||cM.stock<=0)return;aTC(cM.id);clM();swS('cart');setTimeout(function(){window.chk()},500)};
+function tW(id){var i=W.indexOf(id);i>-1?W.splice(i,1):W.push(id);sW2();rP();rW();if(cM&&cM.id===id)document.getElementById('mWish').textContent=W.indexOf(id)!==-1?'❤️':'🤍'}
+function swS(s){document.querySelectorAll('.sec').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.ni').forEach(function(e){e.classList.remove('active')});document.getElementById('sec-'+s).classList.add('active');var n=document.querySelector('[data-sec="'+s+'"]');if(n)n.classList.add('active');if(s==='cart')rC();if(s==='wish')rW();if(s==='home')rP();if(s==='orders'){showLoading();lO();setTimeout(hideLoading,800)}}
 
-    function addToCartFromDetail(prodId) {
-      let p = products.find(x=>x.id==prodId);
-      if (!p || p.is_sold) return;
-      let qty = detailQty || 1;
-      let existing = cart.find(i=>i.product_id===prodId);
-      if (existing) existing.quantity = Math.min(existing.quantity + qty, p.stock);
-      else cart.push({product_id: prodId, name: p.name, price: p.price, quantity: qty, stock: p.stock});
-      saveCart();
-      closeModal('productModal');
-      showToast('Added to cart');
-    }
+function rO2(){var mo=[];O.forEach(function(o){if(U.tid&&String(o.customer_id)===String(U.tid)){mo.push(o)}else if(U.u&&o.customer_username===U.u){mo.push(o)}else if(U.n&&o.customer_name===U.n&&!U.u){mo.push(o)}});document.getElementById('olist').innerHTML=mo.length?mo.map(function(o){var sc='sp';if(o.status==='confirmed')sc='spa';else if(o.status==='shipped')sc='ssh';else if(o.status==='delivered')sc='sd';return'<div class="oc"><div class="oh"><b>#'+o.id+'</b><span class="sb2 '+sc+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+'</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'}).join(''):'';document.getElementById('oempty').style.display=mo.length?'none':'block'}
 
-    function buyNow(prodId) {
-      addToCartFromDetail(prodId);
-      openCheckout();
-    }
+function lP(){fetch(API+'/api/products').then(function(r){return r.json()}).then(function(d){P=d.products||[];rP();rW();if(iaO)lAP()}).catch(function(e){console.error(e);toast('⚠️ Could not load products')})}
+function lO(){fetch(API+'/api/orders?customer_id='+(U.tid||0)).then(function(r){return r.json()}).then(function(d){O=d||[];rO2();uUB();if(iaO)lAO()}).catch(function(e){console.error(e)})}
+function lAll(){showLoading();lP();lO();setTimeout(hideLoading,1000)}
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
+window.oAP=function(){if(U.ia||(U.tid&&AD.indexOf(U.tid)!==-1)){var pw=prompt('🔐 Admin password:');if(pw===(SET.pw||'sadmin')){fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})}).then(function(r){return r.json()}).then(function(d){if(d.token){adminToken=d.token;localStorage.setItem('gc_admin_token',adminToken);U.ia=true;iaO=true;uUB();document.getElementById('aOverlay').classList.add('active');sAT('dash');lAll();toast('🔐 Welcome!')}else{toast('❌ Wrong password!')}}).catch(function(){toast('❌ Connection failed')})}else{toast('❌ Wrong!')}}else{toast('❌ Unauthorized')}};
+window.cAP=function(){document.getElementById('aOverlay').classList.remove('active');iaO=false};
 
-    // ====================== CART ======================
-    function openCart() {
-      let modal = document.getElementById('cartModal');
-      if (cart.length === 0) {
-        modal.innerHTML = `<div class="modal"><h3>Your cart is empty</h3><button class="btn" onclick="closeModal('cartModal')">Close</button></div>`;
-      } else {
-        modal.innerHTML = `
-          <div class="modal"><h3>Your Cart</h3>
-            ${cart.map((item, idx) => `
-              <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;">
-                <span>${item.name} (ETB ${item.price})</span>
-                <div class="quantity-control">
-                  <button onclick="changeCartQty(${idx},-1)">-</button><span>${item.quantity}</span><button onclick="changeCartQty(${idx},1)">+</button>
-                </div>
-                <button onclick="removeCartItem(${idx})" style="background:none;color:var(--danger);border:none;">✕</button>
-              </div>
-            `).join('')}
-            <p>Total: ETB ${cart.reduce((s,i)=>s+(i.price*i.quantity),0)}</p>
-            <button class="btn" onclick="openCheckout()">Checkout</button>
-            <button class="btn btn-outline" onclick="closeModal('cartModal')">Close</button>
-          </div>`;
-      }
-      modal.classList.add('active');
-    }
+function sAT(t){document.querySelectorAll('.atb').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.asec').forEach(function(e){e.classList.remove('active')});var tb=document.querySelector('[data-atab="'+t+'"]');if(tb)tb.classList.add('active');var s=document.getElementById('a-'+t);if(s)s.classList.add('active');if(t==='dash')lD();if(t==='prods'){lAP();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');document.getElementById('pdz').onclick=function(){document.getElementById('api2').click()};document.getElementById('api2').onchange=function(e){var files=Array.from(e.target.files).slice(0,5);pP=[];files.forEach(function(f){var r=new FileReader();r.onload=function(ev){pP.push(ev.target.result);rPP()};r.readAsDataURL(f)});this.value=''};renderCL()}if(t==='ords')lAO()}
 
-    function changeCartQty(idx, delta) {
-      let item = cart[idx];
-      let p = products.find(x=>x.id===item.product_id);
-      if (!p) return;
-      item.quantity = Math.max(1, Math.min(item.quantity+delta, p.stock));
-      saveCart();
-      openCart();
-    }
+function lD(){var pendingO=O.filter(function(o){return o.status==='pending'});var revenue=O.filter(function(o){return o.status!=='pending'}).reduce(function(s,o){return s+(o.total||0)},0);document.getElementById('dStats').innerHTML='<div class="sc"><div class="sv">'+P.length+'</div><div class="sl">📦 Products</div></div><div class="sc"><div class="sv">'+O.length+'</div><div class="sl">📋 Orders</div></div><div class="sc"><div class="sv">'+pendingO.length+'</div><div class="sl">⏳ Pending</div></div><div class="sc"><div class="sv">'+revenue.toLocaleString()+'</div><div class="sl">💰 Revenue</div></div>'}
+function rPP(){var h='';pP.forEach(function(p,i){h+='<div class="pti"><img src="'+p+'"><button class="rt" onclick="rPP2('+i+')">✕</button></div>'});document.getElementById('ppv').innerHTML=h}
+window.rPP2=function(i){pP.splice(i,1);rPP()}
+function renderCL(){document.getElementById('clist').innerHTML=CAT.map(function(c,i){return'<span class="catch">'+c+' <button onclick="dCat('+i+')">✕</button></span>'}).join('')}
+window.aCat=function(){var n=document.getElementById('ncn').value.trim();if(!n){toast('⚠️ Enter name');return}if(CAT.indexOf(n)!==-1){toast('⚠️ Exists!');return}CAT.push(n);sCAT2();document.getElementById('ncn').value='';renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('✅ Added!')};
+window.dCat=function(i){if(!confirm('Delete?'))return;CAT.splice(i,1);sCAT2();renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('🗑️ Deleted')}
 
-    function removeCartItem(idx) { cart.splice(idx,1); saveCart(); openCart(); }
-    function saveCart() { localStorage.setItem('gc_cart', JSON.stringify(cart)); updateCartBadge(); }
+function aP(){var n=document.getElementById('apn').value.trim(),pr=parseInt(document.getElementById('app').value);if(!n||!pr){toast('⚠️ Name and price!');return}var ph=pP.length>0?pP.slice():['https://placehold.co/400x400/D4AF37/0B2E1E?text='+encodeURIComponent(n.substring(0,12))];var np={name:n,category:document.getElementById('apc').value,gender:document.getElementById('apg').value,price:pr,description:document.getElementById('apd').value,images:ph,stock:parseInt(document.getElementById('aps').value)||1,is_sold:false,is_hidden:false};showLoading();fetch(API+'/api/products',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify(np)}).then(function(r){return r.json()}).then(function(){hideLoading();toast('✅ Added!');document.getElementById('apn').value='';document.getElementById('app').value='';document.getElementById('apd').value='';document.getElementById('aps').value='1';pP=[];document.getElementById('ppv').innerHTML='';lP()}).catch(function(e){hideLoading();toast('❌ Error')})}
+function lAP(){var h='';P.forEach(function(p){h+='<div class="api"><img src="'+getImgUrl(p)+'" onerror="this.src=\'https://placehold.co/60x60/D4AF37/0B2E1E?text=P\'"><div class="apii"><b>'+p.name+'</b> '+(p.is_sold?'🔴':'')+'<div>'+p.category+' · '+p.gender+' · '+p.price.toLocaleString()+' '+SET.cu+'</div><div>Stock: <input type="number" value="'+p.stock+'" id="si'+p.id+'" style="width:55px;border:1px solid var(--pb);background:var(--ib);color:var(--t)"> <button class="btn btn-xs btn-s" onclick="uS('+p.id+')">Update</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',5)">+5</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',10)">+10</button></div></div><button class="btn btn-xs '+(p.is_sold?'btn-g':'btn-s')+'" onclick="tS('+p.id+')">'+(p.is_sold?'Avail':'Sell')+'</button> <button class="btn btn-xs btn-d" onclick="dP('+p.id+')">🗑️</button></div>'});document.getElementById('aplist').innerHTML=h||'<p style="text-align:center;padding:20px">No products.</p>'}
+window.uS=function(id){var p=fP(id),inp=document.getElementById('si'+id);if(p&&inp){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock:Math.max(0,parseInt(inp.value)||0),is_sold:(parseInt(inp.value)||0)<=0})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading();toast('❌ Error')})}};
+window.qS=function(id,add){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock_increment:add})}).then(function(){hideLoading();lP();toast('📦 +'+add+'!')}).catch(function(){hideLoading();toast('❌ Error')})};
+window.tS=function(id){var p=fP(id);if(p){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_sold:!p.is_sold})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading();toast('❌ Error')})}};
+window.dP=function(id){if(!confirm('Delete?'))return;showLoading();fetch(API+'/api/products/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}}).then(function(){hideLoading();lP();toast('🗑️ Deleted')}).catch(function(){hideLoading();toast('❌ Error')})};
 
-    // ====================== CHECKOUT ======================
-    function openCheckout() {
-      if (cart.length === 0) return showToast('Cart empty');
-      let modal = document.getElementById('checkoutModal');
-      modal.innerHTML = `
-        <div class="modal"><h3>Checkout</h3>
-          <input id="checkName" placeholder="Full Name" value="${currentUser.first_name||''} ${currentUser.last_name||''}">
-          <input id="checkUsername" placeholder="Username (optional)" value="${currentUser.username||''}">
-          <p>Payment: Telebirr to <b>251990066832 (Biruk)</b></p>
-          <button class="btn" onclick="placeOrder()">Confirm Order</button>
-          <button class="btn btn-outline" onclick="closeModal('checkoutModal')">Cancel</button>
-        </div>`;
-      modal.classList.add('active');
-    }
+function lAO(){if(!adminToken){document.getElementById('aolist').innerHTML='<p style="text-align:center;padding:30px">Login required.</p>';return}fetch(API+'/api/orders?all=true',{headers:{'Authorization':'Bearer '+adminToken}}).then(function(r){return r.json()}).then(function(orders){var h='';orders.forEach(function(o){h+='<div class="oc" style="margin:0 0 10px"><div class="oh"><b>#'+o.id+'</b><span class="sb2 sp">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+' (@'+o.customer_username+')</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p><div style="margin-top:6px"><button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'confirmed\')">✅ Confirm</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'shipped\')">🚚 Ship</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'delivered\')">📦 Delivered</button></div></div>'});document.getElementById('aolist').innerHTML=h||'<p style="text-align:center;padding:30px">No orders.</p>'}).catch(function(){document.getElementById('aolist').innerHTML='<p style="text-align:center;padding:30px">Error loading orders.</p>'})}
+window.uOS=function(id,s){showLoading();fetch(API+'/api/orders/'+id+'/status',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({status:s})}).then(function(){hideLoading();lO();toast('✦ Updated!')}).catch(function(){hideLoading();toast('❌ Error')})};
 
-    async function placeOrder() {
-      let name = document.getElementById('checkName').value.trim();
-      let username = document.getElementById('checkUsername').value.trim();
-      if (!name) return showToast('Name required');
-      let orderData = {
-        customer_id: currentUser.id,
-        customer_name: name,
-        customer_username: username || '',
-        items: cart.map(i => ({product_id: i.product_id, quantity: i.quantity})),
-        payment_method: 'Telebirr'
-      };
-      try {
-        let res = await api(`${API}/api/orders`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(orderData)
-        });
-        alert(`Order placed! Pay via Telebirr to 251990066832 (Biruk). Order ID: ${res.order_id}`);
-        cart = [];
-        saveCart();
-        closeModal('checkoutModal');
-        loadProducts();
-      } catch(e) {}
-    }
+function aTH(){document.body.classList.remove('theme-obsidian','theme-sapphire','theme-ivory');if(th==='obsidian')document.body.classList.add('theme-obsidian');if(th==='sapphire')document.body.classList.add('theme-sapphire');if(th==='ivory')document.body.classList.add('theme-ivory');document.querySelectorAll('#tPopup .to2').forEach(function(e){e.classList.remove('selected')});var el=document.querySelector('#tPopup .to2[data-theme="'+th+'"]');if(el)el.classList.add('selected');SET.th=th;localStorage.setItem('gc_settings',JSON.stringify(SET))}
+function rCats(){var all=['All'].concat(CAT),h='';all.forEach(function(c){h+='<span class="cc'+(c===cat?' active':'')+'" data-cat="'+c+'">'+c+'</span>'});document.getElementById('ctabs').innerHTML=h;document.querySelectorAll('#ctabs .cc').forEach(function(el){el.onclick=function(){cat=this.dataset.cat;rCats();rP()}})}
+function rGF(){var g=['All','Male','Female','Unisex'],l={All:'🌐 All',Male:'👦 Male',Female:'👧 Female',Unisex:'💜 Unisex'},h='';g.forEach(function(g2){h+='<span class="gc'+(g2===gen?' active':'')+'" data-gen="'+g2+'">'+l[g2]+'</span>'});document.getElementById('gfilt').innerHTML=h;document.querySelectorAll('#gfilt .gc').forEach(function(el){el.onclick=function(){gen=this.dataset.gen;rGF();rP()}})}
+function sSD(){SET.sn=document.getElementById('ssn').value||'GEM CART';SET.cu=document.getElementById('scu').value||'Birr';SET.pw=document.getElementById('spw').value||'sadmin';localStorage.setItem('gc_settings',JSON.stringify(SET));toast('💾 Saved!')}
 
-    // ====================== ORDERS ======================
-    async function openOrders() {
-      let modal = document.getElementById('ordersModal');
-      modal.innerHTML = `<div class="modal"><p>Loading...</p></div>`;
-      modal.classList.add('active');
-      try {
-        let orders = await api(`${API}/api/orders?customer_id=${currentUser.id}`);
-        modal.innerHTML = `
-          <div class="modal"><h3>Your Orders</h3>
-            ${orders.length ? orders.map(o => `
-              <div style="border-bottom:1px solid var(--border);padding:10px 0;">
-                <p><b>Order #${o.id}</b> - ${o.status}</p>
-                <p>Items: ${o.items.map(i=>`${i.name} x${i.quantity}`).join(', ')}</p>
-                <p>Total: ETB ${o.total}</p>
-              </div>
-            `).join('') : '<p>No orders yet</p>'}
-            <button class="btn" onclick="closeModal('ordersModal')">Close</button>
-          </div>`;
-      } catch(e) {
-        modal.innerHTML = `<div class="modal"><h3>Error</h3><p>Could not load orders.</p><button class="btn" onclick="closeModal('ordersModal')">Close</button></div>`;
-      }
-    }
-
-    // ====================== WISHLIST ======================
-    function openWishlist() {
-      let modal = document.getElementById('wishlistModal');
-      let items = products.filter(p=>wishlist.includes(p.id));
-      modal.innerHTML = items.length ? `
-        <div class="modal"><h3>Wishlist</h3>
-          ${items.map(p => `
-            <div style="display:flex;gap:10px;align-items:center;margin:10px 0;">
-              <img src="${API}/static/${p.images?.[0]||''}" width="60" height="60" style="object-fit:cover;border-radius:8px;">
-              <span>${p.name} - ETB ${p.price}</span>
-              <button class="btn" onclick="addToCart(${p.id});closeModal('wishlistModal')">Add to Cart</button>
-            </div>
-          `).join('')}
-          <button class="btn btn-outline" onclick="closeModal('wishlistModal')">Close</button>
-        </div>` : `<div class="modal"><h3>Wishlist empty</h3><button class="btn" onclick="closeModal('wishlistModal')">Close</button></div>`;
-      modal.classList.add('active');
-    }
-
-    function addToCart(prodId) {
-      let p = products.find(x=>x.id===prodId);
-      if (!p || p.is_sold) return;
-      let existing = cart.find(i=>i.product_id===prodId);
-      if (existing) existing.quantity = Math.min(existing.quantity+1, p.stock);
-      else cart.push({product_id:prodId, name:p.name, price:p.price, quantity:1, stock:p.stock});
-      saveCart();
-      showToast('Added to cart');
-    }
-
-    // ====================== ADMIN ======================
-    function showAdminPassword() {
-      let modal = document.createElement('div');
-      modal.className = 'admin-password-modal';
-      modal.innerHTML = `
-        <div style="background:var(--bg);padding:20px;border-radius:12px;width:80%;max-width:300px;">
-          <h3>Admin Password</h3>
-          <input id="adminPassInput" type="password" placeholder="Password">
-          <button class="btn" onclick="loginAdmin()">Login</button>
-          <button class="btn btn-outline" onclick="this.parentElement.parentElement.remove()">Cancel</button>
-        </div>`;
-      document.body.appendChild(modal);
-    }
-
-    async function loginAdmin() {
-      let pass = document.getElementById('adminPassInput').value;
-      let modal = document.querySelector('.admin-password-modal');
-      if (!pass) { showToast('Enter password'); return; }
-      showLoadingBar();
-      try {
-        let res = await fetch(`${API}/api/admin/login`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({password: pass})
-        });
-        let data = await res.json();
-        hideLoadingBar();
-        if (res.ok && data.token) {
-          adminToken = data.token;
-          localStorage.setItem('gc_admin_token', adminToken);
-          if (modal) modal.remove();
-          renderAdminPanel();
-          showToast('✅ Admin logged in');
-        } else {
-          showToast(data.error || 'Wrong password');
-        }
-      } catch(e) {
-        hideLoadingBar();
-        showToast('Connection failed. Backend may be down.');
-        console.error(e);
-      }
-    }
-
-    function renderAdminPanel() {
-      let panel = document.getElementById('adminPanel');
-      panel.innerHTML = `
-        <h2>Admin Panel</h2>
-        <div class="tabs">
-          <button class="tab active" onclick="showAdminTab('dashboard')">Dashboard</button>
-          <button class="tab" onclick="showAdminTab('addProduct')">Add Product</button>
-          <button class="tab" onclick="showAdminTab('manageProducts')">Manage</button>
-          <button class="tab" onclick="showAdminTab('categories')">Categories</button>
-          <button class="tab" onclick="showAdminTab('orders')">Orders</button>
-          <button class="tab" onclick="showAdminTab('broadcast')">Broadcast</button>
-        </div>
-        <div id="adminDashboard" class="admin-section active">Loading...</div>
-        <div id="adminAddProduct" class="admin-section"></div>
-        <div id="adminManageProducts" class="admin-section"></div>
-        <div id="adminCategories" class="admin-section"></div>
-        <div id="adminOrders" class="admin-section"></div>
-        <div id="adminBroadcast" class="admin-section"></div>
-      `;
-      panel.style.display = 'block';
-      loadDashboard();
-    }
-
-    function showAdminTab(name) {
-      document.querySelectorAll('#adminPanel .tab').forEach(t=>t.classList.remove('active'));
-      event.target.classList.add('active');
-      document.querySelectorAll('#adminPanel .admin-section').forEach(s=>s.classList.remove('active'));
-      let targetId = 'admin' + name.charAt(0).toUpperCase() + name.slice(1);
-      document.getElementById(targetId).classList.add('active');
-      if (name==='dashboard') loadDashboard();
-      else if (name==='orders') loadAllOrders();
-      else if (name==='manageProducts') loadManageProducts();
-      else if (name==='categories') loadCategoriesAdmin();
-      else if (name==='addProduct') showAddProductForm();
-      else if (name==='broadcast') initBroadcast();
-    }
-
-    async function loadDashboard() {
-      let div = document.getElementById('adminDashboard');
-      try {
-        let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
-        div.innerHTML = `<p>📦 Products: ${products.length}</p><p>🛒 Orders: ${orders.length}</p>`;
-      } catch(e) {
-        div.innerHTML = '<p>Error loading dashboard. Check token.</p>';
-      }
-    }
-
-    function showAddProductForm() {
-      let div = document.getElementById('adminAddProduct');
-      div.innerHTML = `
-        <h3>Add Product</h3>
-        <input id="prodName" placeholder="Product Name">
-        <textarea id="prodDesc" placeholder="Description"></textarea>
-        <input id="prodPrice" type="number" placeholder="Price (ETB)">
-        <select id="prodCategory">${categories.map(c=>`<option>${c}</option>`).join('')}<option>Uncategorized</option></select>
-        <select id="prodGender"><option>Male</option><option>Female</option><option>Unisex</option></select>
-        <input id="prodStock" type="number" value="1" placeholder="Stock">
-        <input type="file" id="prodFiles" multiple accept="image/*,video/*" max="5">
-        <button class="btn" onclick="addProduct()">Add Product</button>
-      `;
-    }
-
-    async function addProduct() {
-      let formData = new FormData();
-      formData.append('name', document.getElementById('prodName').value);
-      formData.append('description', document.getElementById('prodDesc').value);
-      formData.append('price', document.getElementById('prodPrice').value);
-      formData.append('category', document.getElementById('prodCategory').value);
-      formData.append('gender', document.getElementById('prodGender').value);
-      formData.append('stock', document.getElementById('prodStock').value);
-      let files = document.getElementById('prodFiles').files;
-      for (let f of files) formData.append('files', f);
-      try {
-        await api(`${API}/api/products`, {method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:formData});
-        showToast('Product added!');
-        loadProducts();
-      } catch(e) {}
-    }
-
-    async function loadManageProducts() {
-      let div = document.getElementById('adminManageProducts');
-      div.innerHTML = products.map(p => `
-        <div style="border:1px solid var(--border);padding:8px;margin:8px 0;">
-          <b>${p.name}</b> (Stock: ${p.stock}) ${p.is_sold?'SOLD':''} ${p.is_hidden?'HIDDEN':''}
-          <button onclick="updateStock(${p.id},5)">+5</button>
-          <button onclick="updateStock(${p.id},10)">+10</button>
-          <button onclick="toggleSold(${p.id})">${p.is_sold?'Avail':'Sell'}</button>
-          <button onclick="toggleHidden(${p.id})">${p.is_hidden?'Show':'Hide'}</button>
-          <button onclick="deleteProduct(${p.id})" style="color:var(--danger)">Delete</button>
-        </div>
-      `).join('');
-    }
-
-    async function updateStock(id, amt) {
-      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock_increment:amt})});
-      loadProducts(); loadManageProducts();
-    }
-    async function toggleSold(id) {
-      let p = products.find(x=>x.id===id);
-      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_sold:!p.is_sold})});
-      loadProducts(); loadManageProducts();
-    }
-    async function toggleHidden(id) {
-      let p = products.find(x=>x.id===id);
-      await api(`${API}/api/products/${id}`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_hidden:!p.is_hidden})});
-      loadProducts(); loadManageProducts();
-    }
-    async function deleteProduct(id) {
-      if (!confirm('Delete this product?')) return;
-      await api(`${API}/api/products/${id}`, {method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}});
-      loadProducts(); loadManageProducts();
-    }
-
-    async function loadCategoriesAdmin() {
-      let div = document.getElementById('adminCategories');
-      div.innerHTML = `
-        <input id="newCatName" placeholder="New category name">
-        <button class="btn" onclick="addCategory()">Add Category</button>
-        <hr>
-        ${categories.map(c=>`<div>${c} <button onclick="deleteCategory('${c}')" style="color:var(--danger)">Delete</button></div>`).join('')}
-      `;
-    }
-    async function addCategory() {
-      let name = document.getElementById('newCatName').value.trim();
-      if (!name) return;
-      await api(`${API}/api/categories`, {method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({name})});
-      await loadCategories();
-      renderCategoryTabs();
-      loadCategoriesAdmin();
-    }
-    async function deleteCategory(name) {
-      await api(`${API}/api/categories/${name}`, {method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}});
-      await loadCategories();
-      renderCategoryTabs();
-      loadCategoriesAdmin();
-    }
-
-    async function loadAllOrders() {
-      let div = document.getElementById('adminOrders');
-      try {
-        let orders = await api(`${API}/api/orders?all=true`, {headers:{'Authorization':'Bearer '+adminToken}});
-        div.innerHTML = orders.length ? orders.map(o => `
-          <div style="border-bottom:1px solid var(--border);padding:8px;">
-            <p>Order #${o.id} - ${o.customer_name} (${o.status})</p>
-            <select onchange="updateOrderStatus(${o.id},this.value)">
-              <option ${o.status==='pending'?'selected':''}>pending</option>
-              <option ${o.status==='confirmed'?'selected':''}>confirmed</option>
-              <option ${o.status==='shipped'?'selected':''}>shipped</option>
-              <option ${o.status==='delivered'?'selected':''}>delivered</option>
-              <option ${o.status==='cancelled'?'selected':''}>cancelled</option>
-            </select>
-          </div>
-        `).join('') : '<p>No orders yet</p>';
-      } catch(e) { div.innerHTML = '<p>Error loading orders</p>'; }
-    }
-    async function updateOrderStatus(id, status) {
-      await api(`${API}/api/orders/${id}/status`, {method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({status})});
-      showToast('Status updated');
-    }
-
-    function initBroadcast() {
-      document.getElementById('adminBroadcast').innerHTML = `
-        <h3>Send Broadcast</h3>
-        <textarea id="broadcastMsg" placeholder="Message to all users..."></textarea>
-        <input type="file" id="broadcastPhoto" accept="image/*">
-        <button class="btn" onclick="sendBroadcast()">Send to All Users</button>
-      `;
-    }
-    async function sendBroadcast() {
-      let msg = document.getElementById('broadcastMsg').value;
-      let formData = new FormData();
-      formData.append('message', msg);
-      let photo = document.getElementById('broadcastPhoto').files[0];
-      if (photo) formData.append('photo', photo);
-      await api(`${API}/api/broadcast`, {method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:formData});
-      showToast('Broadcast sent!');
-    }
-
-    // ====================== THEME ======================
-    function switchTheme(theme) {
-      document.body.className = theme;
-      localStorage.setItem('gc_theme', theme);
-      try {
-        let bg = getComputedStyle(document.body).getPropertyValue('--bg').trim();
-        tg.setHeaderColor(bg);
-        tg.setBackgroundColor(bg);
-      } catch(e) {}
-    }
-
-    (function() {
-      let saved = localStorage.getItem('gc_theme') || 'signature';
-      document.getElementById('themeSelect').value = saved;
-      switchTheme(saved);
-    })();
-
-    initApp();
-  </script>
+function init(){
+    detectTelegramUser();var ls=JSON.parse(localStorage.getItem('gc_settings')||'null');if(ls)SET=ls;var lu=JSON.parse(localStorage.getItem('gc_user')||'null');if(lu)U=lu;var lc=JSON.parse(localStorage.getItem('gc_cart')||'[]');if(lc)C=lc;var lw=JSON.parse(localStorage.getItem('gc_wishlist')||'[]');if(lw)W=lw;var lcat=JSON.parse(localStorage.getItem('gc_categories')||'null');if(lcat&&lcat.length>0)CAT=lcat;th=SET.th||'signature';aTH();uUB();rCats();rGF();rP();uCB();swS('home');
+    document.getElementById('si').addEventListener('input',rP);document.getElementById('tbtn').onclick=function(){document.getElementById('tPopup').classList.add('active')};document.getElementById('ctBtn').onclick=function(){document.getElementById('tPopup').classList.remove('active')};document.querySelectorAll('#tPopup .to2').forEach(function(o){o.onclick=function(){th=this.dataset.theme;aTH()}});document.getElementById('abtn').onclick=window.oAP;document.getElementById('snbtn').onclick=function(){var n=prompt('Name:');if(n){U.n=n;sU();uUB()}var u=prompt('Username (@):');if(u){U.u=u;sU();uUB()}};document.getElementById('cmBtn').onclick=clM;document.getElementById('mBack').onclick=function(){clM();swS('home')};document.getElementById('mWish').onclick=function(){if(cM)tW(cM.id)};document.getElementById('cobtn').onclick=window.chk;document.getElementById('acBtn').onclick=window.aCat;document.getElementById('apBtn').onclick=aP;document.getElementById('ssBtn').onclick=sSD;document.getElementById('caBtn').onclick=window.cAP;document.querySelectorAll('.ni').forEach(function(item){item.onclick=function(){swS(this.dataset.sec)}});document.querySelectorAll('.atb').forEach(function(t){t.onclick=function(){sAT(this.dataset.atab)}});document.getElementById('aOverlay').onclick=function(e){if(e.target===this)window.cAP()};document.getElementById('tPopup').onclick=function(e){if(e.target===this)this.classList.remove('active')};document.getElementById('pModal').onclick=function(e){if(e.target===this)clM()};setTimeout(function(){document.getElementById('startupLoader').classList.add('hidden')},2000);lAll()
+}
+init();
+</script>
 </body>
 </html>
