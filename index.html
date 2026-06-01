@@ -117,137 +117,145 @@
 
 <div class="ao" id="aOverlay"><div class="ap"><div class="ah"><h2 style="color:var(--g)">⚙️ Admin</h2><button class="btn btn-sm btn-d" id="caBtn">✕</button></div><div class="at"><button class="atb active" data-atab="dash">Dashboard</button><button class="atb" data-atab="prods">Products</button><button class="atb" data-atab="ords">Orders</button><button class="atb" data-atab="sets">Settings</button></div>
 <div class="asec active" id="a-dash"><div class="sg" id="dStats"></div></div>
-<div class="asec" id="a-prods"><div class="fg"><label>Name *</label><input id="apn"></div><div class="fg"><label>Category</label><select id="apc"></select></div><div class="fg"><label>Gender</label><select id="apg"><option>Male</option><option>Female</option><option>Unisex</option></select></div><div class="fg"><label>Price (Birr) *</label><input type="number" id="app"></div><div class="fg"><label>Stock</label><input type="number" id="aps" value="1"></div><div class="fg"><label>Description</label><textarea id="apd"></textarea></div><div class="fg"><label>📷 Photos (max 5)</label><div class="fua" id="pdz"><p style="font-size:24px">📷</p><p>Click to upload images</p></div><input type="file" id="api2" accept="image/*" multiple style="display:none"><div class="pt" id="ppv"></div></div><button class="btn btn-p" id="apBtn">➕ Add Product</button><hr><h4 style="color:var(--g)">📁 Categories</h4><div class="fr"><div class="fg"><label>Add Category</label><input id="ncn"></div><div class="fg" style="flex:0;min-width:auto;padding-top:24px"><button class="btn btn-p" id="acBtn">➕ Add</button></div></div><div id="clist"></div><hr><h4 style="color:var(--g)">📦 Manage Products</h4><div id="aplist"></div></div>
+<div class="asec" id="a-prods"><div class="fg"><label>Name *</label><input id="apn"></div><div class="fg"><label>Category</label><select id="apc"></select></div><div class="fg"><label>Gender</label><select id="apg"><option>Male</option><option>Female</option><option>Unisex</option></select></div><div class="fg"><label>Price (Birr) *</label><input type="number" id="app"></div><div class="fg"><label>Stock</label><input type="number" id="aps" value="1"></div><div class="fg"><label>Description</label><textarea id="apd"></textarea></div><div class="fg"><label>📷 Photos (max 5)</label><div class="fua" id="pdz"><p style="font-size:24px">📷</p><p>Click to upload</p></div><input type="file" id="api2" accept="image/*" multiple style="display:none"><div class="pt" id="ppv"></div></div><button class="btn btn-p" id="apBtn">➕ Add Product</button><hr><h4 style="color:var(--g)">📁 Categories</h4><div class="fr"><div class="fg"><label>Add Category</label><input id="ncn"></div><div class="fg" style="flex:0;min-width:auto;padding-top:24px"><button class="btn btn-p" id="acBtn">➕ Add</button></div></div><div id="clist"></div><hr><h4 style="color:var(--g)">📦 Manage Products</h4><div id="aplist"></div></div>
 <div class="asec" id="a-ords"><div id="aolist"></div></div>
 <div class="asec" id="a-sets"><div class="fg"><label>Shop Name</label><input id="ssn" value="GEM CART"></div><div class="fg"><label>Currency</label><input id="scu" value="Birr"></div><div class="fg"><label>Admin Password</label><input id="spw" value="sadmin"></div><button class="btn btn-p" id="ssBtn">💾 Save</button></div>
 </div></div>
 <div class="toast" id="toast"></div>
-
 <script>
 var API="https://gemcart-backend-x6qi.onrender.com",AD=[7715442708],TN="251990066832",TNAME="Biruk";
 var P=[],C=[],W=[],O=[],CAT=['Bags','Shoes','Stickers','Bottles','Clothes','Jewelry','Sunglasses','Watches','Others'];
-var SET={sn:'GEM CART',cu:'Birr',th:'signature',pw:'sadmin'},U={n:'',u:'',tid:null,ia:false},cM=null,th='signature',iaO=false,cat='All',gen='All',pF=[],adminToken=null;
-
-// PER-USER STORAGE
-function getSK(b){var uid=U.tid||U.u||'guest';return'gc_'+uid+'_'+b}
+var SET={sn:'GEM CART',cu:'Birr',th:'signature',pw:'sadmin'},U={n:'',u:'',tid:null,ia:false},cM=null,th='signature',iaO=false,cat='All',gen='All',pP=[],adminToken=localStorage.getItem('gc_admin_token')||null;
 
 function showLoading(){document.getElementById('loadingBar').style.width='100%'}
 function hideLoading(){setTimeout(function(){document.getElementById('loadingBar').style.width='0%'},300)}
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},2500)}
 function fP(id){return P.find(function(p){return p.id===id})}
-function getImgUrl(p){
-    if(!p||!p.images||!p.images.length)return 'https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image';
-    var img=p.images[0];
-    if(img.startsWith('http')||img.startsWith('data:'))return img;
-    return API+'/static/uploads/'+img;
-}
-function sU(){localStorage.setItem(getSK('user'),JSON.stringify(U))}
-function sC(){localStorage.setItem(getSK('cart'),JSON.stringify(C))}
-function sW2(){localStorage.setItem(getSK('wishlist'),JSON.stringify(W))}
-function sTH2(){localStorage.setItem(getSK('theme'),th)}
+function getImgUrl(p){if(!p||!p.images||!p.images.length)return 'https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image';var img=p.images[0];if(img.startsWith('http')||img.startsWith('data:'))return img;return API+'/static/uploads/'+img}
+function sU(){localStorage.setItem('gc_user',JSON.stringify(U))}
+function sC(){localStorage.setItem('gc_cart',JSON.stringify(C))}
+function sW2(){localStorage.setItem('gc_wishlist',JSON.stringify(W))}
 function sCAT2(){localStorage.setItem('gc_categories',JSON.stringify(CAT))}
 
 function detectTelegramUser(){
-    if(window.Telegram&&window.Telegram.WebApp){try{var tg=window.Telegram.WebApp;tg.ready();var user=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(user){U.tid=user.id;U.u=user.username?'@'+user.username:'';U.n=user.first_name||'';if(user.last_name)U.n+=' '+user.last_name;if(AD.indexOf(user.id)!==-1)U.ia=true;sU()}}catch(e){console.log(e)}}
+    if(window.Telegram&&window.Telegram.WebApp){try{var tg=window.Telegram.WebApp;tg.ready();var user=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(user){if(user.first_name){U.n=user.first_name;if(user.last_name)U.n+=' '+user.last_name}U.u=user.username?'@'+user.username:'';U.tid=user.id;if(AD.indexOf(user.id)!==-1)U.ia=true;sU()}}catch(e){console.log(e)}}
 }
 
 function uUB(){
-    var g=document.getElementById('ug');
-    var myOrders=O.filter(function(o){if(U.tid&&String(o.customer_id)===String(U.tid))return true;if(U.u&&o.customer_username===U.u)return true;return false;});
+    var g=document.getElementById('ug'),n=U.n||'',u=U.u||'';
+    var myOrders=O.filter(function(o){return String(o.customer_id)===String(U.tid)||o.customer_username===U.u||o.customer_name===U.n});
     var c=myOrders.length;
-    if(U.n)g.textContent='👤 '+U.n+(U.u?' ('+U.u+')':'')+' · Orders: '+c+(U.ia?' · 🔐':'');
+    if(n)g.textContent='👤 '+n+(u?' ('+u+')':'')+' · Orders: '+c+(U.ia?' · 🔐':'');
     else g.textContent='👤 Welcome to GEM CART';
 }
 
 function rP(){
     var s=document.getElementById('si').value.toLowerCase();
-    var f=P.filter(function(p){if(p.is_hidden)return false;if(cat!=='All'&&p.category!==cat)return false;if(gen!=='All'&&p.gender!==gen)return false;if(s&&p.name.toLowerCase().indexOf(s)===-1)return false;return true;});
-    var h='';f.forEach(function(p){var lk=W.indexOf(p.id)!==-1,imgUrl=getImgUrl(p);h+='<div class="pc'+(p.is_sold?' sold':'')+'" data-pid="'+p.id+'"><img src="'+imgUrl+'" class="pi" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">'+(p.is_sold?'<span class="sbad">SOLD</span>':'')+'<button class="wbtn'+(lk?' liked':'')+'" data-wid="'+p.id+'">'+(lk?'❤️':'🤍')+'</button><div class="pinfo"><p style="font-size:11px;color:var(--ts)">'+p.category+' · '+p.gender+'</p><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p><p style="font-size:11px;color:var(--g)">'+(p.is_sold?'❌ Sold Out':'Stock: '+p.stock)+'</p></div></div>';});
+    var f=P.filter(function(p){if(p.is_hidden)return false;if(cat!=='All'&&p.category!==cat)return false;if(gen!=='All'&&p.gender!==gen)return false;if(s&&p.name.toLowerCase().indexOf(s)===-1)return false;return true});
+    var h='';f.forEach(function(p){var lk=W.indexOf(p.id)!==-1,imgUrl=getImgUrl(p);h+='<div class="pc'+(p.is_sold?' sold':'')+'" data-pid="'+p.id+'"><img src="'+imgUrl+'" class="pi" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">'+(p.is_sold?'<span class="sbad">SOLD</span>':'')+'<button class="wbtn'+(lk?' liked':'')+'" data-wid="'+p.id+'">'+(lk?'❤️':'🤍')+'</button><div class="pinfo"><p style="font-size:11px;color:var(--ts)">'+p.category+' · '+p.gender+'</p><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p><p style="font-size:11px;color:var(--g)">'+(p.is_sold?'❌ Sold Out':'Stock: '+p.stock)+'</p></div></div>'});
     document.getElementById('pgrid').innerHTML=h;
     document.querySelectorAll('#pgrid .pc').forEach(function(cd){cd.onclick=function(e){if(e.target.classList.contains('wbtn'))return;var p=fP(parseInt(this.dataset.pid));if(p&&!p.is_sold)oP(p.id)}});
     document.querySelectorAll('#pgrid .wbtn').forEach(function(btn){btn.onclick=function(e){e.stopPropagation();tW(parseInt(this.dataset.wid))}});
 }
+
 function rW(){var it=P.filter(function(p){return W.indexOf(p.id)!==-1});document.getElementById('wgrid').innerHTML=it.length?it.map(function(p){return'<div class="pc'+(p.is_sold?' sold':'')+'"><img src="'+getImgUrl(p)+'" class="pi"><div class="pinfo"><p class="pn">'+p.name+'</p><p class="pp">'+p.price.toLocaleString()+' '+SET.cu+'</p></div></div>'}).join(''):'';document.getElementById('wempty').style.display=it.length?'none':'block'}
-function oP(id){var p=fP(id);if(!p||p.is_sold)return;cM=p;var gal='';if(p.images&&p.images.length){p.images.forEach(function(img){var url=img.startsWith('http')||img.startsWith('data:')?img:API+'/static/uploads/'+img;gal+='<img src="'+url+'" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">';});}else{gal='<img src="https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0">';}
-    document.getElementById('mGal').innerHTML=gal;document.getElementById('mCat').textContent=p.category+' · '+p.gender;document.getElementById('mName').textContent=p.name;document.getElementById('mPrice').textContent=p.price.toLocaleString()+' '+SET.cu;document.getElementById('mDesc').textContent=p.description||'';document.getElementById('mStock').textContent=p.stock>0?(p.stock<=3?'⚠️ Only '+p.stock+' left!':'✅ In Stock'):'❌ Sold Out';document.getElementById('mWish').textContent=W.indexOf(p.id)!==-1?'❤️':'🤍';document.getElementById('mAdd').style.opacity=p.stock<=0?'0.5':'1';document.getElementById('mAdd').textContent=p.stock<=0?'SOLD OUT':'Add to Cart';document.getElementById('mAdd').onclick=function(){aTC(p.id)};document.getElementById('mBuy').style.display=p.stock<=0?'none':'inline-block';document.getElementById('mBuy').onclick=function(){bN()};document.getElementById('pModal').classList.add('active')}
+
+function oP(id){var p=fP(id);if(!p||p.is_sold)return;cM=p;var gal='';if(p.images&&p.images.length){p.images.forEach(function(img){var url=img.startsWith('http')||img.startsWith('data:')?img:API+'/static/uploads/'+img;gal+='<img src="'+url+'" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0" onerror="this.src=\'https://placehold.co/400x400/D4AF37/0B2E1E?text=Image\'">'})}else{gal='<img src="https://placehold.co/400x400/D4AF37/0B2E1E?text=No+Image" style="width:100%;max-height:400px;object-fit:cover;flex-shrink:0">'}document.getElementById('mGal').innerHTML=gal;document.getElementById('mCat').textContent=p.category+' · '+p.gender;document.getElementById('mName').textContent=p.name;document.getElementById('mPrice').textContent=p.price.toLocaleString()+' '+SET.cu;document.getElementById('mDesc').textContent=p.description||'';document.getElementById('mStock').textContent=p.stock>0?(p.stock<=3?'⚠️ Only '+p.stock+' left!':'✅ In Stock'):'❌ Sold Out';document.getElementById('mWish').textContent=W.indexOf(p.id)!==-1?'❤️':'🤍';document.getElementById('mAdd').style.opacity=p.stock<=0?'0.5':'1';document.getElementById('mAdd').textContent=p.stock<=0?'SOLD OUT':'Add to Cart';document.getElementById('mAdd').onclick=function(){aTC(p.id)};document.getElementById('mBuy').style.display=p.stock<=0?'none':'inline-block';document.getElementById('mBuy').onclick=function(){bN()};document.getElementById('pModal').classList.add('active')}
 function clM(){document.getElementById('pModal').classList.remove('active');cM=null}
 
 function aTC(id){var p=fP(id);if(!p||p.is_sold||p.stock<=0)return;var ex=C.find(function(c){return c.id===id});if(ex&&ex.qty>=p.stock){toast('⚠️ Stock limit!');return}ex?ex.qty++:C.push({id:id,qty:1});sC();toast('🛒 Added!');uCB();if(cM&&cM.id===id)oP(id)}
 function uCB(){var t=C.reduce(function(s,c){return s+c.qty},0);var b=document.getElementById('cBadge');if(t>0){b.textContent=t;b.style.display='inline'}else{b.style.display='none'}}
-function rC(){if(C.length===0){document.getElementById('citems').innerHTML='';document.getElementById('ctot').style.display='none';document.getElementById('cobtn').style.display='none';document.getElementById('cempty').style.display='block';return}document.getElementById('cempty').style.display='none';document.getElementById('ctot').style.display='flex';document.getElementById('cobtn').style.display='block';var t=0,h='';C.forEach(function(c){var p=fP(c.id);if(!p)return;var dp=p.price;t+=dp*c.qty;h+='<div class="ci"><img src="'+getImgUrl(p)+'" class="cii" onerror="this.src=\'https://placehold.co/100x100/D4AF37/0B2E1E?text=Image\'"><div class="cinfo"><b>'+p.name+'</b><br>'+dp.toLocaleString()+' '+SET.cu+' × '+c.qty+'<div style="margin-top:6px"><button class="qb" onclick="chQ('+c.id+',-1)">−</button> '+c.qty+' <button class="qb" onclick="chQ('+c.id+',1)">+</button> <button class="btn btn-sm btn-d" onclick="rFC('+c.id+')">🗑️</button></div></div></div>';});
-    document.getElementById('citems').innerHTML=h;document.getElementById('tpr').textContent=t.toLocaleString()+' '+SET.cu}
-window.chQ=function(id,d){var c=C.find(function(x){return x.id===id});if(!c)return;var p=fP(id);if(d>0&&p&&c.qty>=p.stock){toast('⚠️ Stock limit!');return}c.qty+=d;if(c.qty<=0)C=C.filter(function(x){return x.id!==id});sC();rC();uCB()}
-window.rFC=function(id){C=C.filter(function(c){return c.id!==id});sC();rC();uCB()}
+function rC(){
+    if(C.length===0){document.getElementById('citems').innerHTML='';document.getElementById('ctot').style.display='none';document.getElementById('cobtn').style.display='none';document.getElementById('cempty').style.display='block';return}
+    document.getElementById('cempty').style.display='none';document.getElementById('ctot').style.display='flex';document.getElementById('cobtn').style.display='block';
+    var t=0,h='';C.forEach(function(c){var p=fP(c.id);if(!p)return;var dp=p.price;t+=dp*c.qty;h+='<div class="ci"><img src="'+getImgUrl(p)+'" class="cii" onerror="this.src=\'https://placehold.co/100x100/D4AF37/0B2E1E?text=Image\'"><div class="cinfo"><b>'+p.name+'</b><br>'+dp.toLocaleString()+' '+SET.cu+' × '+c.qty+'<div style="margin-top:6px"><button class="qb" onclick="chQ('+c.id+',-1)">−</button> '+c.qty+' <button class="qb" onclick="chQ('+c.id+',1)">+</button> <button class="btn btn-sm btn-d" onclick="rFC('+c.id+')">🗑️</button></div></div></div>'});
+    document.getElementById('citems').innerHTML=h;document.getElementById('tpr').textContent=t.toLocaleString()+' '+SET.cu;
+}
+window.chQ=function(id,d){var c=C.find(function(x){return x.id===id});if(!c)return;var p=fP(id);if(d>0&&p&&c.qty>=p.stock){toast('⚠️ Stock limit!');return}c.qty+=d;if(c.qty<=0)C=C.filter(function(x){return x.id!==id});sC();rC();uCB()};
+window.rFC=function(id){C=C.filter(function(c){return c.id!==id});sC();rC();uCB()};
 
-window.chk=function(){if(C.length===0)return;if(!U.n||!U.n.trim()){var n=prompt('👤 Please enter your name:');if(!n)return;U.n=n.trim();sU()}if(!U.u||!U.u.trim()){var u=prompt('📧 Telegram username (@):');if(!u)return;U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim();sU()}uUB();var it=C.map(function(c){var p=fP(c.id);return{product_id:c.id,name:p?p.name:'Unknown',quantity:c.qty,price:p?p.price:0}});var t=it.reduce(function(s,i){return s+i.price*i.quantity},0);showLoading();fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer_id:U.tid||0,customer_name:U.n,customer_username:U.u,items:it,payment_method:'Telebirr'})}).then(function(r){if(!r.ok)throw new Error('Server error');return r.json()}).then(function(res){hideLoading();if(res.order_id){C=[];sC();uCB();rC();toast('✅ Order placed!');lO();swS('orders');alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to confirm.')}else{toast('❌ Failed')}}).catch(function(e){hideLoading();toast('❌ Network error')})}
-window.bN=function(){if(!cM||cM.stock<=0)return;aTC(cM.id);clM();swS('cart');setTimeout(function(){window.chk()},500)}
+window.chk=function(){
+    if(C.length===0)return;detectTelegramUser();
+    if(!U.n||!U.n.trim()){var n=prompt('👤 Please enter your name:');if(!n)return;U.n=n.trim();sU()}
+    if(!U.u||!U.u.trim()){var u=prompt('📧 Telegram username (@):');if(!u)return;U.u=u.trim().startsWith('@')?u.trim():'@'+u.trim();sU()}
+    uUB();var it=C.map(function(c){var p=fP(c.id);return{product_id:c.id,name:p?p.name:'Unknown',quantity:c.qty,price:p?p.price:0}});
+    var t=it.reduce(function(s,i){return s+i.price*i.quantity},0);showLoading();
+    fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer_id:U.tid||0,customer_name:U.n,customer_username:U.u,items:it,payment_method:'Telebirr'})})
+    .then(function(r){if(!r.ok)throw new Error('Server error');return r.json()}).then(function(res){hideLoading();if(res.order_id){C=[];sC();uCB();rC();toast('✅ Order placed!');lP();swS('orders');alert('💎 ORDER PLACED!\n\n👤 '+U.n+'\n📧 '+U.u+'\n💰 '+t.toLocaleString()+' Birr\n\n💳 TELEBIRR:\n📱 '+TN+'\n👤 '+TNAME+'\n\n✦ Send payment to confirm.')}else{toast('❌ Failed')}})
+    .catch(function(e){hideLoading();toast('❌ Network error');console.error(e)});
+};
+window.bN=function(){if(!cM||cM.stock<=0)return;aTC(cM.id);clM();swS('cart');setTimeout(function(){window.chk()},500)};
 function tW(id){var i=W.indexOf(id);i>-1?W.splice(i,1):W.push(id);sW2();rP();rW();if(cM&&cM.id===id)document.getElementById('mWish').textContent=W.indexOf(id)!==-1?'❤️':'🤍'}
 function swS(s){document.querySelectorAll('.sec').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.ni').forEach(function(e){e.classList.remove('active')});document.getElementById('sec-'+s).classList.add('active');var n=document.querySelector('[data-sec="'+s+'"]');if(n)n.classList.add('active');if(s==='cart')rC();if(s==='wish')rW();if(s==='home')rP();if(s==='orders'){showLoading();lO();setTimeout(hideLoading,800)}}
 
-function rO2(){var mo=[];O.forEach(function(o){if(U.tid&&String(o.customer_id)===String(U.tid))mo.push(o);else if(U.u&&o.customer_username===U.u)mo.push(o)});document.getElementById('olist').innerHTML=mo.length?mo.map(function(o){var sc='sp';if(o.status==='confirmed')sc='spa';else if(o.status==='shipped')sc='ssh';else if(o.status==='delivered')sc='sd';return'<div class="oc"><div class="oh"><b>#'+o.id+'</b><span class="sb2 '+sc+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+'</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'}).join(''):'';document.getElementById('oempty').style.display=mo.length?'none':'block'}
-
-function lP(){fetch(API+'/api/products').then(function(r){return r.json()}).then(function(d){P=d.products||[];rP();rW();if(iaO)lAP()}).catch(function(e){console.error(e)})}
-function lO(){var url=API+'/api/orders';if(U.tid)url+='?customer_id='+U.tid;fetch(url).then(function(r){return r.json()}).then(function(d){O=Array.isArray(d)?d:[];rO2();uUB();if(iaO)lAO()}).catch(function(e){console.error(e)})}
+function rO2(){var mo=[];O.forEach(function(o){if(U.tid&&String(o.customer_id)===String(U.tid)){mo.push(o)}else if(U.u&&o.customer_username===U.u){mo.push(o)}});document.getElementById('olist').innerHTML=mo.length?mo.map(function(o){var sc='sp';if(o.status==='confirmed')sc='spa';else if(o.status==='shipped')sc='ssh';else if(o.status==='delivered')sc='sd';return'<div class="oc"><div class="oh"><b>#'+o.id+'</b><span class="sb2 '+sc+'">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+'</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p></div>'}).join(''):'';document.getElementById('oempty').style.display=mo.length?'none':'block'}
+    
+function lP(){fetch(API+'/api/products').then(function(r){return r.json()}).then(function(d){P=d.products||[];rP();rW();if(iaO)lAP()}).catch(function(e){console.error(e);toast('⚠️ Could not load products')})}
+function lO(){var url=API+'/api/orders';if(U.tid){url+='?customer_id='+U.tid}fetch(url).then(function(r){return r.json()}).then(function(d){O=Array.isArray(d)?d:[];rO2();uUB();if(iaO)lAO()}).catch(function(e){console.error(e)})}
 function lAll(){showLoading();lP();lO();setTimeout(hideLoading,1000)}
 
-window.oAP=function(){if(U.ia||(U.tid&&AD.indexOf(U.tid)!==-1)){var pw=prompt('🔐 Admin password:');if(pw===(SET.pw||'sadmin')){fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})}).then(function(r){return r.json()}).then(function(d){if(d.token){adminToken=d.token;localStorage.setItem('gc_admin_token',adminToken);U.ia=true;iaO=true;sU();uUB();document.getElementById('aOverlay').classList.add('active');sAT('dash');lAll();toast('🔐 Welcome!')}else{toast('❌ Wrong!')}}).catch(function(){toast('❌ Connection failed')})}else{toast('❌ Wrong!')}}else{toast('❌ Unauthorized')}}
-window.cAP=function(){document.getElementById('aOverlay').classList.remove('active');iaO=false}
+window.oAP=function(){
+    if(U.ia||(U.tid&&AD.indexOf(U.tid)!==-1)){
+        var pw=prompt('🔐 Admin password:');
+        if(pw===(SET.pw||'sadmin')){
+            fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})})
+            .then(function(r){return r.json()}).then(function(d){
+                if(d.token){adminToken=d.token;localStorage.setItem('gc_admin_token',adminToken);U.ia=true;iaO=true;uUB();document.getElementById('aOverlay').classList.add('active');sAT('dash');lAll();toast('🔐 Welcome!')}
+                else{toast('❌ Wrong password!')}
+            }).catch(function(){toast('❌ Connection failed')});
+        }else{toast('❌ Wrong!')}
+    }else{toast('❌ Unauthorized')}
+};
+window.cAP=function(){document.getElementById('aOverlay').classList.remove('active');iaO=false};
 
-function sAT(t){document.querySelectorAll('.atb').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.asec').forEach(function(e){e.classList.remove('active')});var tb=document.querySelector('[data-atab="'+t+'"]');if(tb)tb.classList.add('active');var s=document.getElementById('a-'+t);if(s)s.classList.add('active');if(t==='dash')lD();if(t==='prods'){lAP();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');document.getElementById('pdz').onclick=function(){document.getElementById('api2').click()};document.getElementById('api2').onchange=function(e){pF=Array.from(e.target.files).slice(0,5);rPF()};renderCL()}if(t==='ords')lAO()}
-function lD(){var po=O.filter(function(o){return o.status==='pending'});var rev=O.filter(function(o){return o.status!=='pending'}).reduce(function(s,o){return s+(o.total||0)},0);document.getElementById('dStats').innerHTML='<div class="sc"><div class="sv">'+P.length+'</div><div class="sl">📦 Products</div></div><div class="sc"><div class="sv">'+O.length+'</div><div class="sl">📋 Orders</div></div><div class="sc"><div class="sv">'+po.length+'</div><div class="sl">⏳ Pending</div></div><div class="sc"><div class="sv">'+rev.toLocaleString()+'</div><div class="sl">💰 Revenue</div></div>'}
-function rPF(){var h='';pF.forEach(function(f,i){var url=URL.createObjectURL(f);h+='<div class="pti"><img src="'+url+'"><button class="rt" onclick="rPF2('+i+')">✕</button></div>'});document.getElementById('ppv').innerHTML=h}
-window.rPF2=function(i){pF.splice(i,1);rPF()}
+function sAT(t){
+    document.querySelectorAll('.atb').forEach(function(e){e.classList.remove('active')});
+    document.querySelectorAll('.asec').forEach(function(e){e.classList.remove('active')});
+    var tb=document.querySelector('[data-atab="'+t+'"]');if(tb)tb.classList.add('active');
+    var s=document.getElementById('a-'+t);if(s)s.classList.add('active');
+    if(t==='dash')lD();
+    if(t==='prods'){
+        lAP();
+        document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');
+        document.getElementById('pdz').onclick=function(){document.getElementById('api2').click()};
+        document.getElementById('api2').onchange=function(e){pP=Array.from(e.target.files).slice(0,5);rPP();this.value=''};
+        renderCL();
+    }
+    if(t==='ords')lAO();
+}
+
+function lD(){
+    var pendingO=O.filter(function(o){return o.status==='pending'});
+    var revenue=O.filter(function(o){return o.status!=='pending'}).reduce(function(s,o){return s+(o.total||0)},0);
+    document.getElementById('dStats').innerHTML='<div class="sc"><div class="sv">'+P.length+'</div><div class="sl">📦 Products</div></div><div class="sc"><div class="sv">'+O.length+'</div><div class="sl">📋 Orders</div></div><div class="sc"><div class="sv">'+pendingO.length+'</div><div class="sl">⏳ Pending</div></div><div class="sc"><div class="sv">'+revenue.toLocaleString()+'</div><div class="sl">💰 Revenue</div></div>';
+}
+
+function rPP(){var h='';pP.forEach(function(f,i){var url=URL.createObjectURL(f);h+='<div class="pti"><img src="'+url+'"><button class="rt" onclick="rPP2('+i+')">✕</button></div>'});document.getElementById('ppv').innerHTML=h}
+window.rPP2=function(i){pP.splice(i,1);rPP();};
 
 function renderCL(){document.getElementById('clist').innerHTML=CAT.map(function(c,i){return'<span class="catch">'+c+' <button onclick="dCat('+i+')">✕</button></span>'}).join('')}
-window.aCat=function(){var n=document.getElementById('ncn').value.trim();if(!n||CAT.indexOf(n)!==-1)return;CAT.push(n);sCAT2();document.getElementById('ncn').value='';renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('✅ Added!')}
-window.dCat=function(i){if(!confirm('Delete?'))return;CAT.splice(i,1);sCAT2();renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('🗑️ Deleted')}
+window.aCat=function(){var n=document.getElementById('ncn').value.trim();if(!n){toast('⚠️ Enter name');return}if(CAT.indexOf(n)!==-1){toast('⚠️ Exists!');return}CAT.push(n);sCAT2();document.getElementById('ncn').value='';renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('✅ Added!')};
+window.dCat=function(i){if(!confirm('Delete?'))return;CAT.splice(i,1);sCAT2();renderCL();document.getElementById('apc').innerHTML=CAT.map(function(c){return'<option>'+c+'</option>'}).join('');rCats();toast('🗑️ Deleted')};
 
-function aP(){var n=document.getElementById('apn').value.trim(),pr=parseInt(document.getElementById('app').value);if(!n||!pr){toast('⚠️ Name and price!');return}var fd=new FormData();fd.append('name',n);fd.append('category',document.getElementById('apc').value);fd.append('gender',document.getElementById('apg').value);fd.append('price',pr);fd.append('description',document.getElementById('apd').value||'');fd.append('stock',parseInt(document.getElementById('aps').value)||1);if(pF.length>0){pF.forEach(function(f){fd.append('files',f)})}showLoading();fetch(API+'/api/products',{method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:fd}).then(function(r){if(!r.ok)throw new Error('Upload failed');return r.json()}).then(function(){hideLoading();toast('✅ Added!');document.getElementById('apn').value='';document.getElementById('app').value='';document.getElementById('apd').value='';document.getElementById('aps').value='1';pF=[];document.getElementById('ppv').innerHTML='';lP()}).catch(function(e){hideLoading();toast('❌ Error')})}
+function aP(){var n=document.getElementById('apn').value.trim(),pr=parseInt(document.getElementById('app').value);if(!n||!pr){toast('⚠️ Name and price!');return}var fd=new FormData();fd.append('name',n);fd.append('category',document.getElementById('apc').value);fd.append('gender',document.getElementById('apg').value);fd.append('price',pr);fd.append('description',document.getElementById('apd').value||'');fd.append('stock',parseInt(document.getElementById('aps').value)||1);if(pP.length>0){for(var i=0;i<pP.length;i++){fd.append('files',pP[i])}}showLoading();fetch(API+'/api/products',{method:'POST',headers:{'Authorization':'Bearer '+adminToken},body:fd}).then(function(r){if(!r.ok)throw new Error('Upload failed');return r.json()}).then(function(){hideLoading();toast('✅ Added!');document.getElementById('apn').value='';document.getElementById('app').value='';document.getElementById('apd').value='';document.getElementById('aps').value='1';pP=[];document.getElementById('ppv').innerHTML='';lP()}).catch(function(e){hideLoading();toast('❌ Error: '+e.message)})}
 
-function lAP(){if(!adminToken){document.getElementById('aplist').innerHTML='<p style="text-align:center;padding:20px">Login required.</p>';return}var h='';P.forEach(function(p){h+='<div class="api"><img src="'+getImgUrl(p)+'" onerror="this.src=\'https://placehold.co/60x60/D4AF37/0B2E1E?text=P\'"><div class="apii"><b>'+p.name+'</b> '+(p.is_sold?'🔴':'')+'<div>'+p.category+' · '+p.gender+' · '+p.price.toLocaleString()+' '+SET.cu+'</div><div>Stock: <input type="number" value="'+p.stock+'" id="si'+p.id+'" style="width:55px;border:1px solid var(--pb);background:var(--ib);color:var(--t)"> <button class="btn btn-xs btn-s" onclick="uS('+p.id+')">Update</button></div></div><button class="btn btn-xs '+(p.is_sold?'btn-g':'btn-s')+'" onclick="tS('+p.id+')">'+(p.is_sold?'Avail':'Sell')+'</button> <button class="btn btn-xs btn-d" onclick="dP('+p.id+')">🗑️</button></div>'});document.getElementById('aplist').innerHTML=h||'<p style="text-align:center;padding:20px">No products.</p>'}
-window.uS=function(id){var p=fP(id),inp=document.getElementById('si'+id);if(p&&inp){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock:Math.max(0,parseInt(inp.value)||0)})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading()})}}
-window.tS=function(id){var p=fP(id);if(p){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_sold:!p.is_sold})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading()})}}
-window.dP=function(id){if(!confirm('Delete?'))return;showLoading();fetch(API+'/api/products/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}}).then(function(){hideLoading();lP()}).catch(function(){hideLoading()})}
+function lAP(){if(!adminToken){document.getElementById('aplist').innerHTML='<p style="text-align:center;padding:20px">Login required.</p>';return}var h='';P.forEach(function(p){h+='<div class="api"><img src="'+getImgUrl(p)+'" onerror="this.src=\'https://placehold.co/60x60/D4AF37/0B2E1E?text=P\'"><div class="apii"><b>'+p.name+'</b> '+(p.is_sold?'🔴':'')+'<div>'+p.category+' · '+p.gender+' · '+p.price.toLocaleString()+' '+SET.cu+'</div><div>Stock: <input type="number" value="'+p.stock+'" id="si'+p.id+'" style="width:55px;border:1px solid var(--pb);background:var(--ib);color:var(--t)"> <button class="btn btn-xs btn-s" onclick="uS('+p.id+')">Update</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',5)">+5</button> <button class="btn btn-xs btn-s" onclick="qS('+p.id+',10)">+10</button></div></div><button class="btn btn-xs '+(p.is_sold?'btn-g':'btn-s')+'" onclick="tS('+p.id+')">'+(p.is_sold?'Avail':'Sell')+'</button> <button class="btn btn-xs btn-d" onclick="dP('+p.id+')">🗑️</button></div>'});document.getElementById('aplist').innerHTML=h||'<p style="text-align:center;padding:20px">No products.</p>'}
+window.uS=function(id){var p=fP(id),inp=document.getElementById('si'+id);if(p&&inp){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock:Math.max(0,parseInt(inp.value)||0),is_sold:(parseInt(inp.value)||0)<=0})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading();toast('❌ Error')})}};
+window.qS=function(id,add){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({stock_increment:add})}).then(function(){hideLoading();lP();toast('📦 +'+add+'!')}).catch(function(){hideLoading();toast('❌ Error')})};
+window.tS=function(id){var p=fP(id);if(p){showLoading();fetch(API+'/api/products/'+id,{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({is_sold:!p.is_sold})}).then(function(){hideLoading();lP()}).catch(function(){hideLoading();toast('❌ Error')})}};
+window.dP=function(id){if(!confirm('Delete?'))return;showLoading();fetch(API+'/api/products/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+adminToken}}).then(function(){hideLoading();lP();toast('🗑️ Deleted')}).catch(function(){hideLoading();toast('❌ Error')})};
 
-function lAO(){if(!adminToken){document.getElementById('aolist').innerHTML='<p>Login required.</p>';return}fetch(API+'/api/orders?all=true',{headers:{'Authorization':'Bearer '+adminToken}}).then(function(r){return r.json()}).then(function(orders){var h='';orders.forEach(function(o){h+='<div class="oc" style="margin:0 0 10px"><div class="oh"><b>#'+o.id+'</b><span class="sb2 sp">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+' (@'+o.customer_username+')</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p><div style="margin-top:6px"><button class="btn btn-xs btn-s" onclick="uOS('+o.id+',\'confirmed\')">✅ Confirm</button> <button class="btn btn-xs btn-s" onclick="uOS('+o.id+',\'shipped\')">🚚 Ship</button> <button class="btn btn-xs btn-s" onclick="uOS('+o.id+',\'delivered\')">📦 Delivered</button></div></div>'});document.getElementById('aolist').innerHTML=h||'<p>No orders.</p>'}).catch(function(){document.getElementById('aolist').innerHTML='<p>Error.</p>'})}
-window.uOS=function(id,s){showLoading();fetch(API+'/api/orders/'+id+'/status',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({status:s})}).then(function(){hideLoading();lO()}).catch(function(){hideLoading()})}
-
-function aTH(){document.body.classList.remove('theme-obsidian','theme-sapphire','theme-ivory');if(th==='obsidian')document.body.classList.add('theme-obsidian');if(th==='sapphire')document.body.classList.add('theme-sapphire');if(th==='ivory')document.body.classList.add('theme-ivory');document.querySelectorAll('#tPopup .to2').forEach(function(e){e.classList.remove('selected')});var el=document.querySelector('#tPopup .to2[data-theme="'+th+'"]');if(el)el.classList.add('selected');sTH2()}
+function lAO(){if(!adminToken){document.getElementById('aolist').innerHTML='<p style="text-align:center;padding:30px">Login required.</p>';return}fetch(API+'/api/orders?all=true',{headers:{'Authorization':'Bearer '+adminToken}}).then(function(r){return r.json()}).then(function(orders){var h='';orders.forEach(function(o){h+='<div class="oc" style="margin:0 0 10px"><div class="oh"><b>#'+o.id+'</b><span class="sb2 sp">'+o.status.toUpperCase()+'</span></div><p>👤 '+o.customer_name+' (@'+o.customer_username+')</p><p>'+o.items.map(function(i){return i.name+' ×'+i.quantity}).join(', ')+'</p><p><b style="color:var(--g)">'+o.total.toLocaleString()+' '+SET.cu+'</b></p><div style="margin-top:6px"><button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'confirmed\')">✅ Confirm</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'shipped\')">🚚 Ship</button> <button class="btn btn-xs btn-s" onclick="uOS(\''+o.id+'\',\'delivered\')">📦 Delivered</button></div></div>'});document.getElementById('aolist').innerHTML=h||'<p style="text-align:center;padding:30px">No orders.</p>'}).catch(function(){document.getElementById('aolist').innerHTML='<p style="text-align:center;padding:30px">Error loading orders.</p>'})}
+window.uOS=function(id,s){showLoading();fetch(API+'/api/orders/'+id+'/status',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify({status:s})}).then(function(){hideLoading();lO();toast('✦ Updated!')}).catch(function(){hideLoading();toast('❌ Error')})};
+    
+function aTH(){document.body.classList.remove('theme-obsidian','theme-sapphire','theme-ivory');if(th==='obsidian')document.body.classList.add('theme-obsidian');if(th==='sapphire')document.body.classList.add('theme-sapphire');if(th==='ivory')document.body.classList.add('theme-ivory');document.querySelectorAll('#tPopup .to2').forEach(function(e){e.classList.remove('selected')});var el=document.querySelector('#tPopup .to2[data-theme="'+th+'"]');if(el)el.classList.add('selected');SET.th=th;localStorage.setItem('gc_settings',JSON.stringify(SET))}
 function rCats(){var all=['All'].concat(CAT),h='';all.forEach(function(c){h+='<span class="cc'+(c===cat?' active':'')+'" data-cat="'+c+'">'+c+'</span>'});document.getElementById('ctabs').innerHTML=h;document.querySelectorAll('#ctabs .cc').forEach(function(el){el.onclick=function(){cat=this.dataset.cat;rCats();rP()}})}
 function rGF(){var g=['All','Male','Female','Unisex'],l={All:'🌐 All',Male:'👦 Male',Female:'👧 Female',Unisex:'💜 Unisex'},h='';g.forEach(function(g2){h+='<span class="gc'+(g2===gen?' active':'')+'" data-gen="'+g2+'">'+l[g2]+'</span>'});document.getElementById('gfilt').innerHTML=h;document.querySelectorAll('#gfilt .gc').forEach(function(el){el.onclick=function(){gen=this.dataset.gen;rGF();rP()}})}
 function sSD(){SET.sn=document.getElementById('ssn').value||'GEM CART';SET.cu=document.getElementById('scu').value||'Birr';SET.pw=document.getElementById('spw').value||'sadmin';localStorage.setItem('gc_settings',JSON.stringify(SET));toast('💾 Saved!')}
 
 function init(){
-    detectTelegramUser();
-    var ls=JSON.parse(localStorage.getItem('gc_settings')||'null');if(ls)SET=ls;
-    var lu=JSON.parse(localStorage.getItem(getSK('user'))||'null');if(lu)U=lu;
-    var lc=JSON.parse(localStorage.getItem(getSK('cart'))||'[]');if(lc)C=lc;
-    var lw=JSON.parse(localStorage.getItem(getSK('wishlist'))||'[]');if(lw)W=lw;
-    var lcat=JSON.parse(localStorage.getItem('gc_categories')||'null');if(lcat&&lcat.length>0)CAT=lcat;
-    adminToken=localStorage.getItem('gc_admin_token')||null;
-    th=localStorage.getItem(getSK('theme'))||'signature';
-    aTH();uUB();rCats();rGF();rP();uCB();swS('home');
-    document.getElementById('si').addEventListener('input',rP);
-    document.getElementById('tbtn').onclick=function(){document.getElementById('tPopup').classList.add('active')};
-    document.getElementById('ctBtn').onclick=function(){document.getElementById('tPopup').classList.remove('active')};
-    document.querySelectorAll('#tPopup .to2').forEach(function(o){o.onclick=function(){th=this.dataset.theme;aTH()}});
-    document.getElementById('abtn').onclick=window.oAP;
-    document.getElementById('snbtn').onclick=function(){var n=prompt('Name:');if(n){U.n=n;sU();uUB()}var u=prompt('Username (@):');if(u){U.u=u;sU();uUB()}};
-    document.getElementById('cmBtn').onclick=clM;
-    document.getElementById('mBack').onclick=function(){clM();swS('home')};
-    document.getElementById('mWish').onclick=function(){if(cM)tW(cM.id)};
-    document.getElementById('cobtn').onclick=window.chk;
-    document.getElementById('acBtn').onclick=window.aCat;
-    document.getElementById('apBtn').onclick=aP;
-    document.getElementById('ssBtn').onclick=sSD;
-    document.getElementById('caBtn').onclick=window.cAP;
-    document.querySelectorAll('.ni').forEach(function(item){item.onclick=function(){swS(this.dataset.sec)}});
-    document.querySelectorAll('.atb').forEach(function(t){t.onclick=function(){sAT(this.dataset.atab)}});
-    document.getElementById('aOverlay').onclick=function(e){if(e.target===this)window.cAP()};
-    document.getElementById('tPopup').onclick=function(e){if(e.target===this)this.classList.remove('active')};
-    document.getElementById('pModal').onclick=function(e){if(e.target===this)clM()};
-    setTimeout(function(){document.getElementById('startupLoader').classList.add('hidden')},2000);
-    lAll();
+    detectTelegramUser();var ls=JSON.parse(localStorage.getItem('gc_settings')||'null');if(ls)SET=ls;var lu=JSON.parse(localStorage.getItem('gc_user')||'null');if(lu)U=lu;var lc=JSON.parse(localStorage.getItem('gc_cart')||'[]');if(lc)C=lc;var lw=JSON.parse(localStorage.getItem('gc_wishlist')||'[]');if(lw)W=lw;var lcat=JSON.parse(localStorage.getItem('gc_categories')||'null');if(lcat&&lcat.length>0)CAT=lcat;th=SET.th||'signature';aTH();uUB();rCats();rGF();rP();uCB();swS('home');
+    document.getElementById('si').addEventListener('input',rP);document.getElementById('tbtn').onclick=function(){document.getElementById('tPopup').classList.add('active')};document.getElementById('ctBtn').onclick=function(){document.getElementById('tPopup').classList.remove('active')};document.querySelectorAll('#tPopup .to2').forEach(function(o){o.onclick=function(){th=this.dataset.theme;aTH()}});document.getElementById('abtn').onclick=window.oAP;document.getElementById('snbtn').onclick=function(){var n=prompt('Name:');if(n){U.n=n;sU();uUB()}var u=prompt('Username (@):');if(u){U.u=u;sU();uUB()}};document.getElementById('cmBtn').onclick=clM;document.getElementById('mBack').onclick=function(){clM();swS('home')};document.getElementById('mWish').onclick=function(){if(cM)tW(cM.id)};document.getElementById('cobtn').onclick=window.chk;document.getElementById('acBtn').onclick=window.aCat;document.getElementById('apBtn').onclick=aP;document.getElementById('ssBtn').onclick=sSD;document.getElementById('caBtn').onclick=window.cAP;document.querySelectorAll('.ni').forEach(function(item){item.onclick=function(){swS(this.dataset.sec)}});document.querySelectorAll('.atb').forEach(function(t){t.onclick=function(){sAT(this.dataset.atab)}});document.getElementById('aOverlay').onclick=function(e){if(e.target===this)window.cAP()};document.getElementById('tPopup').onclick=function(e){if(e.target===this)this.classList.remove('active')};document.getElementById('pModal').onclick=function(e){if(e.target===this)clM()};setTimeout(function(){document.getElementById('startupLoader').classList.add('hidden')},2000);lAll()
 }
 init();
 </script>
